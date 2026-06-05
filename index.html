@@ -7,14 +7,29 @@
 <style>
 :root{--bg:#1a1520;--bg2:#2a2235;--bg3:#3a3245;--bgl:#252030;--brd:#4a4255;--brd2:#5a5265;--txt:#e8e0f0;--dim:#a098b0;--wht:#fff;--blu:#4a9eff;--gld:#ffd700;--red:#ff5555;--grn:#55cc77;--sp:#7cb3ff;--ar:#ff9944;--cv:#ff5577;--sh:#ccaaff;--spb:#1a2a3a;--arb:#2a1a10;--cvb:#2a1020;--shb:#201a2a}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
-.page{display:flex;gap:10px;max-width:1400px;margin:0 auto;padding:12px}
-.game{flex:1;min-width:0}
-/* Advisor */
-.adv{width:270px;flex-shrink:0;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:12px;font-size:13px;max-height:calc(100vh - 24px);overflow-y:auto}
-.adv.col{width:36px;padding:12px 6px;overflow:hidden}.adv.col .adv-b{display:none}
-.adv-tog{display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;user-select:none}
-.adv-tog h3{font-size:12px;color:var(--gld);letter-spacing:.5px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100vh;overflow:hidden}
+.page{display:flex;gap:8px;height:100vh;padding:8px}
+.game{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+/* Wit Watch Panel */
+.wit{width:300px;flex-shrink:0;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.wit-head{padding:8px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:8px;background:rgba(255,215,0,.03);cursor:pointer;user-select:none}
+.wit-head .wit-av{font-size:20px}.wit-head h3{font-size:12px;color:var(--gld);flex:1;letter-spacing:.5px}.wit-head .wit-tog{color:var(--dim);font-size:12px}
+.wit.col{width:40px}.wit.col .wit-msgs,.wit.col .wit-in,.wit.col .wit-head h3,.wit.col .wit-head .wit-tog-txt{display:none}
+.wit-msgs{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+.wit-msg{padding:7px 10px;border-radius:8px;font-size:12px;line-height:1.4;max-width:92%}
+.wit-msg.wit{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.1);color:var(--txt);align-self:flex-start}
+.wit-msg.usr{background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.15);color:var(--blu);align-self:flex-end;text-align:right}
+.wit-msg .wit-nm{font-size:9px;font-weight:700;color:var(--gld);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;display:block}
+.wit-msg.usr .wit-nm{color:var(--blu)}
+.wit-in{padding:8px;border-top:1px solid var(--brd);display:flex;gap:6px}
+.wit-in input{flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:6px 10px;color:var(--txt);font-size:12px;outline:none}
+.wit-in input:focus{border-color:var(--gld)}
+.wit-in input::placeholder{color:var(--dim)}
+.wit-in button{background:var(--gld);color:var(--bg);border:none;border-radius:6px;padding:6px 12px;font-weight:700;font-size:11px;cursor:pointer}
+.wit-in button:hover{opacity:.85}
+/* Legacy advisor classes (used by advisor tips) */
+.adv-sec{margin-bottom:10px}
+.adv-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px;border-bottom:1px solid var(--brd);padding-bottom:3px}
 .adv-sec{margin-bottom:10px}
 .adv-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px;border-bottom:1px solid var(--brd);padding-bottom:3px}
 .tip{border-radius:6px;padding:7px 9px;margin-bottom:5px;font-size:11px;line-height:1.4;border:1px solid rgba(255,215,0,.12);background:rgba(255,215,0,.04)}
@@ -39,12 +54,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .pl.ai{background:rgba(255,85,85,.08);color:var(--red)}.pl.hu{background:rgba(74,158,255,.08);color:var(--blu)}
 .cc{font-weight:400;color:var(--dim);font-size:11px}
 /* Battlefield */
-.bf{display:flex;gap:6px;margin:3px 0}
-.ln{flex:1;border:1px solid var(--brd);border-radius:9px;background:var(--bgl);overflow:hidden}
+.bf{display:flex;gap:6px;margin:3px 0;flex:1;min-height:0}
+.ln{flex:1;border:1px solid var(--brd);border-radius:9px;background:var(--bgl);overflow:hidden;display:flex;flex-direction:column}
 .ln.tower-lane{border-color:var(--gld);box-shadow:0 0 8px rgba(255,215,0,.1)}
 .lh{text-align:center;padding:5px;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--brd);background:rgba(255,255,255,.02)}
 .lh .tower-icon{color:var(--gld);font-size:10px;margin-left:3px}
-.ls{min-height:72px;padding:5px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;justify-content:center}
+.ls{flex:1;min-height:60px;padding:5px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;justify-content:center}
 .ls.as{border-bottom:1px solid var(--brd)}
 .lt{text-align:center;padding:2px 0;font-size:11px;font-weight:700;background:rgba(255,255,255,.02);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
 .lt .at{color:var(--red)}.lt .vs{color:var(--dim);margin:0 4px}.lt .ht{color:var(--blu)}
@@ -66,7 +81,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 /* Hand */
 .ha{margin-top:5px;padding:8px 12px;background:var(--bg2);border-radius:9px;border:1px solid var(--brd)}
 .ha-l{font-size:11px;color:var(--dim);margin-bottom:4px;font-weight:600}
-.hd{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:82px;align-items:center}
+.hd{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:70px;align-items:center}
 .hd .cd{cursor:pointer}.hd .cd:hover{transform:translateY(-5px);box-shadow:0 5px 16px rgba(0,0,0,.4);z-index:10}
 .hd .cd.sel{transform:translateY(-8px);box-shadow:0 0 0 2px var(--gld),0 6px 20px rgba(0,0,0,.5)}
 .hd .cd.unp{opacity:.35;filter:grayscale(.5)}
@@ -86,7 +101,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .blk{text-align:center;padding:6px 12px;margin:4px 0;font-size:12px;color:var(--red);background:rgba(255,85,85,.06);border:1px solid rgba(255,85,85,.15);border-radius:7px}
 /* Status/Log */
 .sb2{text-align:center;padding:6px;margin:4px 0;font-size:13px;font-weight:600;color:var(--gld);background:var(--bg2);border-radius:7px;border:1px solid var(--brd);min-height:32px;display:flex;align-items:center;justify-content:center}
-.log{margin-top:6px;padding:6px 10px;background:var(--bg2);border-radius:7px;border:1px solid var(--brd);max-height:80px;overflow-y:auto;font-size:11px;color:var(--dim)}
+.log{margin-top:4px;padding:4px 10px;background:var(--bg2);border-radius:7px;border:1px solid var(--brd);max-height:60px;overflow-y:auto;font-size:11px;color:var(--dim)}
 .log p{margin-bottom:2px}.log .ai-msg{color:var(--red)}.log .player-msg{color:var(--blu)}.log .system-msg{color:var(--gld)}
 .hint{font-size:10px;color:var(--dim);text-align:center;margin-top:3px;min-height:14px}
 /* Overlay */
@@ -136,7 +151,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tut-dot.ac{background:var(--gld)}
 .tut-dot.done{background:var(--grn)}
 .tut-nav{display:flex;gap:6px}
-@media(max-width:900px){.adv{display:none}.page{padding:8px}}
+@media(max-width:900px){.wit{display:none}.page{padding:6px}}
 @media(max-width:700px){.cd{width:46px;height:64px}.cd .cv{font-size:16px}.ls .cd{width:40px;height:56px}.ls .cd .cv{font-size:14px}}
 </style>
 </head>
@@ -159,7 +174,139 @@ const AIW={
 };
 
 let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
-let pvpMode=false,handoffScreen=false;
+let pvpMode=false,handoffScreen=false,witOpen=true;
+let witMsgs=[{from:'wit',text:"Ah, a new player at the Towers table! I am Wit — some call me Hoid. I've played this game across a dozen worlds, and I assure you, the rules are always the same: the clever survive, and the bold occasionally win. Ask me anything."}];
+
+// ═══════════════════════════════════════
+// Wit Watch — Context-Aware AI Advisor
+// ═══════════════════════════════════════
+const WIT_GREETINGS=["Hmm, an interesting question...","*adjusts flute*","Let me tell you a story... actually, no. Let me just answer.","Ah! Now THAT is worth discussing.","You remind me of a king I once knew. He asked the same thing.","*leans forward conspiratorially*"];
+const WIT_CLOSERS=["But what do I know? I'm just a storyteller.","Use that knowledge wisely — or don't. Free will and all that.","Now stop chatting and go win.","The journey matters more than the destination, but winning is nice too."];
+
+function witReply(q){
+  if(!q||!q.trim())return null;
+  const ql=q.toLowerCase().trim();
+  const greet=WIT_GREETINGS[Math.floor(Math.random()*WIT_GREETINGS.length)];
+  const close=Math.random()>.6?'\n\n'+WIT_CLOSERS[Math.floor(Math.random()*WIT_CLOSERS.length)]:'';
+
+  // Game state context
+  const gs=G;const hasGame=gs&&gs.phase==='play';
+  let ctx={};
+  if(hasGame){
+    const M=MODES[gs.mode],ev=eLanes(gs,'human');
+    const winning=ev.filter(e=>e.d>0).length,losing=ev.filter(e=>e.d<0).length;
+    const hand=gs.p.human.h,aiH=gs.p.ai.h.length;
+    const myForms=[];
+    for(let i=0;i<M.lanes;i++){const f=detectFormations(gs.lanes[i].human,i,gs.lanes,'human',gs.mode);myForms.push(...f)}
+    ctx={winning,losing,handSize:hand.length,aiHandSize:aiH,round:gs.cr,
+      haveSpears:hand.filter(c=>c.type==='spearmen').length,
+      haveShard:hand.filter(c=>c.type==='shardbearers').length,
+      haveArcher:hand.filter(c=>c.type==='archers').length,
+      haveCav:hand.filter(c=>c.type==='cavalry').length,
+      forms:myForms,ev,M};
+  }
+
+  // ── Pattern matching with context ──
+
+  // Help / what do I do
+  if(ql.match(/help|what (should|do|can) i|how do i|what now|stuck|confused/)){
+    if(!hasGame)return`${greet} You're not in a match yet. Pick an opponent and a mode from the menu, then I'll guide you through the battle.${close}`;
+    if(ctx.winning>=ctx.M.w)return`${greet} You're winning ${ctx.winning} lanes! I'd recommend passing to conserve cards. Every card you save now is ammunition for later rounds. Patience is a weapon.${close}`;
+    if(ctx.losing>=ctx.M.w&&gs.cr<3)return`${greet} Things look grim — you're down in ${ctx.losing} lanes. Consider conceding this round to save your ${ctx.handSize} cards. Losing a battle to win the war is not dishonorable. Well, Dalinar might disagree.${close}`;
+    if(ctx.haveSpears>=3)return`${greet} You have ${ctx.haveSpears} Spearmen in hand — that's a Phalanx waiting to happen! Stack 3+ in one lane for +3 per Spearman. Devastating.${close}`;
+    if(ctx.haveShard>0)return`${greet} You have a Shardbearer. Powerful, but deploy it with 2 Spearmen nearby for a Shardwall — otherwise fatigue will erode its strength. A Shardbearer alone is a man in heavy armor with no squire.${close}`;
+    return`${greet} Deploy cards strategically across the three lanes. Win 2 of 3 to take the round. Watch the Center — that's The Tower. Dominate it by +10 with a flank win for an instant Breakthrough.${close}`;
+  }
+
+  // Formations
+  if(ql.match(/formation|phalanx|skirmish|shardwall|vanguard|crossfire/)){
+    if(ql.includes('phalanx'))return`${greet} Phalanx requires 3+ Spearmen in one lane. Each Spearman gets +3 bonus ON TOP of their formation synergy (+1 per ally). Three Spearmen of value 5 = (5+2)×3 + 9 Phalanx = 30 strength. It's the backbone of Dalinar's strategy.${close}`;
+    if(ql.includes('shardwall'))return`${greet} Shardwall: 1 Shardbearer + 2 Spearmen in the same lane. Negates all Shardbearer fatigue. Without it, your Shardbearer loses strength every 3 turns. Think of the Spearmen as squires keeping the Shardplate maintained.${close}`;
+    if(ql.includes('skirmish'))return`${greet} Skirmish Line: Archer + Cavalry in the same lane. Archers get +3, Cavalry get +2. A flexible combo — the Cavalry's Charge lets you reposition, and the Archer's range supports adjacent lanes too.${close}`;
+    if(ql.includes('vanguard'))return`${greet} Vanguard: ONLY Cavalry in a lane (no other unit types). Each gets +4. High risk, high reward. One Cavalry-7 with Vanguard = 11 strength. But if the enemy sends anything significant, you'll need reinforcements.${close}`;
+    return`${greet} There are 5 formations: Phalanx (3+ Spearmen, +3 each), Skirmish (Archer+Cavalry, +3/+2), Shardwall (Shard+2 Spear, no fatigue), Vanguard (solo Cavalry, +4), and Crossfire (Archers in adjacent lanes, +2). They auto-trigger and stack.${close}`;
+  }
+
+  // Tower / breakthrough
+  if(ql.match(/tower|breakthrough|center|middle/)){
+    if(hasGame){
+      const ce=ctx.ev[ctx.M.towerIdx];
+      if(ce.d>=8)return`${greet} You're +${ce.d} in The Tower! You need +10 with a flank win for Breakthrough. One more strong play in Center could end the entire match. Press your advantage!${close}`;
+      if(ce.d<=-8)return`${greet} The enemy is +${Math.abs(ce.d)} in The Tower. If they get to +10 and hold a flank, it's an instant match loss. Either reinforce Center or make sure they can't win a flank.${close}`;
+    }
+    return`${greet} The Tower is the Center lane, marked with 🏰. If you win Center by 10+ margin AND win at least one flank, you get a Breakthrough — instant match victory. It's the most exciting way to win, and the most dangerous way to lose.${close}`;
+  }
+
+  // Cards / units
+  if(ql.match(/spear|infantry|formation bonus/))return`${greet} Spearmen are the foundation. +1 strength per other Spearman in the same lane, and 3+ triggers Phalanx (+3 each). They also enable Shardwall. Never underestimate the rank and file.${close}`;
+  if(ql.match(/archer|range|adjacent/))return`${greet} Archers add +2 strength to each adjacent lane, ON TOP of their own lane strength. Place them in Center to support both flanks simultaneously. Pair with Cavalry for Skirmish Line (+3).${close}`;
+  if(ql.match(/cavalry|charge|reposition|move card/))return`${greet} Cavalry's Charge triggers on deploy — you can reposition one friendly card from any lane to another. Solo Cavalry = Vanguard (+4). They're your tactical wildcard.${close}`;
+  if(ql.match(/shard|bearer|double|fatigue/))return`${greet} Shardbearers deal double strength (a 10 = 20!), but only 1 per lane, and they lose -1 strength every 3 turns from fatigue. Pair with 2 Spearmen for Shardwall to negate the decay. A Shardbearer without support is a crumbling fortress.${close}`;
+
+  // Strategy
+  if(ql.match(/pass|when.*pass|should.*pass/)){
+    if(hasGame&&ctx.winning>=ctx.M.w)return`${greet} YES. You're winning enough lanes. Pass to force your opponent to keep spending cards while you save yours. Card advantage wins matches.${close}`;
+    return`${greet} Pass when you're ahead in 2+ lanes with comfortable margins. Every card you don't play is a card you keep for the next round. Remember: all deployed cards die at round end.${close}`;
+  }
+  if(ql.match(/concede|give up|surrender/)){
+    if(hasGame&&ctx.losing>=ctx.M.w&&gs.cr<3)return`${greet} Actually, yes — conceding now might be wise. You're losing ${ctx.losing} lanes and have ${ctx.handSize} cards to save for Round ${gs.cr+1}. A strategic retreat is not cowardice. Ask Dalinar about the Tower of— actually, never mind that story.${close}`;
+    return`${greet} Concede when you're losing badly in a non-final round. All your deployed cards are eliminated anyway — conceding early just saves your hand cards for the next round. It's often the winning play.${close}`;
+  }
+  if(ql.match(/round 1|first round|early game|opening/))return`${greet} Round 1 wisdom: DON'T overcommit. Play 3-5 cards maximum. If you dump your hand to win Round 1, you'll have nothing for Rounds 2-3. Let your opponent spend freely, then crush them when they're depleted.${close}`;
+  if(ql.match(/card advantage|more cards|fewer cards/))return`${greet} Count cards constantly. If you have 7 and they have 3, you can pressure multiple lanes simultaneously. If reversed, play conservatively and force them to commit first. The player with more cards controls the tempo.${close}`;
+
+  // Sadeas / Dalinar AI
+  if(ql.match(/sadeas|opponent|enemy|ai|how.*beat/)){
+    if(aiPers==='sadeas')return`${greet} Sadeas is a flanker. He avoids Center, crushes the wings, and concedes freely to save cards. Counter him by: (1) securing Center for a Tower push, (2) don't chase him to both flanks — pick ONE and dominate it with the Center.${close}`;
+    return`${greet} Dalinar-AI builds formations relentlessly and pushes Center hard. He's predictable but powerful. Counter by: (1) disrupting his Phalanx before it reaches 3 Spearmen, (2) attacking his flanks where he's weaker, (3) using Cavalry to reposition after he commits.${close}`;
+  }
+
+  // Rules
+  if(ql.match(/rule|how.*play|how.*work|explain|basics/))return`${greet} Deploy cards to 3 lanes. Win 2 of 3 lanes per round, 2 of 3 rounds per match. Actions: Deploy, Move (adjacent lane, -1 str), Retreat (back to hand), Pass, Concede. All deployed cards are eliminated after each round. The Tower (Center) at +10 with a flank = instant match win.${close}`;
+  if(ql.match(/move|moving|shift/))return`${greet} The Move action shifts a deployed card to an adjacent lane (Left↔Center↔Right). It costs -1 effective strength for the round. Worth it to flip a contested lane, but don't move frivolously.${close}`;
+  if(ql.match(/flatface|hidden|face down/))return`${greet} In Flatface mode, your opponent's cards are played face-down. You can see which lanes they commit to, but not the strength. It's a game of bluffing and reading patterns. Spread your forces more evenly — you can't react to what you can't see.${close}`;
+  if(ql.match(/crosswise|5 lane|five lane/))return`${greet} Crosswise Chull: 5 lanes, win 3 of 5. You get 13 cards. Archers reach 2 lanes away instead of 1. The battlefield is wider, flanking is deeper, and positioning matters even more. Place Archers centrally for maximum coverage.${close}`;
+
+  // Wit personality questions
+  if(ql.match(/who are you|your name|hoid|wit\b/))return`I am Wit. Or Hoid. Or the King's Wit. Or a dozen other names across a dozen worlds. I collect stories, tell lies that are truer than truth, and occasionally help people win card games. Don't read too much into that last part.`;
+  if(ql.match(/story|tell me|joke|entertain/))return`"A man once played Towers against a god. He lost every round, but at the end, the god had no cards left and the man held three. 'You won every battle,' the man said, 'but I won the war.' The god was not amused." ...Anyway, deploy your Spearmen.`;
+  if(ql.match(/stormlight|radiant|knight|honor|dalinar/))return`Life before death. Strength before weakness. Journey before destination. Those are fine words for a battlefield, but at this table, I prefer: "Cards before commitment. Formations before force. Victory before valor." Now play.`;
+
+  // Fallback
+  const fallbacks=[
+    `${greet} I'm not sure I follow, but here's general advice: watch your card count, build formations when possible, and don't overcommit to any single round. The patient player usually wins.${close}`,
+    `${greet} Hmm, that's beyond even my vast knowledge. Try asking about formations, The Tower, specific unit types, or when to pass/concede. I'm surprisingly helpful when I want to be.${close}`,
+    `${greet} An unusual question for a card game! Try: "What should I do?", "How do formations work?", "Tell me about The Tower", or "How do I beat Sadeas?"${close}`,
+  ];
+  return fallbacks[Math.floor(Math.random()*fallbacks.length)];
+}
+
+function renderWit(){
+  if(pvpMode)return'';
+  return`<div class="wit ${witOpen?'':'col'}">
+    <div class="wit-head" onclick="togWit()">
+      <span class="wit-av">🃏</span>
+      <h3>Wit Watch</h3>
+      <span class="wit-tog"><span class="wit-tog-txt">${witOpen?'◀':'▶'}</span></span>
+    </div>
+    <div class="wit-msgs" id="witMsgs">${witMsgs.map(m=>
+      `<div class="wit-msg ${m.from}"><span class="wit-nm">${m.from==='wit'?'🃏 Wit':'You'}</span>${m.text}</div>`
+    ).join('')}</div>
+    <div class="wit-in"><input type="text" id="witInput" placeholder="Ask Wit anything..." onkeydown="if(event.key==='Enter')askWit()"><button onclick="askWit()">Ask</button></div>
+  </div>`;
+}
+
+window.togWit=()=>{witOpen=!witOpen;R()};
+window.askWit=function(){
+  const inp=document.getElementById('witInput');if(!inp)return;
+  const q=inp.value.trim();if(!q)return;
+  witMsgs.push({from:'usr',text:q});
+  const reply=witReply(q);
+  witMsgs.push({from:'wit',text:reply});
+  inp.value='';
+  R();
+  setTimeout(()=>{const el=document.getElementById('witMsgs');if(el)el.scrollTop=el.scrollHeight},50);
+};
 
 // ═══════════════════════════════════════
 // Tutorial System
@@ -583,7 +730,7 @@ function R(){
 
   root.innerHTML=`<div class="page">
     <div class="game">
-      <div class="top"><h1>⚡ TOWERS</h1><div class="top-r">
+      <div class="top"><div><h1 style="margin-bottom:0">⚡ TOWERS</h1><span style="font-size:9px;color:var(--dim);letter-spacing:.5px">~Created by DC</span></div><div class="top-r">
         ${s.mode!=='standard'?`<span class="badge">${M.label}</span>`:''}
         ${pvpMode?'<span class="badge" style="background:rgba(85,204,119,.12);color:var(--grn);border-color:rgba(85,204,119,.25)">PvP Hotseat</span>'
           :`<span class="badge" style="background:${aiPers==='sadeas'?'rgba(255,85,85,.12)':'rgba(74,158,255,.12)'};color:${aiPers==='sadeas'?'var(--red)':'var(--blu)'};border-color:${aiPers==='sadeas'?'rgba(255,85,85,.25)':'rgba(74,158,255,.25)'}">vs ${W.name}</span>`}
@@ -602,10 +749,7 @@ function R(){
         <div class="hint">${hintTxt(s)}</div></div>
       <div class="log">${s.log.map(l=>`<p class="${l.t}-msg">${l.m}</p>`).join('')}</div>
     </div>
-    ${pvpMode?'':`<div class="adv ${advOpen?'':'col'}" id="adv">
-      <div class="adv-tog" onclick="togAdv()"><h3>${advOpen?'📜 Advisor':''}</h3><span style="color:var(--dim)">${advOpen?'◀':'▶'}</span></div>
-      <div class="adv-b">${advHTML(s)}</div>
-    </div>`}
+    ${renderWit()}
   </div>
   <div class="ov ${s.phase==='round_end'||s.phase==='match_end'?'ac':''}">${rOv(s)}</div>
   ${renderTutorial()}`;
@@ -613,7 +757,7 @@ function R(){
 }
 
 function renderMenu(){
-  return`<div class="menu"><h1>⚡ TOWERS</h1><div class="sub">A Rosharan Card Game · Formations · The Tower · AI Personalities</div>
+  return`<div class="menu"><h1>⚡ TOWERS</h1><div style="font-size:10px;color:var(--dim);margin-bottom:2px">~Created by DC</div><div class="sub">A Rosharan Card Game · Formations · The Tower · AI Personalities</div>
     <h3>Choose Opponent</h3>
     <div class="ai-row">
       <div class="ai-card sadeas ${aiPers==='sadeas'?'sel':''}" data-ai="sadeas"><h4>🔴 Highprince Sadeas</h4><p>Ruthless & calculated. Targets flanks, baits Center, concedes freely. Exploits card advantage.</p></div>
