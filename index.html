@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Towers — A Rosharan Card Game</title>
+<style>
+:root{--bg:#1a1520;--bg2:#2a2235;--bg3:#3a3245;--bgl:#252030;--brd:#4a4255;--brd2:#5a5265;--txt:#e8e0f0;--dim:#a098b0;--wht:#fff;--blu:#4a9eff;--gld:#ffd700;--red:#ff5555;--grn:#55cc77;--sp:#7cb3ff;--ar:#ff9944;--cv:#ff5577;--sh:#ccaaff;--spb:#1a2a3a;--arb:#2a1a10;--cvb:#2a1020;--shb:#201a2a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.page{display:flex;gap:10px;max-width:1400px;margin:0 auto;padding:12px}
+.game{flex:1;min-width:0}
+/* Advisor */
+.adv{width:270px;flex-shrink:0;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:12px;font-size:13px;max-height:calc(100vh - 24px);overflow-y:auto}
+.adv.col{width:36px;padding:12px 6px;overflow:hidden}.adv.col .adv-b{display:none}
+.adv-tog{display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;user-select:none}
+.adv-tog h3{font-size:12px;color:var(--gld);letter-spacing:.5px}
+.adv-sec{margin-bottom:10px}
+.adv-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px;border-bottom:1px solid var(--brd);padding-bottom:3px}
+.tip{border-radius:6px;padding:7px 9px;margin-bottom:5px;font-size:11px;line-height:1.4;border:1px solid rgba(255,215,0,.12);background:rgba(255,215,0,.04)}
+.tip.w{background:rgba(255,85,85,.06);border-color:rgba(255,85,85,.15)}
+.tip.i{background:rgba(74,158,255,.06);border-color:rgba(74,158,255,.15)}
+.tip .tl{font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;display:block}
+.tip.w .tl{color:var(--red)}.tip.i .tl{color:var(--blu)}.tl.g{color:var(--gld)}
+.la{display:flex;gap:3px;margin:5px 0}
+.lc{flex:1;padding:3px 4px;border-radius:4px;text-align:center;font-size:9px;font-weight:600;border:1px solid var(--brd)}
+.lc.win{background:rgba(85,204,119,.12);border-color:var(--grn);color:var(--grn)}
+.lc.lose{background:rgba(255,85,85,.08);border-color:var(--red);color:var(--red)}
+.lc.tied{background:rgba(255,215,0,.08);border-color:var(--gld);color:var(--gld)}
+.lc.mt{background:var(--bg3);color:var(--dim)}
+/* Top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;margin-bottom:6px;background:var(--bg2);border-radius:10px;border:1px solid var(--brd);flex-wrap:wrap;gap:4px}
+.top h1{font-size:17px;color:var(--gld);letter-spacing:1px}
+.top-r{display:flex;align-items:center;gap:8px}
+.mi{font-size:12px;color:var(--dim)}.mi b{color:var(--gld);font-weight:600}
+.badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:2px 6px;border-radius:3px;background:rgba(204,170,255,.12);color:var(--sh);border:1px solid rgba(204,170,255,.25)}
+/* Player labels */
+.pl{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;margin:3px 0;font-size:12px;font-weight:600;border-radius:5px}
+.pl.ai{background:rgba(255,85,85,.08);color:var(--red)}.pl.hu{background:rgba(74,158,255,.08);color:var(--blu)}
+.cc{font-weight:400;color:var(--dim);font-size:11px}
+/* Battlefield */
+.bf{display:flex;gap:6px;margin:3px 0}
+.ln{flex:1;border:1px solid var(--brd);border-radius:9px;background:var(--bgl);overflow:hidden}
+.ln.tower-lane{border-color:var(--gld);box-shadow:0 0 8px rgba(255,215,0,.1)}
+.lh{text-align:center;padding:5px;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--brd);background:rgba(255,255,255,.02)}
+.lh .tower-icon{color:var(--gld);font-size:10px;margin-left:3px}
+.ls{min-height:72px;padding:5px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;justify-content:center}
+.ls.as{border-bottom:1px solid var(--brd)}
+.lt{text-align:center;padding:2px 0;font-size:11px;font-weight:700;background:rgba(255,255,255,.02);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
+.lt .at{color:var(--red)}.lt .vs{color:var(--dim);margin:0 4px}.lt .ht{color:var(--blu)}
+/* Formation badges */
+.fm-row{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;padding:2px 4px;min-height:16px}
+.fm-badge{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(255,215,0,.1);color:var(--gld);border:1px solid rgba(255,215,0,.2)}
+/* Cards */
+.cd{width:56px;height:78px;border-radius:6px;border:2px solid var(--brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:default;transition:all .15s;position:relative;user-select:none}
+.cd .cv{font-size:20px;font-weight:700;line-height:1}.cd .ci{font-size:14px;margin-bottom:1px}.cd .ct{font-size:8px;text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
+.cd .cs{position:absolute;top:2px;right:4px;font-size:8px;font-weight:700;background:rgba(0,0,0,.5);padding:1px 3px;border-radius:2px}
+.cd .fat-ind{position:absolute;bottom:2px;left:4px;font-size:8px;font-weight:700;color:var(--red)}
+.cd.spearmen{background:var(--spb);border-color:var(--sp);color:var(--sp)}
+.cd.archers{background:var(--arb);border-color:var(--ar);color:var(--ar)}
+.cd.cavalry{background:var(--cvb);border-color:var(--cv);color:var(--cv)}
+.cd.shardbearers{background:var(--shb);border-color:var(--sh);color:var(--sh)}
+.cd.face-down{background:var(--bg3)!important;border-color:var(--brd2)!important;color:var(--dim)!important}
+.cd.face-down .ci,.cd.face-down .cv,.cd.face-down .ct,.cd.face-down .cs,.cd.face-down .fat-ind{visibility:hidden}
+.cd.face-down::after{content:'?';font-size:24px;font-weight:700;color:var(--dim);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+/* Hand */
+.ha{margin-top:5px;padding:8px 12px;background:var(--bg2);border-radius:9px;border:1px solid var(--brd)}
+.ha-l{font-size:11px;color:var(--dim);margin-bottom:4px;font-weight:600}
+.hd{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:82px;align-items:center}
+.hd .cd{cursor:pointer}.hd .cd:hover{transform:translateY(-5px);box-shadow:0 5px 16px rgba(0,0,0,.4);z-index:10}
+.hd .cd.sel{transform:translateY(-8px);box-shadow:0 0 0 2px var(--gld),0 6px 20px rgba(0,0,0,.5)}
+.hd .cd.unp{opacity:.35;filter:grayscale(.5)}
+.ls .cd{width:48px;height:66px}.ls .cd .cv{font-size:16px}.ls .cd .ci{font-size:12px}.ls .cd .ct{font-size:7px}
+/* Retreat/Move highlight */
+.ls.rm .cd{cursor:pointer;outline:2px dashed var(--gld);outline-offset:1px}.ls.rm .cd:hover{outline-color:var(--red)}
+.ls.mm .cd{cursor:pointer;outline:2px dashed var(--blu);outline-offset:1px}.ls.mm .cd:hover{outline-color:var(--grn)}
+/* Actions */
+.act{display:flex;gap:6px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+.btn{padding:6px 16px;border-radius:7px;border:1px solid var(--brd);background:var(--bg3);color:var(--txt);font-size:12px;cursor:pointer;font-weight:600;transition:all .15s}
+.btn:hover:not(:disabled){background:var(--brd)}.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn.p{background:var(--blu);color:#fff;border-color:var(--blu)}.btn.p:hover:not(:disabled){background:#3a8aee}
+.btn.d{background:rgba(255,85,85,.12);color:var(--red);border-color:var(--red)}.btn.d:hover:not(:disabled){background:rgba(255,85,85,.22)}
+.btn.g{background:rgba(255,215,0,.12);color:var(--gld);border-color:var(--gld)}
+.btn.sm{padding:4px 10px;font-size:10px}
+.lsb{display:flex;gap:6px;justify-content:center;margin-top:4px}.lsb .btn{flex:1;max-width:160px}
+.blk{text-align:center;padding:6px 12px;margin:4px 0;font-size:12px;color:var(--red);background:rgba(255,85,85,.06);border:1px solid rgba(255,85,85,.15);border-radius:7px}
+/* Status/Log */
+.sb2{text-align:center;padding:6px;margin:4px 0;font-size:13px;font-weight:600;color:var(--gld);background:var(--bg2);border-radius:7px;border:1px solid var(--brd);min-height:32px;display:flex;align-items:center;justify-content:center}
+.log{margin-top:6px;padding:6px 10px;background:var(--bg2);border-radius:7px;border:1px solid var(--brd);max-height:80px;overflow-y:auto;font-size:11px;color:var(--dim)}
+.log p{margin-bottom:2px}.log .ai-msg{color:var(--red)}.log .player-msg{color:var(--blu)}.log .system-msg{color:var(--gld)}
+.hint{font-size:10px;color:var(--dim);text-align:center;margin-top:3px;min-height:14px}
+/* Overlay */
+.ov{position:fixed;inset:0;background:rgba(10,8,15,.92);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.ac{opacity:1;pointer-events:all}
+.ovc{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:28px 36px;text-align:center;max-width:460px}
+.ovc h2{font-size:22px;color:var(--gld);margin-bottom:6px}.ovc p{color:var(--dim);margin-bottom:10px;font-size:13px}
+.ovc .sc{font-size:32px;font-weight:700;margin:10px 0}.ovc .sc .ps{color:var(--blu)}.ovc .sc .as{color:var(--red)}
+.bt-alert{font-size:14px;color:var(--gld);font-weight:700;margin:8px 0;padding:8px;background:rgba(255,215,0,.08);border-radius:6px;border:1px solid rgba(255,215,0,.2)}
+/* Menu */
+.menu{max-width:540px;margin:50px auto;text-align:center}
+.menu h1{font-size:34px;color:var(--gld);margin-bottom:3px;letter-spacing:2px}.menu .sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+.menu h3{font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin:18px 0 8px;text-align:left}
+.mc{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px 16px;margin-bottom:8px;cursor:pointer;text-align:left;transition:all .15s}
+.mc:hover{border-color:var(--gld);background:var(--bg3)}
+.mc h4{font-size:14px;color:var(--wht);margin-bottom:3px}.mc p{font-size:11px;color:var(--dim);line-height:1.3}
+.mc .mt{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-bottom:4px}
+.mt.std{background:rgba(74,158,255,.12);color:var(--blu)}.mt.var{background:rgba(204,170,255,.12);color:var(--sh)}
+.ai-row{display:flex;gap:8px;margin-bottom:8px}
+.ai-card{flex:1;background:var(--bg2);border:2px solid var(--brd);border-radius:10px;padding:14px;cursor:pointer;text-align:left;transition:all .15s}
+.ai-card:hover{border-color:var(--gld)}.ai-card.sel{border-color:var(--gld);box-shadow:0 0 12px rgba(255,215,0,.15)}
+.ai-card h4{font-size:13px;margin-bottom:3px}.ai-card p{font-size:10px;color:var(--dim);line-height:1.3}
+.ai-card.sadeas h4{color:var(--red)}.ai-card.dalinar h4{color:var(--blu)}
+/* Handoff screen (PvP) */
+.handoff{position:fixed;inset:0;background:var(--bg);z-index:150;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.handoff h2{font-size:24px;color:var(--gld)}.handoff p{color:var(--dim);font-size:14px}
+/* Tutorial overlay */
+.tut-ov{position:fixed;inset:0;background:rgba(10,8,15,.88);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.tut-ov.ac{opacity:1;pointer-events:all}
+.tut-box{background:var(--bg2);border:1px solid var(--gld);border-radius:16px;padding:0;max-width:620px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 0 40px rgba(255,215,0,.08)}
+.tut-head{padding:16px 24px 10px;border-bottom:1px solid var(--brd)}
+.tut-head h2{font-size:18px;color:var(--gld);margin-bottom:2px}
+.tut-head .tut-step-num{font-size:11px;color:var(--dim)}
+.tut-body{padding:16px 24px;font-size:13px;line-height:1.6}
+.tut-body p{margin-bottom:10px}
+.tut-body .tut-cards{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.tut-body .tut-highlight{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15);border-radius:8px;padding:10px 14px;margin:10px 0}
+.tut-body .tut-highlight h4{font-size:12px;color:var(--gld);margin-bottom:4px}
+.tut-body .tut-highlight p{margin-bottom:4px;font-size:12px}
+.tut-body .tut-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.tut-body .tut-grid-item{background:var(--bg3);border:1px solid var(--brd);border-radius:8px;padding:10px 12px}
+.tut-body .tut-grid-item h4{font-size:12px;margin-bottom:3px}
+.tut-body .tut-grid-item p{font-size:11px;color:var(--dim);margin-bottom:0}
+.tut-foot{padding:12px 24px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center}
+.tut-dots{display:flex;gap:4px}
+.tut-dot{width:8px;height:8px;border-radius:50%;background:var(--brd);transition:background .2s}
+.tut-dot.ac{background:var(--gld)}
+.tut-dot.done{background:var(--grn)}
+.tut-nav{display:flex;gap:6px}
+@media(max-width:900px){.adv{display:none}.page{padding:8px}}
+@media(max-width:700px){.cd{width:46px;height:64px}.cd .cv{font-size:16px}.ls .cd{width:40px;height:56px}.ls .cd .cv{font-size:14px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+// ═══════════════════════════════════════
+// TOWERS v3 — Enhanced Game Engine
+// ═══════════════════════════════════════
+const UT=['spearmen','archers','cavalry','shardbearers'];
+const UI={spearmen:'⚔️',archers:'🏹',cavalry:'🐴',shardbearers:'🗡️'};
+const MODES={
+  standard:{lanes:3,ln:['Left Flank','Center','Right Flank'],w:2,deal:10,draw:3,fd:false,label:'Standard',ar:1,tower:true,towerIdx:1},
+  flatface:{lanes:3,ln:['Left Flank','Center','Right Flank'],w:2,deal:10,draw:3,fd:true,label:'Flatface',ar:1,tower:true,towerIdx:1},
+  crosswise:{lanes:5,ln:['Far Left','Left','Center','Right','Far Right'],w:3,deal:13,draw:3,fd:false,label:'Crosswise Chull',ar:2,tower:true,towerIdx:2}
+};
+const AIW={
+  sadeas:{cp:-5,fp:10,fb:3,ca:15,ct:.6,ac:true,name:'Sadeas',icon:'🔴',desc:'Ruthless — flanks first, baits Center'},
+  dalinar:{cp:15,fp:5,fb:12,ca:5,ct:.2,ac:false,name:'Dalinar',icon:'🔵',desc:'Honorable — formations, holds The Tower'}
+};
+
+let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
+let pvpMode=false,handoffScreen=false;
+
+// ═══════════════════════════════════════
+// Tutorial System
+// ═══════════════════════════════════════
+const TUT_STEPS=[
+  {title:'Welcome to Towers',body:`
+    <p>Towers is a Rosharan card game of <b>deployment, positioning, and attrition</b>. Two commanders clash across a multi-lane battlefield, deploying armies to control territory.</p>
+    <p>You play as <b style="color:var(--blu)">Dalinar Kholin</b>. Your opponent is an AI Highprince — either the ruthless <b style="color:var(--red)">Sadeas</b> or the honorable <b style="color:var(--blu)">Dalinar</b> mirror.</p>
+    <div class="tut-highlight"><h4>Match Structure</h4><p>Best of <b>3 rounds</b>. Win 2 rounds → win the match.</p><p>Each round: deploy cards to lanes, then both pass → lanes resolve.</p><p>⚠️ <b>All deployed cards are eliminated</b> after every round. Only hand cards carry forward. Overcommitting early leaves you starved later.</p></div>`},
+
+  {title:'The Battlefield',body:`
+    <p>The field has <b>3 lanes</b> (or 5 in Crosswise Chull). Win the majority of lanes to win the round.</p>
+    <div class="tut-grid">
+      <div class="tut-grid-item"><h4>Left Flank</h4><p>One of two flanks. Archers here support Center.</p></div>
+      <div class="tut-grid-item"><h4>Right Flank</h4><p>The other flank. Mirror of Left.</p></div>
+    </div>
+    <div class="tut-highlight"><h4>🏰 The Tower (Center)</h4><p>Center lane is special. Win it by <b>+10 margin</b> while also holding a flank → <b>Breakthrough</b> = instant match win, regardless of round score.</p></div>
+    <p>Each lane tallies total strength for both sides. Higher total wins the lane. Ties go to the player with <b>fewer cards</b> (tactical efficiency).</p>`},
+
+  {title:'Unit Types',body:`
+    <div class="tut-cards">
+      <div class="cd spearmen" style="width:56px;height:78px;cursor:default"><span class="ci">⚔️</span><span class="cv">5</span><span class="ct">SPEAR</span></div>
+      <div class="cd archers" style="width:56px;height:78px;cursor:default"><span class="ci">🏹</span><span class="cv">7</span><span class="ct">ARCHE</span></div>
+      <div class="cd cavalry" style="width:56px;height:78px;cursor:default"><span class="ci">🐴</span><span class="cv">4</span><span class="ct">CAVAL</span></div>
+      <div class="cd shardbearers" style="width:56px;height:78px;cursor:default"><span class="ci">🗡️</span><span class="cv">9</span><span class="ct">SHARD</span><span class="cs">×2</span></div>
+    </div>
+    <div class="tut-grid">
+      <div class="tut-grid-item"><h4>⚔️ Spearmen</h4><p><b>+1 strength</b> per other Spearman in the same lane. Backbone of any army. Stack them for Phalanx.</p></div>
+      <div class="tut-grid-item"><h4>🏹 Archers</h4><p><b>+2 strength to adjacent lanes.</b> They fight in their own lane AND support neighbors. Best in center.</p></div>
+      <div class="tut-grid-item"><h4>🐴 Cavalry</h4><p><b>Charge:</b> when deployed, reposition 1 friendly card between lanes. Great for surprise flanks.</p></div>
+      <div class="tut-grid-item"><h4>🗡️ Shardbearers</h4><p><b>×2 strength</b> but max 1 per lane. Fatigues over time unless protected by Shardwall (2+ Spearmen).</p></div>
+    </div>`},
+
+  {title:'Your Turn',body:`
+    <p>Players alternate turns. On each turn, choose <b>one action</b>:</p>
+    <div class="tut-grid">
+      <div class="tut-grid-item"><h4>Deploy</h4><p>Play a card from hand to any lane. Click the card, then click a lane.</p></div>
+      <div class="tut-grid-item"><h4>Move</h4><p>Shift a deployed card to an <b>adjacent</b> lane. Costs −1 strength (fatigue).</p></div>
+      <div class="tut-grid-item"><h4>Retreat</h4><p>Pull a deployed card back to hand. Saves it from elimination but costs tempo.</p></div>
+      <div class="tut-grid-item"><h4>Pass</h4><p>Do nothing. When <b>both</b> players pass consecutively, the round resolves.</p></div>
+    </div>
+    <p><b>Concede 🤝</b> — Surrender the round. Cards already deployed are still eliminated, but you keep your hand for the next round. Strategic concession is key.</p>`},
+
+  {title:'Formations',body:`
+    <p>Formations are <b>bonus effects</b> that trigger automatically when specific unit combos are in a lane. They show as golden badges below the lane.</p>
+    <div class="tut-grid">
+      <div class="tut-grid-item" style="border-color:var(--sp)"><h4>⚔️ Phalanx</h4><p>3+ Spearmen in one lane → <b>+3 per Spearman</b>. Three spearmen (3,4,5) = 18 base + 9 Phalanx = 27 total!</p></div>
+      <div class="tut-grid-item" style="border-color:var(--ar)"><h4>🏹🐴 Skirmish Line</h4><p>Archer + Cavalry in same lane → <b>+3/archer, +2/cavalry</b>. Flexible and mobile.</p></div>
+      <div class="tut-grid-item" style="border-color:var(--sh)"><h4>🛡️ Shardwall</h4><p>Shardbearer + 2+ Spearmen → <b>negates Shardbearer fatigue</b>. Essential for sustained power.</p></div>
+      <div class="tut-grid-item" style="border-color:var(--cv)"><h4>🐴 Vanguard / 🎯 Crossfire</h4><p><b>Vanguard:</b> Solo cavalry = +4. <b>Crossfire:</b> Archers in adjacent lanes = +2 each.</p></div>
+    </div>
+    <p>Formations stack — a lane can have multiple active formations!</p>`},
+
+  {title:'Fatigue & Logistics',body:`
+    <p>Shardbearers are devastating but unsustainable without support.</p>
+    <div class="tut-highlight"><h4>💀 Shardbearer Fatigue</h4><p>Every <b>3 turns</b> a Shardbearer stays deployed, it loses <b>−1 effective strength</b>. A Shard-10 (worth 20) drops to 19 after 3 turns, 18 after 6, etc.</p>
+    <p><b>Shardwall negates this.</b> Keep 2+ Spearmen alongside your Shardbearer.</p></div>
+    <div class="tut-highlight"><h4>🔄 Move Penalty</h4><p>Moving any card to an adjacent lane costs <b>−1 strength</b> for the round. Worth it to flip a lane, but not free.</p></div>
+    <p>Minimum strength is always 1 — units can't go below that.</p>`},
+
+  {title:'Strategy Tips',body:`
+    <p><b>Core principles for winning at Towers:</b></p>
+    <div class="tut-highlight"><h4>1. Don't Overcommit Round 1</h4><p>All deployed cards die after the round. If you dump your whole hand to win Round 1, you'll have nothing for Rounds 2–3. Sometimes conceding Round 1 with 8 cards saved is better than winning it with 2.</p></div>
+    <div class="tut-highlight"><h4>2. Build Formations Deliberately</h4><p>Phalanx is the strongest formation. If you draw 3+ Spearmen, cluster them. A Phalanx of three 5-value Spearmen = 27 strength — hard to beat.</p></div>
+    <div class="tut-highlight"><h4>3. Watch Card Advantage</h4><p>Count cards. If you have 7 and the AI has 3, you can pressure multiple lanes. If reversed, consider passing to force the AI to commit first.</p></div>
+    <div class="tut-highlight"><h4>4. The Tower Is a Trap (and a Weapon)</h4><p>Breakthrough wins matches instantly — but it takes massive Center investment. Against Sadeas, he'll bait you into Center then crush flanks. Against Dalinar, fight him there or concede Center and win both flanks.</p></div>
+    <div class="tut-highlight"><h4>5. Use the Advisor</h4><p>The right-side panel gives lane status, formation alerts, and play suggestions. Toggle it with the ◀/▶ button.</p></div>`},
+
+  {title:'Ready to Play!',body:`
+    <p>You now know everything you need to command your forces on the Rosharan battlefield.</p>
+    <div class="tut-highlight"><h4>Quick Reference</h4>
+    <p>⚔️ <b>Spearmen</b> — +1/spearman in lane. 3+ = Phalanx.</p>
+    <p>🏹 <b>Archers</b> — +2 to adjacent lanes. Center = max value.</p>
+    <p>🐴 <b>Cavalry</b> — Charge on deploy. Solo = Vanguard (+4).</p>
+    <p>🗡️ <b>Shardbearers</b> — ×2 strength. Fatigues. Shardwall protects.</p>
+    <p>🏰 <b>The Tower</b> — Center +10 with flank = Breakthrough!</p>
+    </div>
+    <p style="color:var(--gld);font-weight:600;text-align:center;font-size:15px;margin-top:16px">Life before death. Strength before weakness.<br>Journey before destination.</p>`}
+];
+
+function renderTutorial(){
+  if(!tutOpen)return'';
+  const step=TUT_STEPS[tutStep],total=TUT_STEPS.length;
+  const isFirst=tutStep===0,isLast=tutStep===total-1;
+  return`<div class="tut-ov ac">
+    <div class="tut-box">
+      <div class="tut-head"><h2>${step.title}</h2><span class="tut-step-num">Step ${tutStep+1} of ${total}</span></div>
+      <div class="tut-body">${step.body}</div>
+      <div class="tut-foot">
+        <div class="tut-dots">${TUT_STEPS.map((_,i)=>`<div class="tut-dot ${i<tutStep?'done':''} ${i===tutStep?'ac':''}"></div>`).join('')}</div>
+        <div class="tut-nav">
+          ${!isFirst?'<button class="btn sm" onclick="tutPrev()">Back</button>':''}
+          <button class="btn sm" onclick="tutClose()" style="color:var(--dim)">Skip</button>
+          ${isLast
+            ?'<button class="btn sm p" onclick="tutClose()">Start Playing</button>'
+            :`<button class="btn sm p" onclick="tutNext()">Next</button>`}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+window.tutOpen_=()=>{tutOpen=true;tutStep=0;R()};
+window.tutNext=()=>{if(tutStep<TUT_STEPS.length-1){tutStep++;R()}};
+window.tutPrev=()=>{if(tutStep>0){tutStep--;R()}};
+window.tutClose=()=>{tutOpen=false;R()};
+
+function mkDeck(){const d=[];for(const t of UT)for(let v=1;v<=10;v++)d.push({id:`${t}_${v}`,type:t,value:v,deployTurn:-1,moved:false});return d}
+function shuf(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+
+function mkState(m){
+  const M=MODES[m],d=shuf(mkDeck()),lanes=[];
+  for(let i=0;i<M.lanes;i++)lanes.push({human:[],ai:[]});
+  return{mode:m,dp:d.slice(M.deal*2),p:{human:{h:d.slice(0,M.deal),rw:0},ai:{h:d.slice(M.deal,M.deal*2),rw:0}},
+    lanes,cr:1,turn:'human',hp:false,ap:false,phase:'play',sel:null,rm:false,mm:false,cm:false,cid:null,log:[],rr:[]}
+}
+
+// ── Formations ──
+function detectFormations(cards,li,all,pl,m){
+  const M=MODES[m],f=[],sp=cards.filter(c=>c.type==='spearmen'),ar=cards.filter(c=>c.type==='archers'),
+    cv=cards.filter(c=>c.type==='cavalry'),sh=cards.filter(c=>c.type==='shardbearers');
+  if(sp.length>=3)f.push({n:'Phalanx',b:sp.length*3,d:`+${sp.length*3}`,ico:'⚔️'});
+  if(ar.length>0&&cv.length>0)f.push({n:'Skirmish',b:ar.length*3+cv.length*2,d:`+${ar.length*3+cv.length*2}`,ico:'🏹🐴'});
+  if(sh.length>0&&sp.length>=2)f.push({n:'Shardwall',b:0,nf:true,d:'No fatigue',ico:'🛡️'});
+  if(cv.length>0&&cards.length===cv.length)f.push({n:'Vanguard',b:cv.length*4,d:`+${cv.length*4}`,ico:'🐴'});
+  let adjAr=0;
+  for(let d=1;d<=M.ar;d++)for(const o of[-d,d]){const a=li+o;if(a>=0&&a<M.lanes)adjAr+=all[a][pl].filter(c=>c.type==='archers').length}
+  if(ar.length>0&&adjAr>0)f.push({n:'Crossfire',b:ar.length*2,d:`+${ar.length*2}`,ico:'🎯'});
+  return f;
+}
+
+function calcFatigue(card,curTurn,formations){
+  let p=0;
+  if(card.moved)p+=1;
+  if(card.type==='shardbearers'&&card.deployTurn>=0){
+    const t=curTurn-card.deployTurn;
+    p+=Math.floor(t/3);
+    if(formations.some(f=>f.nf))p=card.moved?1:0;
+  }
+  return p;
+}
+
+function calcStr(cards,li,all,pl,m,tn){
+  const M=MODES[m],forms=detectFormations(cards,li,all,pl,m);
+  let total=0;
+  for(const c of cards){
+    let s=c.value;
+    if(c.type==='shardbearers')s=c.value*2;
+    if(c.type==='spearmen')s+=cards.filter(x=>x.id!==c.id&&x.type==='spearmen').length;
+    s-=calcFatigue(c,tn,forms);
+    if(s<1)s=1;
+    total+=s;
+  }
+  // Archer range support
+  for(let d=1;d<=M.ar;d++)for(const o of[-d,d]){const a=li+o;if(a>=0&&a<M.lanes)for(const c of all[a][pl])if(c.type==='archers')total+=2}
+  // Formation bonuses
+  for(const f of forms)total+=f.b;
+  return total;
+}
+
+function canShard(lane,pl){return!lane[pl].some(c=>c.type==='shardbearers')}
+function canPlay(card,lanes,pl){if(card.type!=='shardbearers')return true;return lanes.some(l=>canShard(l,pl))}
+function playable(hand,lanes,pl){return hand.filter(c=>canPlay(c,lanes,pl)).length}
+
+// ── Resolution ──
+function resolve(s){
+  const M=MODES[s.mode],res=[];
+  for(let i=0;i<M.lanes;i++){
+    const h=calcStr(s.lanes[i].human,i,s.lanes,'human',s.mode,turnNum);
+    const a=calcStr(s.lanes[i].ai,i,s.lanes,'ai',s.mode,turnNum);
+    const hc=s.lanes[i].human.length,ac=s.lanes[i].ai.length;
+    let w=null;
+    if(h>a)w='human';else if(a>h)w='ai';else if(hc<ac&&hc>0)w='human';else if(ac<hc&&ac>0)w='ai';
+    res.push({hs:h,as:a,w,margin:Math.abs(h-a),hc,ac});
+  }
+  const hl=res.filter(r=>r.w==='human').length,al=res.filter(r=>r.w==='ai').length;
+  let rw=null;if(hl>=M.w)rw='human';else if(al>=M.w)rw='ai';
+  // Breakthrough check
+  let bt=null;
+  if(M.tower){
+    const ci=M.towerIdx,cr=res[ci];
+    if(cr.w&&cr.margin>=10){
+      const flankWins=res.filter((r,i)=>i!==ci&&r.w===cr.w).length;
+      if(flankWins>=1)bt=cr.w;
+    }
+  }
+  return{lr:res,rw,hl,al,bt};
+}
+
+function elim(s){const M=MODES[s.mode];for(let i=0;i<M.lanes;i++){s.lanes[i].human=[];s.lanes[i].ai=[]}}
+function drawC(s,n){for(const pl of['human','ai'])for(let i=0;i<n&&s.dp.length>0;i++)s.p[pl].h.push(s.dp.pop())}
+
+// ═══════════════════════════════════════
+// AI v3 — Personality-Driven
+// ═══════════════════════════════════════
+function aiTurn(s){
+  const h=s.p.ai.h,M=MODES[s.mode],W=AIW[aiPers];
+  if(h.length===0)return{a:'pass'};
+  const ev=eLanes(s,'ai'),aw=ev.filter(e=>e.d>0).length,al=ev.filter(e=>e.d<0).length,hh=s.p.human.h.length;
+
+  // Pass logic
+  if(s.hp&&aw>=M.w)return{a:'pass'};
+  if(aw>=M.w&&s.cr<3){
+    const mins=ev.filter(e=>e.d>0).map(e=>e.d);
+    if(Math.min(...mins)>=4||(Math.min(...mins)>=2&&h.length>hh+2))return{a:'pass'};
+  }
+  // Concede logic (personality-weighted)
+  if(s.cr<3&&al>=M.w){
+    const ts=ev.reduce((a,e)=>a+e.hs,0),ta=ev.reduce((a,e)=>a+e.as,0);
+    if(ts-ta>12&&h.length>3&&Math.random()>W.ct)return{a:'concede'};
+  }
+  if(s.hp&&al>=M.w&&s.cr<3&&h.length>3&&Math.random()>W.ct)return{a:'concede'};
+
+  // Move check: can we improve by moving a deployed card?
+  const movePlay=evalMoves(s,ev,W);
+
+  // Deploy evaluation
+  let best=null,bs=-Infinity;
+  for(const c of h)for(let li=0;li<M.lanes;li++){
+    if(c.type==='shardbearers'&&!canShard(s.lanes[li],'ai'))continue;
+    const sc=evalPlay(s,c,li,ev,h,W);
+    if(sc>bs){bs=sc;best={a:'deploy',c,li}}
+  }
+
+  // Compare move vs deploy
+  if(movePlay&&movePlay.score>bs+3)return movePlay;
+
+  // Tempo pass
+  if(aw>=M.w&&!s.hp&&bs<6)return{a:'pass'};
+  if(!best||bs<-8)return{a:'pass'};
+  return best;
+}
+
+function evalPlay(s,card,li,ev,hand,W){
+  const M=MODES[s.mode],e=ev[li];let sc=0;
+  let add=card.value;
+  if(card.type==='shardbearers')add=card.value*2;
+  if(card.type==='spearmen'){const ex=s.lanes[li].ai.filter(c=>c.type==='spearmen').length;add=card.value+ex+ex;}
+
+  // Lane flip
+  if(e.d<0&&e.d+add>0)sc+=25;else if(e.d<0&&e.d+add>=0)sc+=18;
+  else if(e.d>=0&&e.d<4)sc+=12;else if(e.d>=6)sc-=10;
+
+  // Stacking penalty
+  if(s.lanes[li].ai.length>=4)sc-=10;if(s.lanes[li].ai.length>=3)sc-=4;
+  if(e.hc>0&&e.ac===0)sc+=10;
+
+  // Formation synergy
+  const simCards=[...s.lanes[li].ai,card];
+  const simAll=s.lanes.map((l,i)=>({human:[...l.human],ai:i===li?simCards:[...l.ai]}));
+  const forms=detectFormations(simCards,li,simAll,'ai',s.mode);
+  sc+=forms.reduce((a,f)=>a+f.b,0)*(W.fb/10);
+
+  // Personality: center vs flank
+  const isCenter=li===M.towerIdx;
+  sc+=isCenter?W.cp:W.fp;
+
+  // Tower breakthrough potential
+  if(M.tower&&isCenter&&e.d+add>=10)sc+=15;
+
+  // Archer positioning
+  if(card.type==='archers'){
+    let adj=Math.min(li,M.ar)+Math.min(M.lanes-1-li,M.ar);sc+=adj*2;
+    for(let d=1;d<=M.ar;d++)for(const o of[-d,d]){const a=li+o;if(a>=0&&a<M.lanes&&ev[a].d<0&&ev[a].d>-5)sc+=5}
+  }
+  if(card.type==='spearmen'){sc+=s.lanes[li].ai.filter(c=>c.type==='spearmen').length*3*W.fb/10}
+
+  sc+=add*0.3;
+  if(s.cr===1&&card.value>=8)sc-=4;
+  if(s.cr===1&&card.value>=9)sc-=3;
+
+  // Flatface: distribute
+  if(M.fd)sc-=s.lanes[li].ai.length*4;
+
+  return sc;
+}
+
+function evalMoves(s,ev,W){
+  const M=MODES[s.mode];let best=null,bs=-Infinity;
+  for(let li=0;li<M.lanes;li++){
+    for(const card of s.lanes[li].ai){
+      for(const adj of[li-1,li+1]){
+        if(adj<0||adj>=M.lanes)continue;
+        if(card.type==='shardbearers'&&!canShard(s.lanes[adj],'ai'))continue;
+        // Simulate move
+        const curDiff=ev[li].d,adjDiff=ev[adj].d;
+        const cardStr=card.type==='shardbearers'?card.value*2:card.value;
+        const newCur=curDiff-cardStr,newAdj=adjDiff+cardStr-1;
+        // Only worth it if it flips the adjacent lane without losing current
+        if(newAdj>0&&curDiff>cardStr+2){
+          const sc=20+(newAdj-adjDiff);
+          if(sc>bs){bs=sc;best={a:'move',card,from:li,to:adj,score:sc}}
+        }
+      }
+    }
+  }
+  return best;
+}
+
+function eLanes(s,pl){
+  const oth=pl==='ai'?'human':'ai',M=MODES[s.mode];
+  return s.lanes.map((l,i)=>{
+    const ps=calcStr(l[pl],i,s.lanes,pl,s.mode,turnNum),os=calcStr(l[oth],i,s.lanes,oth,s.mode,turnNum);
+    return{i,as:pl==='ai'?ps:os,hs:pl==='ai'?os:ps,d:ps-os,ac:l.ai.length,hc:l.human.length}
+  });
+}
+
+function aiCharge(s){
+  const M=MODES[s.mode],ev=eLanes(s,'ai');
+  let wk=-1,wd=Infinity,st=-1,sd=-Infinity;
+  for(let i=0;i<M.lanes;i++){if(ev[i].d<wd&&s.lanes[i].human.length>0){wd=ev[i].d;wk=i}}
+  for(let i=0;i<M.lanes;i++){if(i===wk)continue;if(ev[i].d>sd&&s.lanes[i].ai.length>1){sd=ev[i].d;st=i}}
+  if(st>=0&&wk>=0&&sd>3){
+    const cards=[...s.lanes[st].ai].sort((a,b)=>a.value-b.value);
+    const mc=cards[0];
+    if(mc&&(mc.type!=='shardbearers'||canShard(s.lanes[wk],'ai'))){
+      s.lanes[st].ai=s.lanes[st].ai.filter(c=>c.id!==mc.id);s.lanes[wk].ai.push(mc);
+      lg(`Cavalry charge! ${AIW[aiPers].name} repositions to ${MODES[s.mode].ln[wk]}`,'ai');
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// Advisor
+// ═══════════════════════════════════════
+function advHTML(s){
+  if(!s||s.phase!=='play')return'';
+  const M=MODES[s.mode],h=s.p.human.h,ev=eLanes(s,'human');
+  let o='';
+  // Lane status
+  o+=`<div class="adv-sec"><h4>Lane Status</h4><div class="la">${ev.map((e,i)=>{
+    const cl=e.d>0?'win':e.d<0?'lose':(s.lanes[i].human.length===0&&s.lanes[i].ai.length===0)?'mt':'tied';
+    const lb=M.ln[i].replace('Flank','Fl').replace('Center','Ctr').replace('Far ','F.');
+    return`<div class="lc ${cl}">${lb}<br>${e.d>0?'+':''}${e.d}</div>`}).join('')}</div></div>`;
+
+  o+='<div class="adv-sec"><h4>Advisor</h4>';
+
+  // Active formations
+  const myForms=[];
+  for(let i=0;i<M.lanes;i++){const f=detectFormations(s.lanes[i].human,i,s.lanes,'human',s.mode);if(f.length)myForms.push(...f.map(x=>({...x,lane:M.ln[i]})))}
+  if(myForms.length)o+=`<div class="tip i"><span class="tl">Active Formations</span>${myForms.map(f=>`${f.ico} <b>${f.n}</b> in ${f.lane} (${f.d})`).join('<br>')}</div>`;
+
+  // Blocked cards
+  const blk=h.filter(c=>!canPlay(c,s.lanes,'human'));
+  if(blk.length)o+=`<div class="tip w"><span class="tl">Blocked Cards</span>${blk.map(c=>`${UI[c.type]} ${c.type}(${c.value})`).join(', ')} — all lanes have a Shardbearer. Retreat one first.</div>`;
+  if(h.length>0&&playable(h,s.lanes,'human')===0)o+=`<div class="tip w"><span class="tl">No Playable Cards</span>Pass, Retreat a Shardbearer, or Concede.</div>`;
+
+  // Tower status
+  if(M.tower){
+    const ci=M.towerIdx,ce=ev[ci];
+    if(ce.d>=8)o+=`<div class="tip" style="border-color:rgba(255,215,0,.3)"><span class="tl g">Tower Breakthrough Close!</span>You're +${ce.d} in Center. Reach +10 with a flank win for instant match victory.</div>`;
+    else if(ce.d<=-8)o+=`<div class="tip w"><span class="tl">Tower Threat</span>Sadeas is +${Math.abs(ce.d)} in Center. A breakthrough could end the match.</div>`;
+  }
+
+  // Strategic advice
+  const win=ev.filter(e=>e.d>0).length,lose=ev.filter(e=>e.d<0).length;
+  if(win>=M.w){const m=Math.min(...ev.filter(e=>e.d>0).map(e=>e.d));
+    o+=m>=4?`<div class="tip i"><span class="tl">Strong Position</span>Pass to conserve cards.</div>`
+      :`<div class="tip i"><span class="tl">Ahead but Thin</span>Margins are tight — one card could flip a lane.</div>`}
+  if(lose>=M.w&&s.cr<3)o+=`<div class="tip w"><span class="tl">Consider Conceding</span>Save ${h.length} cards for rounds ${s.cr+1}–3.</div>`;
+
+  // Card advantage
+  const ah=s.p.ai.h.length;
+  if(h.length<ah-2)o+=`<div class="tip w"><span class="tl">Card Disadvantage</span>${AIW[aiPers].name} has ${ah-h.length} more cards.</div>`;
+
+  // Move suggestion
+  const movable=[];
+  for(let i=0;i<M.lanes;i++)for(const c of s.lanes[i].human){for(const adj of[i-1,i+1])if(adj>=0&&adj<M.lanes){const e=ev[adj];if(e.d<0)movable.push({card:c,from:M.ln[i],to:M.ln[adj],gap:e.d})}}
+  if(movable.length>0&&!s.sel){const best=movable.sort((a,b)=>a.gap-b.gap)[0];
+    o+=`<div class="tip"><span class="tl g">Move Option</span>Consider moving ${UI[best.card.type]} from ${best.from} to ${best.to} (${best.gap} deficit there). Costs −1 strength.</div>`}
+
+  // Selected card
+  if(s.sel)o+=`<div class="tip"><span class="tl g">${UI[s.sel.type]} ${s.sel.type} (${s.sel.value})</span>${cardAdv(s.sel,s)}</div>`;
+
+  o+='</div>';
+  // Quick ref
+  o+=`<div class="adv-sec"><h4>Formations</h4><div class="tip" style="font-size:10px">
+    <b>Phalanx:</b> 3+ Spearmen → +3/each<br>
+    <b>Skirmish:</b> Archer+Cavalry → +3/ar +2/cv<br>
+    <b>Shardwall:</b> Shard+2 Spear → no fatigue<br>
+    <b>Vanguard:</b> Solo Cavalry → +4/each<br>
+    <b>Crossfire:</b> Archers adj lanes → +2/each
+  </div></div>`;
+  return o;
+}
+
+function cardAdv(c,s){
+  const M=MODES[s.mode];
+  if(c.type==='spearmen'){let bl=-1,bb=0;for(let i=0;i<M.lanes;i++){const n=s.lanes[i].human.filter(x=>x.type==='spearmen').length;if(n>bb){bb=n;bl=i}}
+    return bb>=2?`Phalanx ready in ${M.ln[bl]} (${bb} spearmen). Deploying here triggers +3/each!`:'Start a formation cluster in a contested lane.'}
+  if(c.type==='archers')return`Place in center-ish lane for max adjacency range${M.ar>1?' (2 lanes each way)':''}.`;
+  if(c.type==='cavalry')return'Triggers Charge (reposition 1 card). Alone in a lane = Vanguard (+4).';
+  if(c.type==='shardbearers'){const b=[];for(let i=0;i<M.lanes;i++)if(!canShard(s.lanes[i],'human'))b.push(M.ln[i]);
+    return b.length===M.lanes?'<b style="color:var(--red)">BLOCKED</b> — retreat a Shardbearer first.':`Worth ${c.value*2}. Pair with 2 Spearmen for Shardwall.${b.length?` Blocked in: ${b.join(', ')}.`:''}`}
+  return'';
+}
+
+// ═══════════════════════════════════════
+// Rendering
+// ═══════════════════════════════════════
+function lg(m,t='system'){if(!G)return;G.log.unshift({m,t});if(G.log.length>50)G.log.pop()}
+
+function R(){
+  const root=document.getElementById('root');
+  if(menu){root.innerHTML=renderMenu()+renderTutorial();bindMenu();return}
+  const s=G,M=MODES[s.mode],W=AIW[aiPers];
+  const p1Label=pvpMode?'Player 1':'Dalinar (You)', p2Label=pvpMode?'Player 2':W.name;
+  const p2Icon=pvpMode?'🟢':W.icon;
+  const isP2Turn=s.turn==='ai';
+
+  // PvP handoff screen
+  if(pvpMode&&handoffScreen&&s.phase==='play'){
+    root.innerHTML=`<div class="handoff">
+      <h2>🔄 Pass the Device</h2>
+      <p><b>${isP2Turn?'Player 2':'Player 1'}</b> — it's your turn.</p>
+      <p style="color:var(--dim);font-size:12px">Don't look at the other player's hand!</p>
+      <button class="btn p" onclick="dismissHandoff()" style="margin-top:12px;padding:12px 32px;font-size:15px">I'm Ready</button>
+    </div>${renderTutorial()}`;
+    return;
+  }
+
+  root.innerHTML=`<div class="page">
+    <div class="game">
+      <div class="top"><h1>⚡ TOWERS</h1><div class="top-r">
+        ${s.mode!=='standard'?`<span class="badge">${M.label}</span>`:''}
+        ${pvpMode?'<span class="badge" style="background:rgba(85,204,119,.12);color:var(--grn);border-color:rgba(85,204,119,.25)">PvP Hotseat</span>'
+          :`<span class="badge" style="background:${aiPers==='sadeas'?'rgba(255,85,85,.12)':'rgba(74,158,255,.12)'};color:${aiPers==='sadeas'?'var(--red)':'var(--blu)'};border-color:${aiPers==='sadeas'?'rgba(255,85,85,.25)':'rgba(74,158,255,.25)'}">vs ${W.name}</span>`}
+        <span class="mi">Rd <b>${s.cr}/3</b> · P1 <b>${s.p.human.rw}</b>–<b>${s.p.ai.rw}</b> P2 · Pile: ${s.dp.length}</span>
+        <button class="btn sm" onclick="tutOpen_()">?</button>
+        <button class="btn sm" onclick="toMenu()">Menu</button>
+      </div></div>
+      <div class="pl ai"><span>${p2Icon} ${p2Label}</span><span class="cc">${s.p.ai.h.length} in hand</span></div>
+      <div class="bf">${s.lanes.map((l,i)=>rLane(l,i,s)).join('')}</div>
+      <div class="pl hu"><span>🔵 ${p1Label}</span><span class="cc">${s.p.human.h.length} in hand</span></div>
+      <div class="sb2" id="st">${stTxt(s)}</div>
+      ${rBlk(s)}${s.phase==='play'&&(s.turn==='human'||(pvpMode&&s.turn==='ai'))?rAct(s):''}
+      <div class="ha"><div class="ha-l">${pvpMode?(isP2Turn?'Player 2\'s Hand':'Player 1\'s Hand'):'Your Hand'}</div><div class="hd">${pvpMode
+        ?(isP2Turn?s.p.ai.h.map(c=>rHC_pvp(c,s,'ai')).join(''):s.p.human.h.map(c=>rHC(c,s)).join(''))
+        :s.p.human.h.map(c=>rHC(c,s)).join('')}</div>
+        <div class="hint">${hintTxt(s)}</div></div>
+      <div class="log">${s.log.map(l=>`<p class="${l.t}-msg">${l.m}</p>`).join('')}</div>
+    </div>
+    ${pvpMode?'':`<div class="adv ${advOpen?'':'col'}" id="adv">
+      <div class="adv-tog" onclick="togAdv()"><h3>${advOpen?'📜 Advisor':''}</h3><span style="color:var(--dim)">${advOpen?'◀':'▶'}</span></div>
+      <div class="adv-b">${advHTML(s)}</div>
+    </div>`}
+  </div>
+  <div class="ov ${s.phase==='round_end'||s.phase==='match_end'?'ac':''}">${rOv(s)}</div>
+  ${renderTutorial()}`;
+  bind();
+}
+
+function renderMenu(){
+  return`<div class="menu"><h1>⚡ TOWERS</h1><div class="sub">A Rosharan Card Game · Formations · The Tower · AI Personalities</div>
+    <h3>Choose Opponent</h3>
+    <div class="ai-row">
+      <div class="ai-card sadeas ${aiPers==='sadeas'?'sel':''}" data-ai="sadeas"><h4>🔴 Highprince Sadeas</h4><p>Ruthless & calculated. Targets flanks, baits Center, concedes freely. Exploits card advantage.</p></div>
+      <div class="ai-card dalinar ${aiPers==='dalinar'?'sel':''}" data-ai="dalinar"><h4>🔵 Highprince Dalinar</h4><p>Formation-heavy & honorable. Builds Phalanx, holds The Tower, rarely concedes. Hard to outmuscle.</p></div>
+    </div>
+    <div style="margin-bottom:4px"><div class="ai-card ${pvpMode?'sel':''}" data-ai="pvp" style="border-color:${pvpMode?'var(--gld)':'var(--brd)'}"><h4 style="color:var(--grn)">🤝 vs Human (Hotseat)</h4><p>Two players, same screen. Take turns and pass the device. No peeking!</p></div></div>
+    <h3>Choose Mode</h3>
+    <div class="mc" data-mode="standard"><span class="mt std">Standard</span><h4>Classic Towers</h4><p>3 lanes with The Tower at Center. Formations, fatigue, breakthrough victory.</p></div>
+    <div class="mc" data-mode="flatface"><span class="mt var">Variant</span><h4>Flatface</h4><p>Opponent cards hidden until round end. Bluff and misdirect.</p></div>
+    <div class="mc" data-mode="crosswise"><span class="mt var">Variant</span><h4>Crosswise Chull</h4><p>5 lanes, win 3 of 5. Archers reach 2 lanes. 13 cards dealt.</p></div>
+    <div style="margin-top:20px"><button class="btn g" onclick="tutOpen_();" style="width:100%;padding:10px">📜 How to Play — Interactive Tutorial</button></div>
+  </div>`;
+
+}
+
+function rHC(c,s){
+  const sel=s.sel&&s.sel.id===c.id,pl=canPlay(c,s.lanes,'human');
+  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" ${!pl?'title="Blocked — all lanes have Shardbearer"':''}><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${c.type.slice(0,5)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}</div>`;
+}
+function rHC_pvp(c,s,side){
+  const sel=s.sel&&s.sel.id===c.id,pl=canPlay(c,s.lanes,side);
+  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" data-pvp="${side}"><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${c.type.slice(0,5)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}</div>`;
+}
+
+function rCard(c,fd=false){
+  const fat=c.type==='shardbearers'&&c.deployTurn>=0?Math.floor((turnNum-c.deployTurn)/3):0;
+  const mf=c.moved?1:0;const tf=fat+mf;
+  return`<div class="cd ${fd?'face-down':c.type}" data-id="${c.id}"><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${c.type.slice(0,5)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0&&!fd?`<span class="fat-ind">-${tf}</span>`:''}</div>`;
+}
+
+function rLane(l,i,s){
+  const M=MODES[s.mode],ff=M.fd,isRes=s.phase==='round_end'||s.phase==='match_end';
+  const show=!ff||isRes;
+  const h=calcStr(l.human,i,s.lanes,'human',s.mode,turnNum),a=show?calcStr(l.ai,i,s.lanes,'ai',s.mode,turnNum):'?';
+  const activeSide=pvpMode&&s.turn==='ai'?'ai':'human';
+  const rmC=s.rm?'rm':'',mmC=s.mm?'mm':'';
+  const isTower=M.tower&&i===M.towerIdx;
+  // Human formations
+  const hf=detectFormations(l.human,i,s.lanes,'human',s.mode);
+  const af=show?detectFormations(l.ai,i,s.lanes,'ai',s.mode):[];
+  return`<div class="ln ${isTower?'tower-lane':''}" data-lane="${i}">
+    <div class="lh">${M.ln[i]}${isTower?'<span class="tower-icon"> 🏰</span>':''}</div>
+    <div class="ls as ${activeSide==='ai'?rmC+' '+mmC:''}" data-lane="${i}" data-side="ai">${l.ai.map(c=>rCard(c,ff&&!isRes)).join('')}</div>
+    <div class="fm-row">${af.map(f=>`<span class="fm-badge">${f.ico} ${f.n}</span>`).join('')}</div>
+    <div class="lt"><span class="at">${a}</span><span class="vs">vs</span><span class="ht">${h}</span></div>
+    <div class="fm-row">${hf.map(f=>`<span class="fm-badge">${f.ico} ${f.n}</span>`).join('')}</div>
+    <div class="ls hs ${activeSide==='human'?rmC+' '+mmC:''}" data-lane="${i}" data-side="human">${l.human.map(c=>rCard(c,false)).join('')}</div>
+  </div>`;
+}
+
+function rBlk(s){
+  if(s.phase!=='play')return'';
+  if(!pvpMode&&s.turn!=='human')return'';
+  const side=pvpMode&&s.turn==='ai'?'ai':'human';
+  const h=s.p[side].h;if(h.length===0||playable(h,s.lanes,side)>0)return'';
+  return`<div class="blk">⚠️ No cards can deploy — every lane has a Shardbearer. Retreat one, Pass, or Concede.</div>`;
+}
+
+function rAct(s){
+  const M=MODES[s.mode],side=pvpMode&&s.turn==='ai'?'ai':'human';
+  const h=s.p[side].h,pc=playable(h,s.lanes,side);
+  const td=s.lanes.reduce((a,l)=>a+l[side].length,0);
+
+  if(s.sel&&!s.rm&&!s.mm&&!s.cm){
+    const c=s.sel;if(!canPlay(c,s.lanes,side))return`<div class="blk">🗡️ This Shardbearer can't deploy — every lane has one. Retreat first.</div><div class="act"><button class="btn" onclick="cSel()">Cancel</button></div>`;
+    return`<div class="lsb">${M.ln.map((n,i)=>{const dis=c.type==='shardbearers'&&!canShard(s.lanes[i],side);return`<button class="btn p" onclick="dep(${i})" ${dis?'disabled title="Has Shardbearer"':''}>${n}</button>`}).join('')}</div><div class="act"><button class="btn" onclick="cSel()">Cancel</button></div>`;
+  }
+  if(s.cm)return`<div class="act"><button class="btn" onclick="cCharge()">Skip Charge</button></div>`;
+  if(s.rm)return`<div class="act"><button class="btn" onclick="cRet()">Cancel Retreat</button></div>`;
+  if(s.mm)return`<div class="act"><button class="btn" onclick="cMove()">Cancel Move</button></div>`;
+
+  return`<div class="act">
+    <button class="btn p" onclick="sDep()" ${pc===0?'disabled':''}>Deploy</button>
+    <button class="btn" onclick="sMove()" ${td===0?'disabled':''}>Move</button>
+    <button class="btn" onclick="sRet()" ${td===0?'disabled':''}>Retreat</button>
+    <button class="btn g" onclick="pPass()">Pass</button>
+    <button class="btn d" onclick="pCon()">Concede 🤝</button>
+  </div>`;
+}
+
+function rOv(s){
+  const M=MODES[s.mode];
+  if(s.phase==='match_end'){
+    const w=s.p.human.rw>=2?'human':'ai',isW=w==='human';
+    const lastR=s.rr[s.rr.length-1];
+    const bt=lastR&&lastR.bt;
+    return`<div class="ovc"><div style="font-size:44px;margin-bottom:6px">🤝</div><h2>${isW?'Victory!':'Defeat'}</h2>
+      ${bt?`<div class="bt-alert">🏰 BREAKTHROUGH! The Tower has fallen!</div>`:''}
+      <p>${isW?'"The Codes are upheld." Dalinar extends a firm handshake.':`"${aiPers==='sadeas'?'Better luck next time, Blackthorn.':'A worthy contest. Honor is satisfied.'}" ${AIW[aiPers].name} offers a handshake.`}</p>
+      <div class="sc"><span class="ps">${s.p.human.rw}</span><span style="color:var(--dim)"> – </span><span class="as">${s.p.ai.rw}</span></div>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn p" onclick="rematch()">Rematch</button><button class="btn" onclick="toMenu()">Menu</button></div></div>`;
+  }
+  if(s.phase==='round_end'){
+    const last=s.rr[s.rr.length-1];if(!last)return'';
+    const isW=last.rw==='human',isD=last.rw===null;
+    return`<div class="ovc"><h2>Round ${s.cr-1} ${isD?'Draw':(isW?'Won!':'Lost')}</h2>
+      <p>${last.lr.map((r,i)=>`${M.ln[i]}${M.tower&&i===M.towerIdx?' 🏰':''}: ${r.hs} vs ${r.as} ${r.w==='human'?'✓':r.w==='ai'?'✗':'—'}${r.margin>=10&&r.w?' ⚡':''}`).join('<br>')}</p>
+      <p style="color:var(--gld)">Lanes: You ${last.hl} – ${last.al} AI</p>
+      <p style="font-size:11px;color:var(--dim)">Cards eliminated. Drawing ${Math.min(M.draw,G.dp.length)} each.</p>
+      <button class="btn p" onclick="nextRd()">Round ${s.cr}</button></div>`;
+  }
+  return'';
+}
+
+function stTxt(s){
+  const M=MODES[s.mode];
+  if(s.phase!=='play')return'';
+  if(!pvpMode&&s.turn==='ai')return`${AIW[aiPers].icon} ${AIW[aiPers].name} is thinking...`;
+  const whoLabel=pvpMode?(s.turn==='human'?'🔵 Player 1':'🟢 Player 2'):'🔵 You';
+  if(s.rm)return`${whoLabel} — click a deployed card to retreat`;
+  if(s.mm)return`${whoLabel} — click a deployed card to move (−1 strength)`;
+  if(s.cm)return`${whoLabel} — Cavalry Charge: click a card to reposition`;
+  if(s.sel)return`${whoLabel} — Deploy ${UI[s.sel.type]} ${s.sel.type} (${s.sel.value}) — choose a lane`;
+  return`${whoLabel} — Deploy, Move, Retreat, Pass, or Concede`;
+}
+function hintTxt(s){
+  if(!s.sel)return'Select a card to see its ability';
+  const c=s.sel,M=MODES[s.mode];
+  if(c.type==='spearmen')return`⚔️ Formation +1/Spearman. 3+ = Phalanx (+3 each)`;
+  if(c.type==='archers')return`🏹 +2 to adj lanes${M.ar>1?' (2 away)':''}. +Cavalry = Skirmish Line`;
+  if(c.type==='cavalry')return`🐴 Charge: reposition 1 card. Solo = Vanguard (+4)`;
+  if(c.type==='shardbearers')return`🗡️ ×2 str (=${c.value*2}). Fatigues over time. +2 Spear = Shardwall`;
+  return'';
+}
+
+// ═══════════════════════════════════════
+// Events
+// ═══════════════════════════════════════
+function bindMenu(){
+  document.querySelectorAll('.ai-card').forEach(el=>el.addEventListener('click',()=>{
+    if(el.dataset.ai==='pvp'){pvpMode=true;aiPers='sadeas'}else{pvpMode=false;aiPers=el.dataset.ai}
+    R();
+  }));
+  document.querySelectorAll('.mc').forEach(el=>el.addEventListener('click',()=>{mode=el.dataset.mode;startGame(mode)}));
+}
+
+function bind(){
+  // Hand card clicks — works for both P1 and PvP P2
+  document.querySelectorAll('.hd .cd').forEach(el=>el.addEventListener('click',()=>{
+    if(anim)return;
+    const isP2=pvpMode&&G.turn==='ai';
+    if(!pvpMode&&G.turn!=='human')return;
+    const hand=isP2?G.p.ai.h:G.p.human.h;
+    const c=hand.find(x=>x.id===el.dataset.id);if(!c)return;
+    G.sel=G.sel?.id===c.id?null:c;G.rm=false;G.mm=false;G.cm=false;G.cid=null;R();
+  }));
+  // Lane card clicks — for retreat/move/charge, use the active player's side
+  const side=pvpMode&&G.turn==='ai'?'ai':'human';
+  document.querySelectorAll(`.ls[data-side="${side}"] .cd`).forEach(el=>el.addEventListener('click',()=>{
+    if(anim)return;const id=el.dataset.id;
+    if(G.rm)retCard(id);
+    else if(G.mm)moveCard(id);
+    else if(G.cm&&!G.cid)selCharge(id);
+  }));
+}
+
+// Actions
+window.sDep=()=>{G.rm=false;G.mm=false;G.cm=false;R()};
+window.sRet=()=>{G.rm=true;G.sel=null;G.mm=false;G.cm=false;R()};
+window.sMove=()=>{G.mm=true;G.sel=null;G.rm=false;G.cm=false;R()};
+window.cSel=()=>{G.sel=null;R()};
+window.cRet=()=>{G.rm=false;R()};
+window.cMove=()=>{G.mm=false;R()};
+window.cCharge=()=>{G.cm=false;G.cid=null;lg('You skip the charge.','player');endTurn()};
+
+window.dep=function(li){
+  const c=G.sel;if(!c)return;
+  const side=pvpMode&&G.turn==='ai'?'ai':'human';
+  if(c.type==='shardbearers'&&!canShard(G.lanes[li],side))return;
+  G.p[side].h=G.p[side].h.filter(x=>x.id!==c.id);
+  c.deployTurn=turnNum;c.moved=false;
+  G.lanes[li][side].push(c);G.sel=null;
+  if(side==='human')G.hp=false; else G.ap=false;
+  const who=side==='human'?'Player 1':'Player 2';
+  lg(`${pvpMode?who:'You'} deploy${pvpMode?'s':''} ${UI[c.type]} ${c.type} (${c.value}) to ${MODES[G.mode].ln[li]}`,side==='human'?'player':'ai');
+  const td=G.lanes.reduce((a,l)=>a+l[side].length,0);
+  if(c.type==='cavalry'&&td>1){G.cm=true;G.cid=null;R();return}
+  endTurn();
+};
+
+function moveCard(id){
+  const M=MODES[G.mode],side=pvpMode&&G.turn==='ai'?'ai':'human';
+  for(let i=0;i<M.lanes;i++){
+    const c=G.lanes[i][side].find(x=>x.id===id);
+    if(c){
+      // Show adjacent lane options
+      G.mm=false;
+      const st=document.getElementById('st');
+      if(st)st.textContent=`Move ${UI[c.type]} (${c.value}) to which lane?`;
+      const actDiv=document.querySelector('.act');
+      if(actDiv){
+        actDiv.innerHTML=M.ln.map((n,li)=>{
+          if(li===i)return`<button class="btn sm" disabled>${n} (here)</button>`;
+          if(Math.abs(li-i)>1)return`<button class="btn sm" disabled>${n} (too far)</button>`;
+          const dis=c.type==='shardbearers'&&!canShard(G.lanes[li],'human');
+          return`<button class="btn sm p" onclick="execMove('${id}',${i},${li})" ${dis?'disabled':''}>${n}</button>`;
+        }).join('')+`<button class="btn sm" onclick="cMove2()">Cancel</button>`;
+      }
+      return;
+    }
+  }
+}
+window.cMove2=()=>{G.mm=false;R()};
+window.execMove=function(id,from,to){
+  const side=pvpMode&&G.turn==='ai'?'ai':'human';
+  const c=G.lanes[from][side].find(x=>x.id===id);if(!c)return;
+  if(c.type==='shardbearers'&&!canShard(G.lanes[to],side)){lg('Blocked — lane has Shardbearer.','system');R();return}
+  G.lanes[from][side]=G.lanes[from][side].filter(x=>x.id!==id);c.moved=true;G.lanes[to][side].push(c);
+  if(side==='human')G.hp=false;else G.ap=false;
+  lg(`${pvpMode?(side==='human'?'P1':'P2'):'You'} move${pvpMode?'s':''} ${UI[c.type]} to ${MODES[G.mode].ln[to]} (−1)`,'player');endTurn();
+};
+
+function retCard(id){
+  const M=MODES[G.mode],side=pvpMode&&G.turn==='ai'?'ai':'human';
+  for(let i=0;i<M.lanes;i++){const idx=G.lanes[i][side].findIndex(c=>c.id===id);
+    if(idx!==-1){const c=G.lanes[i][side].splice(idx,1)[0];c.deployTurn=-1;c.moved=false;G.p[side].h.push(c);G.rm=false;
+      if(side==='human')G.hp=false;else G.ap=false;
+      lg(`${pvpMode?(side==='human'?'P1':'P2'):'You'} retreat${pvpMode?'s':''} ${UI[c.type]} (${c.value}) from ${M.ln[i]}`,side==='human'?'player':'ai');endTurn();return}}
+}
+
+function selCharge(id){
+  const M=MODES[G.mode],side=pvpMode&&G.turn==='ai'?'ai':'human';
+  for(let i=0;i<M.lanes;i++){const c=G.lanes[i][side].find(x=>x.id===id);
+    if(c){G.cid=id;const st=document.getElementById('st');if(st)st.textContent=`Move ${UI[c.type]} (${c.value}) to which lane?`;
+      const ad=document.querySelector('.act');
+      if(ad)ad.innerHTML=M.ln.map((n,li)=>li===i?`<button class="btn sm" disabled>${n}</button>`
+        :`<button class="btn sm p" onclick="doCharge('${id}',${i},${li})">${n}</button>`).join('')+`<button class="btn sm" onclick="cCharge()">Skip</button>`;
+      return}}
+}
+window.doCharge=function(id,from,to){
+  const side=pvpMode&&G.turn==='ai'?'ai':'human';
+  const c=G.lanes[from][side].find(x=>x.id===id);if(!c)return;
+  if(c.type==='shardbearers'&&!canShard(G.lanes[to],side)){lg('Blocked.','system');G.cm=false;G.cid=null;endTurn();return}
+  G.lanes[from][side]=G.lanes[from][side].filter(x=>x.id!==id);G.lanes[to][side].push(c);
+  lg(`Cavalry charge! ${UI[c.type]} repositioned to ${MODES[G.mode].ln[to]}`,'player');G.cm=false;G.cid=null;endTurn();
+};
+
+window.pPass=function(){
+  const who=G.turn;
+  if(who==='human')G.hp=true; else G.ap=true;
+  G.sel=null;G.rm=false;G.mm=false;
+  lg(`${who==='human'?'Player 1':'Player 2'} passes.`,who==='human'?'player':'ai');
+  if(G.hp&&G.ap)resRound(); else endTurn();
+};
+window.pCon=function(){
+  const who=G.turn;
+  if(who==='human'){lg('Player 1 offers a handshake and concedes.','player');G.p.ai.rw++}
+  else{lg('Player 2 offers a handshake and concedes.','ai');G.p.human.rw++}
+  elim(G);chkEnd();
+};
+
+// Turn flow
+function endTurn(){
+  turnNum++;G.sel=null;G.rm=false;G.mm=false;
+  if(pvpMode){
+    G.turn=G.turn==='human'?'ai':'human';
+    handoffScreen=true;
+    R();
+  } else {
+    G.turn='ai';R();
+    anim=true;setTimeout(()=>{aiExec();anim=false},600+Math.random()*400);
+  }
+}
+window.dismissHandoff=function(){handoffScreen=false;R();};
+
+function aiExec(){
+  const M=MODES[G.mode],d=aiTurn(G);
+  if(d.a==='pass'){G.ap=true;lg(`${AIW[aiPers].name} passes.`,'ai');if(G.hp){resRound();return}}
+  else if(d.a==='concede'){lg(`${AIW[aiPers].name} concedes with a ${aiPers==='sadeas'?'curt nod':'reluctant bow'}.`,'ai');G.p.human.rw++;elim(G);chkEnd();return}
+  else if(d.a==='deploy'){
+    const{c,li}=d;G.p.ai.h=G.p.ai.h.filter(x=>x.id!==c.id);c.deployTurn=turnNum;c.moved=false;G.lanes[li].ai.push(c);G.ap=false;
+    lg(`${AIW[aiPers].name} deploys ${M.fd?'a card':UI[c.type]+' '+c.type+' ('+c.value+')'} to ${M.ln[li]}`,'ai');
+    if(c.type==='cavalry')aiCharge(G);
+  }
+  else if(d.a==='move'){
+    const{card,from,to}=d;
+    G.lanes[from].ai=G.lanes[from].ai.filter(x=>x.id!==card.id);card.moved=true;G.lanes[to].ai.push(card);G.ap=false;
+    lg(`${AIW[aiPers].name} moves ${M.fd?'a unit':UI[card.type]} to ${M.ln[to]}`,'ai');
+  }
+  G.turn='human';R();
+}
+
+function resRound(){
+  const r=resolve(G);G.rr.push(r);const M=MODES[G.mode];
+  // Breakthrough check
+  if(r.bt){
+    const winner=r.bt;
+    if(winner==='human'){G.p.human.rw=2;lg(`BREAKTHROUGH! You shatter The Tower!`,'system')}
+    else{G.p.ai.rw=2;lg(`BREAKTHROUGH! ${AIW[aiPers].name} breaks through The Tower!`,'ai')}
+  } else {
+    if(r.rw==='human'){G.p.human.rw++;lg(`Round ${G.cr}: You win! (${r.hl}–${r.al})`,'system')}
+    else if(r.rw==='ai'){G.p.ai.rw++;lg(`Round ${G.cr}: ${AIW[aiPers].name} wins. (${r.al}–${r.hl})`,'system')}
+    else lg(`Round ${G.cr}: Draw!`,'system');
+  }
+  elim(G);G.cr++;G.hp=false;G.ap=false;turnNum=0;
+  if(G.p.human.rw>=2||G.p.ai.rw>=2||G.cr>3)G.phase='match_end';else G.phase='round_end';
+  R();
+}
+
+function chkEnd(){
+  G.cr++;G.hp=false;G.ap=false;turnNum=0;
+  G.rr.push({rw:null,lr:[],hl:0,al:0,bt:null});
+  if(G.p.human.rw>=2||G.p.ai.rw>=2)G.phase='match_end';
+  else if(G.cr>3)G.phase='match_end';
+  else G.phase='round_end';
+  R();
+}
+
+window.nextRd=function(){drawC(G,MODES[G.mode].draw);G.phase='play';G.turn='human';G.sel=null;lg(`— Round ${G.cr} begins. —`,'system');R()};
+window.rematch=()=>startGame(mode);
+window.toMenu=()=>{menu=true;R()};
+window.togAdv=()=>{advOpen=!advOpen;R()};
+
+function startGame(m){
+  mode=m;menu=false;turnNum=0;G=mkState(m);
+  const M=MODES[m];
+  lg(`— Towers (${M.label}) vs ${AIW[aiPers].name}. Life before death, Radiant. —`,'system');
+  if(M.fd)lg('Flatface: opponent cards hidden until round end.','system');
+  if(M.tower)lg('🏰 Center lane is The Tower. Win it by +10 with a flank for Breakthrough!','system');
+  R();
+}
+
+R();
+</script>
+</body>
+</html>
