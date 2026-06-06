@@ -10,23 +10,36 @@
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100vh;overflow:hidden}
 .page{display:flex;gap:8px;height:100vh;padding:8px}
 .game{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+/* Right Panel — Advisor + Wit Watch */
+.rpanel{width:300px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.rpanel.col{width:40px}
+/* Advisor section */
+.adv-box{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;overflow-y:auto;max-height:40vh;flex-shrink:0}
+.rpanel.col .adv-box{display:none}
+.adv-box-head{padding:6px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:6px;background:rgba(74,158,255,.03)}
+.adv-box-head h3{font-size:11px;color:var(--blu);flex:1;letter-spacing:.5px;text-transform:uppercase}
+.adv-box-body{padding:8px}
 /* Wit Watch Panel */
-.wit{width:300px;flex-shrink:0;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
-.wit-head{padding:8px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:8px;background:rgba(255,215,0,.03);cursor:pointer;user-select:none}
-.wit-head .wit-av{font-size:20px}.wit-head h3{font-size:12px;color:var(--gld);flex:1;letter-spacing:.5px}.wit-head .wit-tog{color:var(--dim);font-size:12px}
-.wit.col{width:40px}.wit.col .wit-msgs,.wit.col .wit-in,.wit.col .wit-head h3,.wit.col .wit-head .wit-tog-txt{display:none}
-.wit-msgs{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
-.wit-msg{padding:7px 10px;border-radius:8px;font-size:12px;line-height:1.4;max-width:92%}
-.wit-msg.wit{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.1);color:var(--txt);align-self:flex-start}
-.wit-msg.usr{background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.15);color:var(--blu);align-self:flex-end;text-align:right}
-.wit-msg .wit-nm{font-size:9px;font-weight:700;color:var(--gld);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;display:block}
+.wit{flex:1;min-height:0;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.wit-head{padding:6px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:8px;background:rgba(255,215,0,.03);cursor:pointer;user-select:none}
+.wit-head .wit-av{font-size:18px}.wit-head h3{font-size:11px;color:var(--gld);flex:1;letter-spacing:.5px}.wit-head .wit-tog{color:var(--dim);font-size:12px}
+.rpanel.col .wit{width:40px}.rpanel.col .wit-msgs,.rpanel.col .wit-in,.rpanel.col .wit-head h3,.rpanel.col .wit-head .wit-tog-txt{display:none}
+.wit-msgs{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px}
+.wit-msg{padding:6px 9px;border-radius:8px;font-size:11px;line-height:1.4;max-width:94%}
+.wit-msg.wit{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);color:var(--txt);align-self:flex-start}
+.wit-msg.usr{background:rgba(74,158,255,.08);border:1px solid rgba(74,158,255,.12);color:var(--blu);align-self:flex-end;text-align:right}
+.wit-msg .wit-nm{font-size:8px;font-weight:700;color:var(--gld);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1px;display:block}
 .wit-msg.usr .wit-nm{color:var(--blu)}
-.wit-in{padding:8px;border-top:1px solid var(--brd);display:flex;gap:6px}
-.wit-in input{flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:6px 10px;color:var(--txt);font-size:12px;outline:none}
+.wit-in{padding:6px;border-top:1px solid var(--brd);display:flex;gap:5px}
+.wit-in input{flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:5px 9px;color:var(--txt);font-size:11px;outline:none}
 .wit-in input:focus{border-color:var(--gld)}
 .wit-in input::placeholder{color:var(--dim)}
-.wit-in button{background:var(--gld);color:var(--bg);border:none;border-radius:6px;padding:6px 12px;font-weight:700;font-size:11px;cursor:pointer}
+.wit-in button{background:var(--gld);color:var(--bg);border:none;border-radius:6px;padding:5px 10px;font-weight:700;font-size:10px;cursor:pointer}
 .wit-in button:hover{opacity:.85}
+/* Quick-ask buttons */
+.wit-qa{display:flex;gap:3px;flex-wrap:wrap;padding:4px 6px;border-top:1px solid var(--brd)}
+.wit-qa button{font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid var(--brd);background:var(--bg3);color:var(--dim);cursor:pointer;transition:all .12s}
+.wit-qa button:hover{border-color:var(--gld);color:var(--gld)}
 /* Legacy advisor classes (used by advisor tips) */
 .adv-sec{margin-bottom:10px}
 .adv-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px;border-bottom:1px solid var(--brd);padding-bottom:3px}
@@ -66,26 +79,61 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 /* Formation badges */
 .fm-row{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;padding:2px 4px;min-height:16px}
 .fm-badge{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(255,215,0,.1);color:var(--gld);border:1px solid rgba(255,215,0,.2)}
-/* Cards */
-.cd{width:56px;height:78px;border-radius:6px;border:2px solid var(--brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:default;transition:all .15s;position:relative;user-select:none}
-.cd .cv{font-size:20px;font-weight:700;line-height:1}.cd .ci{font-size:14px;margin-bottom:1px}.cd .ct{font-size:8px;text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
-.cd .cs{position:absolute;top:2px;right:4px;font-size:8px;font-weight:700;background:rgba(0,0,0,.5);padding:1px 3px;border-radius:2px}
-.cd .fat-ind{position:absolute;bottom:2px;left:4px;font-size:8px;font-weight:700;color:var(--red)}
-.cd.spearmen{background:var(--spb);border-color:var(--sp);color:var(--sp)}
-.cd.archers{background:var(--arb);border-color:var(--ar);color:var(--ar)}
-.cd.cavalry{background:var(--cvb);border-color:var(--cv);color:var(--cv)}
-.cd.shardbearers{background:var(--shb);border-color:var(--sh);color:var(--sh)}
-.cd.face-down{background:var(--bg3)!important;border-color:var(--brd2)!important;color:var(--dim)!important}
-.cd.face-down .ci,.cd.face-down .cv,.cd.face-down .ct,.cd.face-down .cs,.cd.face-down .fat-ind{visibility:hidden}
-.cd.face-down::after{content:'?';font-size:24px;font-weight:700;color:var(--dim);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+/* Click-to-deploy: lane targets */
+.ln.deploy-target{cursor:pointer;border-color:var(--grn);box-shadow:0 0 12px rgba(85,204,119,.15)}
+.ln.deploy-target:hover{box-shadow:0 0 20px rgba(85,204,119,.25);border-color:#77ee99}
+.ln.deploy-target.blocked{cursor:not-allowed;border-color:var(--red);box-shadow:0 0 8px rgba(255,85,85,.1);opacity:.6}
+.ln.deploy-target.blocked:hover{box-shadow:0 0 8px rgba(255,85,85,.1)}
+/* Lane preview indicator */
+.lane-preview{text-align:center;padding:3px 0;font-size:11px;font-weight:700;min-height:20px;transition:all .2s}
+.lane-preview .preview-add{color:var(--grn);font-weight:800}
+.lane-preview .preview-form{color:var(--gld);font-size:9px;display:block}
+.lane-preview .preview-blocked{color:var(--red);font-size:9px}
+/* Pulsing action hints */
+@keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}50%{box-shadow:0 0 12px 3px rgba(255,215,0,.25)}}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(255,85,85,0)}50%{box-shadow:0 0 10px 2px rgba(255,85,85,.2)}}
+.btn.pulse-pass{animation:pulse-gold 1.8s ease-in-out infinite;border-color:var(--gld);color:var(--gld)}
+.btn.pulse-concede{animation:pulse-red 2s ease-in-out infinite}
+/* Wit cheat mode toggle */
+.wit-mode{padding:6px 8px;border-top:1px solid var(--brd);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.wit-mode label{font-size:9px;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:3px}
+.wit-mode input[type=radio]{appearance:none;width:12px;height:12px;border:2px solid var(--brd);border-radius:50%;cursor:pointer;transition:all .15s}
+.wit-mode input[type=radio]:checked{border-color:var(--gld);background:var(--gld)}
+.wit-mode .mode-label{font-size:9px;color:var(--dim);font-weight:600;margin-right:4px}
+/* Cheat panel */
+.cheat-intel{padding:6px 8px;border-bottom:1px solid var(--brd);font-size:10px;background:rgba(255,85,85,.03)}
+.cheat-intel .ci-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.cheat-intel .ci-label{color:var(--dim)}.cheat-intel .ci-val{color:var(--gld);font-weight:700}
+.cheat-intel .ci-best{background:rgba(85,204,119,.08);padding:4px 6px;border-radius:4px;margin-top:4px;color:var(--grn);font-weight:600}
+/* Cards — Polished */
+.cd{width:60px;height:82px;border-radius:8px;border:2px solid var(--brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:default;transition:all .18s;position:relative;user-select:none;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;border-radius:6px;opacity:.15;pointer-events:none}
+.cd .cv{font-size:22px;font-weight:800;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.4)}.cd .ci{font-size:15px;margin-bottom:2px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.cd .ct{font-size:7px;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;opacity:.8;font-weight:600}
+.cd .cs{position:absolute;top:3px;right:4px;font-size:8px;font-weight:800;background:rgba(0,0,0,.6);padding:1px 4px;border-radius:3px;letter-spacing:.3px}
+.cd .cd-suit{position:absolute;top:3px;left:4px;font-size:9px;opacity:.5;font-weight:700}
+.cd .cd-eff{position:absolute;bottom:3px;right:4px;font-size:8px;font-weight:700;background:rgba(0,0,0,.5);padding:1px 4px;border-radius:3px;color:var(--grn)}
+.cd .fat-ind{position:absolute;bottom:3px;left:4px;font-size:8px;font-weight:700;color:var(--red);text-shadow:0 0 4px rgba(255,85,85,.5)}
+.cd.spearmen{background:linear-gradient(135deg,var(--spb),#0d1e2e);border-color:var(--sp);color:var(--sp)}
+.cd.spearmen::before{background:linear-gradient(180deg,var(--sp),transparent)}
+.cd.archers{background:linear-gradient(135deg,var(--arb),#1e0e05);border-color:var(--ar);color:var(--ar)}
+.cd.archers::before{background:linear-gradient(180deg,var(--ar),transparent)}
+.cd.cavalry{background:linear-gradient(135deg,var(--cvb),#1e0810);border-color:var(--cv);color:var(--cv)}
+.cd.cavalry::before{background:linear-gradient(180deg,var(--cv),transparent)}
+.cd.shardbearers{background:linear-gradient(135deg,var(--shb),#120e1e);border-color:var(--sh);color:var(--sh);box-shadow:inset 0 0 12px rgba(204,170,255,.08)}
+.cd.shardbearers::before{background:linear-gradient(180deg,var(--sh),transparent)}
+.cd.face-down{background:var(--bg3)!important;border-color:var(--brd2)!important;color:var(--dim)!important;box-shadow:none!important}
+.cd.face-down::before{display:none}
+.cd.face-down .ci,.cd.face-down .cv,.cd.face-down .ct,.cd.face-down .cs,.cd.face-down .cd-suit,.cd.face-down .cd-eff,.cd.face-down .fat-ind{visibility:hidden}
+.cd.face-down::after{content:'?';font-size:26px;font-weight:800;color:var(--dim);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
 /* Hand */
 .ha{margin-top:5px;padding:8px 12px;background:var(--bg2);border-radius:9px;border:1px solid var(--brd)}
 .ha-l{font-size:11px;color:var(--dim);margin-bottom:4px;font-weight:600}
 .hd{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:70px;align-items:center}
-.hd .cd{cursor:pointer}.hd .cd:hover{transform:translateY(-5px);box-shadow:0 5px 16px rgba(0,0,0,.4);z-index:10}
-.hd .cd.sel{transform:translateY(-8px);box-shadow:0 0 0 2px var(--gld),0 6px 20px rgba(0,0,0,.5)}
-.hd .cd.unp{opacity:.35;filter:grayscale(.5)}
-.ls .cd{width:48px;height:66px}.ls .cd .cv{font-size:16px}.ls .cd .ci{font-size:12px}.ls .cd .ct{font-size:7px}
+.hd .cd{cursor:pointer}.hd .cd:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:10}
+.hd .cd.sel{transform:translateY(-10px) scale(1.06);box-shadow:0 0 0 2px var(--gld),0 0 16px rgba(255,215,0,.2),0 8px 24px rgba(0,0,0,.5)}
+.hd .cd.unp{opacity:.3;filter:grayscale(.6) brightness(.8)}
+.ls .cd{width:50px;height:68px}.ls .cd .cv{font-size:17px}.ls .cd .ci{font-size:13px}.ls .cd .ct{font-size:6px}
 /* Retreat/Move highlight */
 .ls.rm .cd{cursor:pointer;outline:2px dashed var(--gld);outline-offset:1px}.ls.rm .cd:hover{outline-color:var(--red)}
 .ls.mm .cd{cursor:pointer;outline:2px dashed var(--blu);outline-offset:1px}.ls.mm .cd:hover{outline-color:var(--grn)}
@@ -151,7 +199,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tut-dot.ac{background:var(--gld)}
 .tut-dot.done{background:var(--grn)}
 .tut-nav{display:flex;gap:6px}
-@media(max-width:900px){.wit{display:none}.page{padding:6px}}
+@media(max-width:900px){.rpanel{display:none}.page{padding:6px}}
 @media(max-width:700px){.cd{width:46px;height:64px}.cd .cv{font-size:16px}.ls .cd{width:40px;height:56px}.ls .cd .cv{font-size:14px}}
 </style>
 </head>
@@ -174,7 +222,7 @@ const AIW={
 };
 
 let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
-let pvpMode=false,handoffScreen=false,witOpen=true;
+let pvpMode=false,handoffScreen=false,witOpen=true,witMode='normal'; // normal|enhanced|cheat
 let witMsgs=[{from:'wit',text:"Ah, a new player at the Towers table! I am Wit — some call me Hoid. I've played this game across a dozen worlds, and I assure you, the rules are always the same: the clever survive, and the bold occasionally win. Ask me anything."}];
 
 // ═══════════════════════════════════════
@@ -182,6 +230,43 @@ let witMsgs=[{from:'wit',text:"Ah, a new player at the Towers table! I am Wit �
 // ═══════════════════════════════════════
 const WIT_GREETINGS=["Hmm, an interesting question...","*adjusts flute*","Let me tell you a story... actually, no. Let me just answer.","Ah! Now THAT is worth discussing.","You remind me of a king I once knew. He asked the same thing.","*leans forward conspiratorially*"];
 const WIT_CLOSERS=["But what do I know? I'm just a storyteller.","Use that knowledge wisely — or don't. Free will and all that.","Now stop chatting and go win.","The journey matters more than the destination, but winning is nice too."];
+
+// Fuzzy topic scorer: returns best-matching topic
+function witTopic(ql){
+  const topics=[
+    {id:'help',kw:['help','what should','what do','how do i','what now','stuck','confused','advice','suggest','recommend','tip','hint','guide','lost','idea','next','plan','think','strategy','best play','best move','good move','wise','options','choice']},
+    {id:'formation',kw:['formation','phalanx','skirmish','shardwall','vanguard','crossfire','combo','synergy','bonus','stack','cluster','group','combine']},
+    {id:'tower',kw:['tower','breakthrough','center','middle','dominate center','push center','win center','instant win']},
+    {id:'spear',kw:['spear','infantry','spearman','spearmen','foot soldier','pikeman','rank and file','formation bonus','shield wall']},
+    {id:'archer',kw:['archer','range','adjacent','bow','support','nearby','long range','ranged']},
+    {id:'cavalry',kw:['cavalry','charge','reposition','horse','mount','rider','mobile','flank','rush']},
+    {id:'shard',kw:['shard','bearer','shardbearer','double','fatigue','plate','blade','powerful','strongest','decay','degrade','tire']},
+    {id:'pass',kw:['pass','when pass','should pass','skip','wait','hold','save','conserve','patience','tempo']},
+    {id:'concede',kw:['concede','give up','surrender','resign','yield','forfeit','quit round','lose round','cut losses']},
+    {id:'opening',kw:['round 1','first round','early game','opening','start','beginning','initial','first play','first card']},
+    {id:'cardadv',kw:['card advantage','more cards','fewer cards','hand size','cards left','card count','card economy','tempo','resource']},
+    {id:'opponent',kw:['sadeas','dalinar','opponent','enemy','ai','beat','counter','defeat','win against','strategy against','fight','versus']},
+    {id:'rules',kw:['rule','how play','how work','explain','basics','tutorial','learn','teach','new player','beginner','what is']},
+    {id:'move',kw:['move','moving','shift','transfer','relocate','adjacent','switch lane']},
+    {id:'flatface',kw:['flatface','flat face','hidden','face down','bluff','secret','blind']},
+    {id:'crosswise',kw:['crosswise','chull','5 lane','five lane','expanded','wide','bigger']},
+    {id:'wit',kw:['who are you','your name','hoid','wit','yourself','name','introduce']},
+    {id:'story',kw:['story','tell me','joke','entertain','fun','laugh','amuse','tale','riddle','poem']},
+    {id:'lore',kw:['stormlight','radiant','knight','honor','dalinar lore','roshar','cosmere','brandon','sanderson','oath','ideal','bridge']},
+    {id:'win',kw:['win','winning','lose','losing','ahead','behind','score','standing','status','situation','how am i doing','am i winning']},
+    {id:'deploy',kw:['deploy','play','place','put','where','which lane','best lane','where should','drop']},
+    {id:'retreat',kw:['retreat','pull back','take back','remove','withdraw','recall']},
+  ];
+  let best=null,bestScore=0;
+  for(const t of topics){
+    let score=0;
+    for(const kw of t.kw){
+      if(ql.includes(kw))score+=kw.split(' ').length+1; // multi-word matches score higher
+    }
+    if(score>bestScore){bestScore=score;best=t.id}
+  }
+  return{topic:best,score:bestScore};
+}
 
 function witReply(q){
   if(!q||!q.trim())return null;
@@ -196,20 +281,35 @@ function witReply(q){
     const M=MODES[gs.mode],ev=eLanes(gs,'human');
     const winning=ev.filter(e=>e.d>0).length,losing=ev.filter(e=>e.d<0).length;
     const hand=gs.p.human.h,aiH=gs.p.ai.h.length;
-    const myForms=[];
-    for(let i=0;i<M.lanes;i++){const f=detectFormations(gs.lanes[i].human,i,gs.lanes,'human',gs.mode);myForms.push(...f)}
+    const myForms=[],deployed=[];
+    for(let i=0;i<M.lanes;i++){
+      const f=detectFormations(gs.lanes[i].human,i,gs.lanes,'human',gs.mode);myForms.push(...f);
+      deployed.push(...gs.lanes[i].human);
+    }
+    const totalDeployed=deployed.length;
+    const blocked=hand.filter(c=>!canPlay(c,gs.lanes,'human')).length;
     ctx={winning,losing,handSize:hand.length,aiHandSize:aiH,round:gs.cr,
       haveSpears:hand.filter(c=>c.type==='spearmen').length,
       haveShard:hand.filter(c=>c.type==='shardbearers').length,
       haveArcher:hand.filter(c=>c.type==='archers').length,
       haveCav:hand.filter(c=>c.type==='cavalry').length,
-      forms:myForms,ev,M};
+      forms:myForms,ev,M,totalDeployed,blocked};
   }
 
-  // ── Pattern matching with context ──
+  // ── Fuzzy topic matching ──
+  const{topic,score}=witTopic(ql);
 
-  // Help / what do I do
-  if(ql.match(/help|what (should|do|can) i|how do i|what now|stuck|confused/)){
+  // If very low confidence, try context-based response first
+  if(score===0&&hasGame){
+    // Proactive: give situation-aware advice even for vague questions
+    if(ctx.winning>=ctx.M.w)return`${greet} You're ahead! Winning ${ctx.winning} lanes. My advice: pass. Save cards. Let your opponent overextend. Patience wins wars.${close}`;
+    if(ctx.losing>=ctx.M.w&&gs.cr<3)return`${greet} You're behind in ${ctx.losing} lanes. Round ${ctx.round} of 3. Consider conceding to save your ${ctx.handSize} cards for a stronger push next round.${close}`;
+    if(ctx.blocked>0)return`${greet} You have ${ctx.blocked} blocked Shardbearer${ctx.blocked>1?'s':''} — every lane has one. Retreat a deployed Shardbearer to free a lane, or pass.${close}`;
+    if(ctx.handSize===0)return`${greet} Your hand is empty. All you can do is Move deployed cards, Retreat them, or Pass. If you're ahead, pass and let the round resolve.${close}`;
+  }
+
+  // ── Topic-matched responses ──
+  if(topic==='help'){
     if(!hasGame)return`${greet} You're not in a match yet. Pick an opponent and a mode from the menu, then I'll guide you through the battle.${close}`;
     if(ctx.winning>=ctx.M.w)return`${greet} You're winning ${ctx.winning} lanes! I'd recommend passing to conserve cards. Every card you save now is ammunition for later rounds. Patience is a weapon.${close}`;
     if(ctx.losing>=ctx.M.w&&gs.cr<3)return`${greet} Things look grim — you're down in ${ctx.losing} lanes. Consider conceding this round to save your ${ctx.handSize} cards. Losing a battle to win the war is not dishonorable. Well, Dalinar might disagree.${close}`;
@@ -218,8 +318,7 @@ function witReply(q){
     return`${greet} Deploy cards strategically across the three lanes. Win 2 of 3 to take the round. Watch the Center — that's The Tower. Dominate it by +10 with a flank win for an instant Breakthrough.${close}`;
   }
 
-  // Formations
-  if(ql.match(/formation|phalanx|skirmish|shardwall|vanguard|crossfire/)){
+  if(topic==='formation'){
     if(ql.includes('phalanx'))return`${greet} Phalanx requires 3+ Spearmen in one lane. Each Spearman gets +3 bonus ON TOP of their formation synergy (+1 per ally). Three Spearmen of value 5 = (5+2)×3 + 9 Phalanx = 30 strength. It's the backbone of Dalinar's strategy.${close}`;
     if(ql.includes('shardwall'))return`${greet} Shardwall: 1 Shardbearer + 2 Spearmen in the same lane. Negates all Shardbearer fatigue. Without it, your Shardbearer loses strength every 3 turns. Think of the Spearmen as squires keeping the Shardplate maintained.${close}`;
     if(ql.includes('skirmish'))return`${greet} Skirmish Line: Archer + Cavalry in the same lane. Archers get +3, Cavalry get +2. A flexible combo — the Cavalry's Charge lets you reposition, and the Archer's range supports adjacent lanes too.${close}`;
@@ -227,8 +326,7 @@ function witReply(q){
     return`${greet} There are 5 formations: Phalanx (3+ Spearmen, +3 each), Skirmish (Archer+Cavalry, +3/+2), Shardwall (Shard+2 Spear, no fatigue), Vanguard (solo Cavalry, +4), and Crossfire (Archers in adjacent lanes, +2). They auto-trigger and stack.${close}`;
   }
 
-  // Tower / breakthrough
-  if(ql.match(/tower|breakthrough|center|middle/)){
+  if(topic==='tower'){
     if(hasGame){
       const ce=ctx.ev[ctx.M.towerIdx];
       if(ce.d>=8)return`${greet} You're +${ce.d} in The Tower! You need +10 with a flank win for Breakthrough. One more strong play in Center could end the entire match. Press your advantage!${close}`;
@@ -237,40 +335,66 @@ function witReply(q){
     return`${greet} The Tower is the Center lane, marked with 🏰. If you win Center by 10+ margin AND win at least one flank, you get a Breakthrough — instant match victory. It's the most exciting way to win, and the most dangerous way to lose.${close}`;
   }
 
-  // Cards / units
-  if(ql.match(/spear|infantry|formation bonus/))return`${greet} Spearmen are the foundation. +1 strength per other Spearman in the same lane, and 3+ triggers Phalanx (+3 each). They also enable Shardwall. Never underestimate the rank and file.${close}`;
-  if(ql.match(/archer|range|adjacent/))return`${greet} Archers add +2 strength to each adjacent lane, ON TOP of their own lane strength. Place them in Center to support both flanks simultaneously. Pair with Cavalry for Skirmish Line (+3).${close}`;
-  if(ql.match(/cavalry|charge|reposition|move card/))return`${greet} Cavalry's Charge triggers on deploy — you can reposition one friendly card from any lane to another. Solo Cavalry = Vanguard (+4). They're your tactical wildcard.${close}`;
-  if(ql.match(/shard|bearer|double|fatigue/))return`${greet} Shardbearers deal double strength (a 10 = 20!), but only 1 per lane, and they lose -1 strength every 3 turns from fatigue. Pair with 2 Spearmen for Shardwall to negate the decay. A Shardbearer without support is a crumbling fortress.${close}`;
+  if(topic==='spear')return`${greet} Spearmen are the foundation. +1 strength per other Spearman in the same lane, and 3+ triggers Phalanx (+3 each). They also enable Shardwall.${hasGame&&ctx.haveSpears>=2?` You have ${ctx.haveSpears} in hand — cluster them!`:''} Never underestimate the rank and file.${close}`;
+  if(topic==='archer')return`${greet} Archers add +2 strength to each adjacent lane, ON TOP of their own lane strength. Place them in Center to support both flanks simultaneously. Pair with Cavalry for Skirmish Line (+3).${hasGame&&ctx.haveArcher>0?` You have ${ctx.haveArcher} — Center is ideal.`:''}.${close}`;
+  if(topic==='cavalry')return`${greet} Cavalry's Charge triggers on deploy — you can reposition one friendly card from any lane to another. Solo Cavalry = Vanguard (+4). They're your tactical wildcard.${hasGame&&ctx.haveCav>0?` You have ${ctx.haveCav} ready to charge.`:''}.${close}`;
+  if(topic==='shard')return`${greet} Shardbearers deal double strength (a 10 = 20!), but only 1 per lane, and they lose -1 strength every 3 turns from fatigue. Pair with 2 Spearmen for Shardwall to negate the decay. A Shardbearer without support is a crumbling fortress.${hasGame&&ctx.haveShard>0?` You have ${ctx.haveShard} — pair with infantry!`:''}.${close}`;
 
-  // Strategy
-  if(ql.match(/pass|when.*pass|should.*pass/)){
+  if(topic==='win'){
+    if(!hasGame)return`${greet} Start a match first, then I can tell you how you're doing.${close}`;
+    if(ctx.winning>ctx.losing)return`${greet} You're winning ${ctx.winning} lane${ctx.winning>1?'s':''} vs ${ctx.losing}. Round ${ctx.round}. Match score: You ${gs.p.human.rw}–${gs.p.ai.rw}. ${ctx.winning>=ctx.M.w?'Consider passing to lock it in.':'Keep pushing.'}${close}`;
+    if(ctx.losing>ctx.winning)return`${greet} You're behind — losing ${ctx.losing} lane${ctx.losing>1?'s':''}. ${ctx.round<3?'This round may not be salvageable. Think about conceding to save cards.':'Final round — fight for it.'}${close}`;
+    return`${greet} Lanes are even. This is where positioning and formations decide the battle. Look for a Phalanx or Tower push.${close}`;
+  }
+
+  if(topic==='deploy'){
+    if(!hasGame)return`${greet} Click a card in your hand, then click a lane button to deploy it.${close}`;
+    const weakest=ctx.ev.reduce((a,e)=>e.d<a.d?e:a,{d:Infinity});
+    const wIdx=ctx.ev.indexOf(weakest);
+    if(weakest.d<0)return`${greet} ${ctx.M.ln[wIdx]} is your weakest lane at ${weakest.d}. Reinforcing there could flip it. ${ctx.haveSpears>=2?'Spearmen would build toward Phalanx.':ctx.haveShard>0?'A Shardbearer would swing it hard.':'Play your highest-value card.'}${close}`;
+    return`${greet} All lanes look decent. Consider where a formation could form, or reinforce a lane the opponent is threatening.${close}`;
+  }
+
+  if(topic==='retreat')return`${greet} Retreat pulls a deployed card back to your hand. It won't be eliminated at round end, but you lose its strength from the lane AND lose a turn. Best used when: (1) a Shardbearer is blocking deployment in all lanes, (2) you overcommitted to a lane you're going to lose anyway, or (3) you want to redeploy a card more effectively.${close}`;
+
+  if(topic==='pass'){
     if(hasGame&&ctx.winning>=ctx.M.w)return`${greet} YES. You're winning enough lanes. Pass to force your opponent to keep spending cards while you save yours. Card advantage wins matches.${close}`;
     return`${greet} Pass when you're ahead in 2+ lanes with comfortable margins. Every card you don't play is a card you keep for the next round. Remember: all deployed cards die at round end.${close}`;
   }
-  if(ql.match(/concede|give up|surrender/)){
+  if(topic==='concede'){
     if(hasGame&&ctx.losing>=ctx.M.w&&gs.cr<3)return`${greet} Actually, yes — conceding now might be wise. You're losing ${ctx.losing} lanes and have ${ctx.handSize} cards to save for Round ${gs.cr+1}. A strategic retreat is not cowardice. Ask Dalinar about the Tower of— actually, never mind that story.${close}`;
     return`${greet} Concede when you're losing badly in a non-final round. All your deployed cards are eliminated anyway — conceding early just saves your hand cards for the next round. It's often the winning play.${close}`;
   }
-  if(ql.match(/round 1|first round|early game|opening/))return`${greet} Round 1 wisdom: DON'T overcommit. Play 3-5 cards maximum. If you dump your hand to win Round 1, you'll have nothing for Rounds 2-3. Let your opponent spend freely, then crush them when they're depleted.${close}`;
-  if(ql.match(/card advantage|more cards|fewer cards/))return`${greet} Count cards constantly. If you have 7 and they have 3, you can pressure multiple lanes simultaneously. If reversed, play conservatively and force them to commit first. The player with more cards controls the tempo.${close}`;
+  if(topic==='opening')return`${greet} Round 1 wisdom: DON'T overcommit. Play 3-5 cards maximum.${hasGame&&ctx.round===1?` You have ${ctx.handSize} cards — save at least 5 for later rounds.`:''} If you dump your hand to win Round 1, you'll have nothing for Rounds 2-3. Let your opponent spend freely, then crush them when they're depleted.${close}`;
+  if(topic==='cardadv'){
+    if(hasGame){const diff=ctx.handSize-ctx.aiHandSize;
+      return diff>0?`${greet} You have ${diff} more cards than ${AIW[aiPers].name}. That's leverage — you can pressure multiple lanes while they're spread thin. Use this advantage to force unfavorable trades.${close}`
+        :diff<0?`${greet} You're ${Math.abs(diff)} cards behind. Play conservatively — make each card count. Consider passing to force ${AIW[aiPers].name} to commit first. The player with more cards controls tempo.${close}`
+        :`${greet} Cards are even at ${ctx.handSize} each. It's about positioning now. Look for formation opportunities or a Tower push.${close}`}
+    return`${greet} Count cards constantly. The player with more cards controls tempo. If you have the advantage, pressure. If not, force the opponent to commit first.${close}`;
+  }
 
-  // Sadeas / Dalinar AI
-  if(ql.match(/sadeas|opponent|enemy|ai|how.*beat/)){
+  if(topic==='opponent'){
     if(aiPers==='sadeas')return`${greet} Sadeas is a flanker. He avoids Center, crushes the wings, and concedes freely to save cards. Counter him by: (1) securing Center for a Tower push, (2) don't chase him to both flanks — pick ONE and dominate it with the Center.${close}`;
     return`${greet} Dalinar-AI builds formations relentlessly and pushes Center hard. He's predictable but powerful. Counter by: (1) disrupting his Phalanx before it reaches 3 Spearmen, (2) attacking his flanks where he's weaker, (3) using Cavalry to reposition after he commits.${close}`;
   }
 
-  // Rules
-  if(ql.match(/rule|how.*play|how.*work|explain|basics/))return`${greet} Deploy cards to 3 lanes. Win 2 of 3 lanes per round, 2 of 3 rounds per match. Actions: Deploy, Move (adjacent lane, -1 str), Retreat (back to hand), Pass, Concede. All deployed cards are eliminated after each round. The Tower (Center) at +10 with a flank = instant match win.${close}`;
-  if(ql.match(/move|moving|shift/))return`${greet} The Move action shifts a deployed card to an adjacent lane (Left↔Center↔Right). It costs -1 effective strength for the round. Worth it to flip a contested lane, but don't move frivolously.${close}`;
-  if(ql.match(/flatface|hidden|face down/))return`${greet} In Flatface mode, your opponent's cards are played face-down. You can see which lanes they commit to, but not the strength. It's a game of bluffing and reading patterns. Spread your forces more evenly — you can't react to what you can't see.${close}`;
-  if(ql.match(/crosswise|5 lane|five lane/))return`${greet} Crosswise Chull: 5 lanes, win 3 of 5. You get 13 cards. Archers reach 2 lanes away instead of 1. The battlefield is wider, flanking is deeper, and positioning matters even more. Place Archers centrally for maximum coverage.${close}`;
+  if(topic==='rules')return`${greet} Deploy cards to ${hasGame?ctx.M.lanes:'3'} lanes. Win ${hasGame?ctx.M.w:'2'} of ${hasGame?ctx.M.lanes:'3'} lanes per round, 2 of 3 rounds per match. Actions: Deploy, Move (−1 str), Retreat, Pass, Concede. All deployed cards eliminated after each round. The Tower (Center) at +10 with a flank = instant match win.${close}`;
+  if(topic==='move')return`${greet} The Move action shifts a deployed card to an adjacent lane. Costs −1 effective strength. Worth it to flip a contested lane, but not free.${hasGame&&ctx.totalDeployed>0?` You have ${ctx.totalDeployed} deployed cards — any could be repositioned.`:''}.${close}`;
+  if(topic==='flatface')return`${greet} In Flatface mode, opponent cards are face-down. You see which lanes they commit to, but not the strength. Spread evenly — you can't react to what you can't see.${hasGame&&gs.mode==='flatface'?' You\'re playing Flatface now — trust your instincts and read patterns.':''}.${close}`;
+  if(topic==='crosswise')return`${greet} Crosswise Chull: 5 lanes, win 3 of 5. 13 cards dealt. Archers reach 2 lanes away. The battlefield is wider, flanking deeper, positioning critical. Archers in the center-ish lanes get maximum coverage.${close}`;
 
-  // Wit personality questions
-  if(ql.match(/who are you|your name|hoid|wit\b/))return`I am Wit. Or Hoid. Or the King's Wit. Or a dozen other names across a dozen worlds. I collect stories, tell lies that are truer than truth, and occasionally help people win card games. Don't read too much into that last part.`;
-  if(ql.match(/story|tell me|joke|entertain/))return`"A man once played Towers against a god. He lost every round, but at the end, the god had no cards left and the man held three. 'You won every battle,' the man said, 'but I won the war.' The god was not amused." ...Anyway, deploy your Spearmen.`;
-  if(ql.match(/stormlight|radiant|knight|honor|dalinar/))return`Life before death. Strength before weakness. Journey before destination. Those are fine words for a battlefield, but at this table, I prefer: "Cards before commitment. Formations before force. Victory before valor." Now play.`;
+  if(topic==='wit')return`I am Wit. Or Hoid. Or the King's Wit. Or a dozen other names across a dozen worlds. I collect stories, tell lies that are truer than truth, and occasionally help people win card games. Don't read too much into that last part.`;
+  if(topic==='story'){
+    const stories=[
+      `"A man once played Towers against a god. He lost every round, but at the end, the god had no cards left and the man held three. 'You won every battle,' the man said, 'but I won the war.' The god was not amused." ...Anyway, deploy your Spearmen.`,
+      `"There was once a soldier who stacked his entire army in one lane. 'Concentrated force!' he declared. His opponent played one card to each of the other two lanes and won the round with three ones. The soldier never recovered." The lesson? Don't overcommit.`,
+      `"A Shardbearer once strode onto the battlefield alone, convinced his strength was sufficient. He won the first clash. And the second. By the third, his Plate was cracked and his arms heavy. A single spearman brought him low." That's fatigue. Bring squires.`,
+      `"Two Highprinces sat across a Towers table. One played with honor — formations, the Codes, careful positioning. The other played to win — cheap tricks, concessions, card counting. They tied. Because in the end, both approaches work. Choose yours."`,
+    ];
+    return stories[Math.floor(Math.random()*stories.length)];
+  }
+  if(topic==='lore')return`Life before death. Strength before weakness. Journey before destination. Those are fine words for a battlefield, but at this table, I prefer: "Cards before commitment. Formations before force. Victory before valor." The Oaths of the card player. Now play.`;
 
   // Fallback
   const fallbacks=[
@@ -281,28 +405,162 @@ function witReply(q){
   return fallbacks[Math.floor(Math.random()*fallbacks.length)];
 }
 
+// ── Lane Preview Calculator ──
+function calcPreview(card,laneIdx,s){
+  if(!s||!card)return null;
+  const side=pvpMode&&s.turn==='ai'?'ai':'human';
+  if(card.type==='shardbearers'&&!canShard(s.lanes[laneIdx],side))return{blocked:true};
+  // Simulate deploying this card
+  const simLanes=s.lanes.map((l,i)=>({human:[...l.human],ai:[...l.ai]}));
+  const simCard={...card,deployTurn:turnNum,moved:false};
+  simLanes[laneIdx][side].push(simCard);
+  const M=MODES[s.mode];
+  const before=calcStr(s.lanes[laneIdx][side],laneIdx,s.lanes,side,s.mode,turnNum);
+  const after=calcStr(simLanes[laneIdx][side],laneIdx,simLanes,side,s.mode,turnNum);
+  const diff=after-before;
+  // Check if new formations trigger
+  const formsBefore=detectFormations(s.lanes[laneIdx][side],laneIdx,s.lanes,side,s.mode);
+  const formsAfter=detectFormations(simLanes[laneIdx][side],laneIdx,simLanes,side,s.mode);
+  const newForms=formsAfter.filter(f=>!formsBefore.some(b=>b.n===f.n));
+  // Check adjacent lane archer impact
+  let adjBonus=0;
+  if(card.type==='archers'){
+    for(let d=1;d<=M.ar;d++)for(const o of[-d,d]){const a=laneIdx+o;if(a>=0&&a<M.lanes)adjBonus+=2}
+  }
+  return{diff,newForms,adjBonus,blocked:false};
+}
+
+// ── Cheat Analysis Engine ──
+function cheatAnalysis(s){
+  if(!s||s.phase!=='play')return null;
+  const M=MODES[s.mode],ev=eLanes(s,'human'),hand=s.p.human.h,aiH=s.p.ai.h;
+  // AI hand breakdown (cheat: we can see it)
+  const aiBreak={spearmen:0,archers:0,cavalry:0,shardbearers:0};
+  for(const c of aiH)aiBreak[c.type]++;
+  const aiMaxVal=aiH.length>0?Math.max(...aiH.map(c=>c.type==='shardbearers'?c.value*2:c.value)):0;
+  // Find optimal play
+  let bestPlay=null,bestScore=-Infinity;
+  for(const card of hand){
+    if(!canPlay(card,s.lanes,'human'))continue;
+    for(let li=0;li<M.lanes;li++){
+      if(card.type==='shardbearers'&&!canShard(s.lanes[li],'human'))continue;
+      const prev=calcPreview(card,li,s);
+      if(!prev||prev.blocked)continue;
+      // Score: strength gain + formation bonus + lane need
+      let score=prev.diff;
+      if(prev.newForms.length>0)score+=prev.newForms.reduce((a,f)=>a+f.b,0)+5;
+      // Prioritize flipping losing lanes
+      if(ev[li].d<0&&ev[li].d+prev.diff>0)score+=15;
+      // Tower push
+      if(li===M.towerIdx&&ev[li].d+prev.diff>=10)score+=20;
+      if(score>bestScore){bestScore=score;bestPlay={card,lane:li,score,diff:prev.diff,forms:prev.newForms}}
+    }
+  }
+  // Should pass?
+  const winning=ev.filter(e=>e.d>0).length;
+  const shouldPass=winning>=M.w&&ev.filter(e=>e.d>0).every(e=>e.d>=3);
+  // Should concede?
+  const losing=ev.filter(e=>e.d<0).length;
+  const shouldConcede=losing>=M.w&&s.cr<3&&hand.length>3;
+  // Win probability per lane
+  const laneProbs=ev.map(e=>{
+    const margin=e.d;const aiCards=s.lanes[e.i].ai.length;
+    if(margin>8)return{pct:95,label:'Dominant'};
+    if(margin>4)return{pct:80,label:'Strong'};
+    if(margin>0)return{pct:60,label:'Ahead'};
+    if(margin===0)return{pct:50,label:'Even'};
+    if(margin>-4)return{pct:40,label:'Behind'};
+    if(margin>-8)return{pct:20,label:'Weak'};
+    return{pct:5,label:'Critical'};
+  });
+  return{aiBreak,aiMaxVal,bestPlay,shouldPass,shouldConcede,laneProbs,ev,winning,losing};
+}
+
+function renderCheatPanel(s){
+  const a=cheatAnalysis(s);if(!a)return'';
+  const M=MODES[s.mode];
+  let h=`<div class="cheat-intel">`;
+  h+=`<div class="ci-row"><span class="ci-label">AI Hand</span><span class="ci-val">⚔${a.aiBreak.spearmen} 🏹${a.aiBreak.archers} 🐴${a.aiBreak.cavalry} 🗡${a.aiBreak.shardbearers}</span></div>`;
+  h+=`<div class="ci-row"><span class="ci-label">AI Max Card</span><span class="ci-val">${a.aiMaxVal} str</span></div>`;
+  h+=`<div class="ci-row"><span class="ci-label">Lane Win %</span><span class="ci-val">${a.laneProbs.map((p,i)=>`${M.ln[i].charAt(0)}:${p.pct}%`).join(' ')}</span></div>`;
+  if(a.shouldPass)h+=`<div class="ci-best">PASS — you're winning with margin. Save cards.</div>`;
+  else if(a.shouldConcede)h+=`<div class="ci-best" style="color:var(--red)">CONCEDE — save cards for next round.</div>`;
+  else if(a.bestPlay){
+    const bp=a.bestPlay;
+    h+=`<div class="ci-best">PLAY: ${UI[bp.card.type]} ${bp.card.type}(${bp.card.value}) → ${M.ln[bp.lane]} (+${bp.diff} str${bp.forms.length?', triggers '+bp.forms.map(f=>f.n).join('+'):''})</div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
 function renderWit(){
   if(pvpMode)return'';
-  return`<div class="wit ${witOpen?'':'col'}">
-    <div class="wit-head" onclick="togWit()">
-      <span class="wit-av">🃏</span>
-      <h3>Wit Watch</h3>
-      <span class="wit-tog"><span class="wit-tog-txt">${witOpen?'◀':'▶'}</span></span>
+  const col=witOpen?'':'col';
+  return`<div class="rpanel ${col}">
+    ${G&&G.phase==='play'?`<div class="adv-box">
+      <div class="adv-box-head"><span>📊</span><h3>Intel</h3></div>
+      <div class="adv-box-body">${advHTML(G)}</div>
+    </div>`:''}
+    <div class="wit">
+      <div class="wit-head" onclick="togWit()">
+        <span class="wit-av">🃏</span>
+        <h3>Wit Watch</h3>
+        <span class="wit-tog"><span class="wit-tog-txt">${witOpen?'◀':'▶'}</span></span>
+      </div>
+      <div class="wit-mode">
+        <span class="mode-label">Guidance:</span>
+        <label><input type="radio" name="wm" value="normal" ${witMode==='normal'?'checked':''} onchange="setWitMode('normal')"> Normal</label>
+        <label><input type="radio" name="wm" value="enhanced" ${witMode==='enhanced'?'checked':''} onchange="setWitMode('enhanced')"> Enhanced</label>
+        <label><input type="radio" name="wm" value="cheat" ${witMode==='cheat'?'checked':''} onchange="setWitMode('cheat')"> <span style="color:var(--red)">Cheat</span></label>
+      </div>
+      ${witMode==='cheat'&&G&&G.phase==='play'?renderCheatPanel(G):''}
+      <div class="wit-msgs" id="witMsgs">${witMsgs.map(m=>
+        `<div class="wit-msg ${m.from}"><span class="wit-nm">${m.from==='wit'?'🃏 Wit':'You'}</span>${m.text}</div>`
+      ).join('')}</div>
+      <div class="wit-qa">
+        <button onclick="quickAsk('What should I do?')">What do I do?</button>
+        <button onclick="quickAsk('How do formations work?')">Formations</button>
+        <button onclick="quickAsk('Tell me about The Tower')">The Tower</button>
+        <button onclick="quickAsk('How do I beat my opponent?')">Beat AI</button>
+        <button onclick="quickAsk('Should I pass or concede?')">Pass/Concede?</button>
+      </div>
+      <div class="wit-in"><input type="text" id="witInput" placeholder="Ask Wit anything..." onkeydown="if(event.key==='Enter')askWit()"><button onclick="askWit()">Ask</button></div>
     </div>
-    <div class="wit-msgs" id="witMsgs">${witMsgs.map(m=>
-      `<div class="wit-msg ${m.from}"><span class="wit-nm">${m.from==='wit'?'🃏 Wit':'You'}</span>${m.text}</div>`
-    ).join('')}</div>
-    <div class="wit-in"><input type="text" id="witInput" placeholder="Ask Wit anything..." onkeydown="if(event.key==='Enter')askWit()"><button onclick="askWit()">Ask</button></div>
   </div>`;
 }
 
 window.togWit=()=>{witOpen=!witOpen;R()};
+window.setWitMode=function(m){
+  witMode=m;
+  const modeMsg={normal:'Guidance set to Normal. I\'ll answer when asked.',enhanced:'Enhanced mode. I\'ll proactively advise you each turn — like having a general whispering in your ear.',cheat:'"Cheat" mode? *sighs* Fine. I\'ll show you their hand, the optimal play, and win probabilities. Don\'t say I didn\'t warn you — victories without struggle are hollow. But I suppose you want to learn the mechanics. I respect that.'};
+  witMsgs.push({from:'wit',text:modeMsg[m]});R();
+};
+// Proactive Wit commentary (called after each AI turn in enhanced/cheat mode)
+function witProactive(){
+  if(witMode==='normal'||!G||G.phase!=='play'||pvpMode)return;
+  const a=cheatAnalysis(G);if(!a)return;
+  const M=MODES[G.mode];
+  let msg='';
+  if(witMode==='enhanced'){
+    if(a.shouldPass)msg=`I'd pass here. You're winning ${a.winning} lanes with margin. Save those cards — round ${G.cr} isn't the last.`;
+    else if(a.shouldConcede)msg=`This round looks lost. Conceding saves ${G.p.human.h.length} cards for Round ${G.cr+1}. Live to fight again.`;
+    else if(a.bestPlay){const bp=a.bestPlay;
+      msg=`Consider ${UI[bp.card.type]} ${bp.card.type}(${bp.card.value}) → ${M.ln[bp.lane]}. That's +${bp.diff} strength.${bp.forms.length?' Triggers '+bp.forms.map(f=>f.n).join(' + ')+'!':''}`}
+    else msg=null;
+  } else if(witMode==='cheat'){
+    if(a.shouldPass)msg=`PASS. Lanes locked: ${a.laneProbs.map((p,i)=>M.ln[i].charAt(0)+':'+p.pct+'%').join(' ')}. Conserve.`;
+    else if(a.shouldConcede)msg=`CONCEDE. AI holds: ⚔${a.aiBreak.spearmen} 🏹${a.aiBreak.archers} 🐴${a.aiBreak.cavalry} 🗡${a.aiBreak.shardbearers}. Max card: ${a.aiMaxVal}. You can't overcome this.`;
+    else if(a.bestPlay){const bp=a.bestPlay;
+      msg=`OPTIMAL: ${UI[bp.card.type]}${bp.card.value} → ${M.ln[bp.lane]} (+${bp.diff}${bp.forms.length?', '+bp.forms.map(f=>f.n).join('+'):''}). Win%: ${a.laneProbs.map((p,i)=>M.ln[i].charAt(0)+':'+p.pct+'%').join(' ')}`}
+  }
+  if(msg)witMsgs.push({from:'wit',text:msg});
+}
+window.quickAsk=function(q){witMsgs.push({from:'usr',text:q});witMsgs.push({from:'wit',text:witReply(q)});R();setTimeout(()=>{const el=document.getElementById('witMsgs');if(el)el.scrollTop=el.scrollHeight},50)};
 window.askWit=function(){
   const inp=document.getElementById('witInput');if(!inp)return;
   const q=inp.value.trim();if(!q)return;
   witMsgs.push({from:'usr',text:q});
-  const reply=witReply(q);
-  witMsgs.push({from:'wit',text:reply});
+  witMsgs.push({from:'wit',text:witReply(q)});
   inp.value='';
   R();
   setTimeout(()=>{const el=document.getElementById('witMsgs');if(el)el.scrollTop=el.scrollHeight},50);
@@ -773,19 +1031,26 @@ function renderMenu(){
 
 }
 
+const SUIT_SYM={spearmen:'♣',archers:'♦',cavalry:'♥',shardbearers:'♠'};
+const TYPE_LABEL={spearmen:'Spearmen',archers:'Archers',cavalry:'Cavalry',shardbearers:'Shardbearer'};
 function rHC(c,s){
   const sel=s.sel&&s.sel.id===c.id,pl=canPlay(c,s.lanes,'human');
-  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" ${!pl?'title="Blocked — all lanes have Shardbearer"':''}><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${c.type.slice(0,5)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}</div>`;
+  const eff=c.type==='shardbearers'?c.value*2:c.value;
+  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" title="${pl?TYPE_LABEL[c.type]+' — Str '+eff:'Blocked — all lanes have Shardbearer'}"><span class="cd-suit">${SUIT_SYM[c.type]}</span><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type].slice(0,6)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}<span class="cd-eff">${eff}</span></div>`;
 }
 function rHC_pvp(c,s,side){
   const sel=s.sel&&s.sel.id===c.id,pl=canPlay(c,s.lanes,side);
-  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" data-pvp="${side}"><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${c.type.slice(0,5)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}</div>`;
+  const eff=c.type==='shardbearers'?c.value*2:c.value;
+  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" data-pvp="${side}" title="${TYPE_LABEL[c.type]+' — Str '+eff}"><span class="cd-suit">${SUIT_SYM[c.type]}</span><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type].slice(0,6)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}<span class="cd-eff">${eff}</span></div>`;
 }
 
 function rCard(c,fd=false){
   const fat=c.type==='shardbearers'&&c.deployTurn>=0?Math.floor((turnNum-c.deployTurn)/3):0;
   const mf=c.moved?1:0;const tf=fat+mf;
-  return`<div class="cd ${fd?'face-down':c.type}" data-id="${c.id}"><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${c.type.slice(0,5)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0&&!fd?`<span class="fat-ind">-${tf}</span>`:''}</div>`;
+  let eff=c.type==='shardbearers'?c.value*2:c.value;
+  if(c.type==='spearmen')eff=c.value; // base only, lane bonuses shown in total
+  eff=Math.max(1,eff-tf);
+  return`<div class="cd ${fd?'face-down':c.type}" data-id="${c.id}"><span class="cd-suit">${SUIT_SYM[c.type]||''}</span><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${(TYPE_LABEL[c.type]||c.type).slice(0,6)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0&&!fd?`<span class="fat-ind">-${tf}</span>`:''}${!fd?`<span class="cd-eff">${eff}</span>`:''}</div>`;
 }
 
 function rLane(l,i,s){
@@ -798,11 +1063,27 @@ function rLane(l,i,s){
   // Human formations
   const hf=detectFormations(l.human,i,s.lanes,'human',s.mode);
   const af=show?detectFormations(l.ai,i,s.lanes,'ai',s.mode):[];
-  return`<div class="ln ${isTower?'tower-lane':''}" data-lane="${i}">
+  // Click-to-deploy + preview
+  const sel=s.sel;const isDeploying=sel&&!s.rm&&!s.mm&&!s.cm&&s.phase==='play';
+  let deployClass='',previewHTML='';
+  if(isDeploying){
+    const prev=calcPreview(sel,i,s);
+    if(prev&&!prev.blocked){
+      deployClass='deploy-target';
+      let formTxt=prev.newForms.length?prev.newForms.map(f=>`${f.ico}${f.n}`).join(' '):'';
+      previewHTML=`<div class="lane-preview"><span class="preview-add">+${prev.diff}</span>${formTxt?`<span class="preview-form">${formTxt}</span>`:''}${prev.adjBonus?`<span class="preview-form">+${prev.adjBonus} to adj</span>`:''}</div>`;
+    } else if(prev&&prev.blocked){
+      deployClass='deploy-target blocked';
+      previewHTML=`<div class="lane-preview"><span class="preview-blocked">Shardbearer limit</span></div>`;
+    }
+  }
+
+  return`<div class="ln ${isTower?'tower-lane':''} ${deployClass}" data-lane="${i}" ${deployClass==='deploy-target'?`onclick="dep(${i})"`:''}>
     <div class="lh">${M.ln[i]}${isTower?'<span class="tower-icon"> 🏰</span>':''}</div>
     <div class="ls as ${activeSide==='ai'?rmC+' '+mmC:''}" data-lane="${i}" data-side="ai">${l.ai.map(c=>rCard(c,ff&&!isRes)).join('')}</div>
     <div class="fm-row">${af.map(f=>`<span class="fm-badge">${f.ico} ${f.n}</span>`).join('')}</div>
     <div class="lt"><span class="at">${a}</span><span class="vs">vs</span><span class="ht">${h}</span></div>
+    ${previewHTML}
     <div class="fm-row">${hf.map(f=>`<span class="fm-badge">${f.ico} ${f.n}</span>`).join('')}</div>
     <div class="ls hs ${activeSide==='human'?rmC+' '+mmC:''}" data-lane="${i}" data-side="human">${l.human.map(c=>rCard(c,false)).join('')}</div>
   </div>`;
@@ -829,12 +1110,20 @@ function rAct(s){
   if(s.rm)return`<div class="act"><button class="btn" onclick="cRet()">Cancel Retreat</button></div>`;
   if(s.mm)return`<div class="act"><button class="btn" onclick="cMove()">Cancel Move</button></div>`;
 
+  // Smart action hints
+  const ev=s.phase==='play'?eLanes(s,'human'):[];
+  const winning=ev.filter(e=>e.d>0).length;
+  const losing=ev.filter(e=>e.d<0).length;
+  const M2=MODES[s.mode];
+  const shouldPulsePass=winning>=M2.w&&ev.filter(e=>e.d>0).every(e=>e.d>=3);
+  const shouldPulseConcede=losing>=M2.w&&s.cr<3&&h.length>3;
+
   return`<div class="act">
     <button class="btn p" onclick="sDep()" ${pc===0?'disabled':''}>Deploy</button>
     <button class="btn" onclick="sMove()" ${td===0?'disabled':''}>Move</button>
     <button class="btn" onclick="sRet()" ${td===0?'disabled':''}>Retreat</button>
-    <button class="btn g" onclick="pPass()">Pass</button>
-    <button class="btn d" onclick="pCon()">Concede 🤝</button>
+    <button class="btn g ${shouldPulsePass?'pulse-pass':''}" onclick="pPass()">Pass${shouldPulsePass?' ✓':''}</button>
+    <button class="btn d ${shouldPulseConcede?'pulse-concede':''}" onclick="pCon()">Concede 🤝</button>
   </div>`;
 }
 
@@ -870,7 +1159,7 @@ function stTxt(s){
   if(s.rm)return`${whoLabel} — click a deployed card to retreat`;
   if(s.mm)return`${whoLabel} — click a deployed card to move (−1 strength)`;
   if(s.cm)return`${whoLabel} — Cavalry Charge: click a card to reposition`;
-  if(s.sel)return`${whoLabel} — Deploy ${UI[s.sel.type]} ${s.sel.type} (${s.sel.value}) — choose a lane`;
+  if(s.sel)return`${whoLabel} — ${UI[s.sel.type]} ${s.sel.type} (${s.sel.value}) selected — click a lane to deploy`;
   return`${whoLabel} — Deploy, Move, Retreat, Pass, or Concede`;
 }
 function hintTxt(s){
@@ -1037,7 +1326,8 @@ function aiExec(){
     G.lanes[from].ai=G.lanes[from].ai.filter(x=>x.id!==card.id);card.moved=true;G.lanes[to].ai.push(card);G.ap=false;
     lg(`${AIW[aiPers].name} moves ${M.fd?'a unit':UI[card.type]} to ${M.ln[to]}`,'ai');
   }
-  G.turn='human';R();
+  G.turn='human';witProactive();R();
+  setTimeout(()=>{const el=document.getElementById('witMsgs');if(el)el.scrollTop=el.scrollHeight},100);
 }
 
 function resRound(){
