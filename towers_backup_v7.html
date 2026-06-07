@@ -10,68 +10,52 @@
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100vh;overflow:hidden}
 .page{display:flex;gap:8px;height:100vh;padding:8px}
 .game{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
-/* Inline Lane Status Bar (above battlefield) */
-.lane-status-bar{display:flex;gap:4px;margin:2px 0;justify-content:center}
-.ls-chip{padding:3px 10px;border-radius:5px;font-size:10px;font-weight:700;border:1px solid var(--brd);text-align:center;flex:1;max-width:140px}
-.ls-chip.win{background:rgba(85,204,119,.1);border-color:var(--grn);color:var(--grn)}
-.ls-chip.lose{background:rgba(255,85,85,.06);border-color:var(--red);color:var(--red)}
-.ls-chip.tied{background:rgba(255,215,0,.06);border-color:var(--gld);color:var(--gld)}
-.ls-chip.empty{background:var(--bg3);color:var(--dim)}
-/* Formations Bar (below hand) */
-.form-bar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;padding:4px 8px;margin-top:3px}
-.form-bar .fb-item{font-size:9px;padding:2px 8px;border-radius:4px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.12);color:var(--gld)}
-.form-bar .fb-item.active{background:rgba(85,204,119,.1);border-color:var(--grn);color:var(--grn);font-weight:700}
-/* Floating Wit Chat */
-.wit-float{position:fixed;bottom:12px;right:12px;width:320px;z-index:50;display:flex;flex-direction:column;transition:all .25s}
-.wit-float.mini{width:48px;height:48px;border-radius:50%;cursor:pointer}
-.wit-float.mini .wit-body,.wit-float.mini .wit-head-bar{display:none}
-.wit-bubble{width:48px;height:48px;border-radius:50%;background:var(--gld);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);border:2px solid rgba(255,215,0,.4);transition:all .15s}
-.wit-bubble:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(255,215,0,.2)}
-.wit-float:not(.mini) .wit-bubble{display:none}
-.wit-body{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;max-height:380px;display:flex;flex-direction:column}
-.wit-head-bar{padding:6px 10px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:6px;background:rgba(255,215,0,.03)}
-.wit-head-bar span{font-size:14px}
-.wit-head-bar h4{font-size:11px;color:var(--gld);flex:1;font-weight:700}
-.wit-head-bar .wit-close{cursor:pointer;color:var(--dim);font-size:14px;padding:2px 4px}
-.wit-head-bar .wit-close:hover{color:var(--txt)}
-/* Wit mode toggle */
-.wit-mode{padding:4px 8px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:4px}
-.wit-mode label{font-size:9px;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:2px}
-.wit-mode input[type=radio]{appearance:none;width:10px;height:10px;border:2px solid var(--brd);border-radius:50%;cursor:pointer}
-.wit-mode input[type=radio]:checked{border-color:var(--gld);background:var(--gld)}
-.wit-mode .mode-label{font-size:8px;color:var(--dim);font-weight:600;margin-right:2px}
-/* Wit topic dropdown */
-.wit-topic{padding:4px 8px;border-bottom:1px solid var(--brd)}
-.wit-topic select{width:100%;background:var(--bg3);border:1px solid var(--brd);border-radius:5px;padding:4px 8px;color:var(--txt);font-size:10px;outline:none;cursor:pointer}
-.wit-topic select:focus{border-color:var(--gld)}
-/* Messages */
-.wit-msgs{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:4px;max-height:180px}
-.wit-msg{padding:5px 8px;border-radius:7px;font-size:10px;line-height:1.4;max-width:92%}
-.wit-msg.wit{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.08);color:var(--txt);align-self:flex-start}
-.wit-msg.usr{background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.1);color:var(--blu);align-self:flex-end;text-align:right}
-.wit-msg .wit-nm{font-size:7px;font-weight:700;color:var(--gld);text-transform:uppercase;letter-spacing:.4px;margin-bottom:1px;display:block}
+/* Right Panel — Advisor + Wit Watch */
+.rpanel{width:300px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.rpanel.col{width:40px}
+/* Advisor section */
+.adv-box{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;overflow-y:auto;max-height:40vh;flex-shrink:0}
+.rpanel.col .adv-box{display:none}
+.adv-box-head{padding:6px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:6px;background:rgba(74,158,255,.03)}
+.adv-box-head h3{font-size:11px;color:var(--blu);flex:1;letter-spacing:.5px;text-transform:uppercase}
+.adv-box-body{padding:8px}
+/* Wit Watch Panel */
+.wit{flex:1;min-height:0;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.wit-head{padding:6px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:8px;background:rgba(255,215,0,.03);cursor:pointer;user-select:none}
+.wit-head .wit-av{font-size:18px}.wit-head h3{font-size:11px;color:var(--gld);flex:1;letter-spacing:.5px}.wit-head .wit-tog{color:var(--dim);font-size:12px}
+.rpanel.col .wit{width:40px}.rpanel.col .wit-msgs,.rpanel.col .wit-in,.rpanel.col .wit-head h3,.rpanel.col .wit-head .wit-tog-txt{display:none}
+.wit-msgs{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px}
+.wit-msg{padding:6px 9px;border-radius:8px;font-size:11px;line-height:1.4;max-width:94%}
+.wit-msg.wit{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);color:var(--txt);align-self:flex-start}
+.wit-msg.usr{background:rgba(74,158,255,.08);border:1px solid rgba(74,158,255,.12);color:var(--blu);align-self:flex-end;text-align:right}
+.wit-msg .wit-nm{font-size:8px;font-weight:700;color:var(--gld);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1px;display:block}
 .wit-msg.usr .wit-nm{color:var(--blu)}
-/* Wit input */
-.wit-in{padding:5px;border-top:1px solid var(--brd);display:flex;gap:4px}
-.wit-in input{flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:5px;padding:4px 8px;color:var(--txt);font-size:10px;outline:none}
+.wit-in{padding:6px;border-top:1px solid var(--brd);display:flex;gap:5px}
+.wit-in input{flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:5px 9px;color:var(--txt);font-size:11px;outline:none}
 .wit-in input:focus{border-color:var(--gld)}
 .wit-in input::placeholder{color:var(--dim)}
-.wit-in button{background:var(--gld);color:var(--bg);border:none;border-radius:5px;padding:4px 10px;font-weight:700;font-size:9px;cursor:pointer}
-/* Cheat panel */
-.cheat-intel{padding:5px 8px;border-bottom:1px solid var(--brd);font-size:9px;background:rgba(255,85,85,.03)}
-.cheat-intel .ci-row{display:flex;justify-content:space-between;padding:1px 0}
-.cheat-intel .ci-label{color:var(--dim)}.cheat-intel .ci-val{color:var(--gld);font-weight:700}
-.cheat-intel .ci-best{background:rgba(85,204,119,.08);padding:3px 5px;border-radius:3px;margin-top:2px;color:var(--grn);font-weight:600;font-size:9px}
-/* Legacy advisor classes (kept for advHTML compatibility) */
-.adv-sec{margin-bottom:6px}
-.adv-sec h4{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:3px}
-.tip{border-radius:5px;padding:5px 7px;margin-bottom:4px;font-size:10px;line-height:1.3;border:1px solid rgba(255,215,0,.1);background:rgba(255,215,0,.03)}
-.tip.w{background:rgba(255,85,85,.05);border-color:rgba(255,85,85,.12)}
-.tip.i{background:rgba(74,158,255,.05);border-color:rgba(74,158,255,.12)}
-.tip .tl{font-weight:700;font-size:8px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:1px;display:block}
+.wit-in button{background:var(--gld);color:var(--bg);border:none;border-radius:6px;padding:5px 10px;font-weight:700;font-size:10px;cursor:pointer}
+.wit-in button:hover{opacity:.85}
+/* Quick-ask buttons */
+.wit-qa{display:flex;gap:3px;flex-wrap:wrap;padding:4px 6px;border-top:1px solid var(--brd)}
+.wit-qa button{font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid var(--brd);background:var(--bg3);color:var(--dim);cursor:pointer;transition:all .12s}
+.wit-qa button:hover{border-color:var(--gld);color:var(--gld)}
+/* Legacy advisor classes (used by advisor tips) */
+.adv-sec{margin-bottom:10px}
+.adv-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px;border-bottom:1px solid var(--brd);padding-bottom:3px}
+.adv-sec{margin-bottom:10px}
+.adv-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px;border-bottom:1px solid var(--brd);padding-bottom:3px}
+.tip{border-radius:6px;padding:7px 9px;margin-bottom:5px;font-size:11px;line-height:1.4;border:1px solid rgba(255,215,0,.12);background:rgba(255,215,0,.04)}
+.tip.w{background:rgba(255,85,85,.06);border-color:rgba(255,85,85,.15)}
+.tip.i{background:rgba(74,158,255,.06);border-color:rgba(74,158,255,.15)}
+.tip .tl{font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;display:block}
 .tip.w .tl{color:var(--red)}.tip.i .tl{color:var(--blu)}.tl.g{color:var(--gld)}
-.la{display:none} /* Hidden — replaced by inline lane-status-bar */
-.lc{display:none}
+.la{display:flex;gap:3px;margin:5px 0}
+.lc{flex:1;padding:3px 4px;border-radius:4px;text-align:center;font-size:9px;font-weight:600;border:1px solid var(--brd)}
+.lc.win{background:rgba(85,204,119,.12);border-color:var(--grn);color:var(--grn)}
+.lc.lose{background:rgba(255,85,85,.08);border-color:var(--red);color:var(--red)}
+.lc.tied{background:rgba(255,215,0,.08);border-color:var(--gld);color:var(--gld)}
+.lc.mt{background:var(--bg3);color:var(--dim)}
 /* Top bar */
 .top{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;margin-bottom:6px;background:linear-gradient(90deg,var(--bg2),rgba(42,34,53,.9));border-radius:10px;border:1px solid var(--brd);flex-wrap:wrap;gap:4px}
 .top h1{font-size:18px;color:var(--gld);letter-spacing:2px;font-weight:800;text-shadow:0 0 12px rgba(255,215,0,.15)}
@@ -235,7 +219,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tut-dot.ac{background:var(--gld)}
 .tut-dot.done{background:var(--grn)}
 .tut-nav{display:flex;gap:6px}
-@media(max-width:900px){.wit-float{bottom:6px;right:6px;width:280px}.page{padding:6px}}
+@media(max-width:900px){.rpanel{display:none}.page{padding:6px}}
 @media(max-width:700px){.cd{width:46px;height:64px}.cd .cv{font-size:16px}.ls .cd{width:40px;height:56px}.ls .cd .cv{font-size:14px}}
 </style>
 </head>
@@ -529,57 +513,22 @@ function renderCheatPanel(s){
   return h;
 }
 
-// Inline lane status bar (rendered above battlefield)
-function renderLaneStatus(s){
-  if(!s||s.phase!=='play')return'';
-  const M=MODES[s.mode],ev=eLanes(s,'human');
-  return`<div class="lane-status-bar">${ev.map((e,i)=>{
-    const cl=e.d>0?'win':e.d<0?'lose':(s.lanes[i].human.length===0&&s.lanes[i].ai.length===0)?'empty':'tied';
-    return`<div class="ls-chip ${cl}">${M.ln[i]} <b>${e.d>0?'+':''}${e.d}</b></div>`
-  }).join('')}</div>`;
-}
-
-// Formations bar (rendered below hand)
-function renderFormBar(s){
-  if(!s||s.phase!=='play')return'';
-  const M=MODES[s.mode],active=[];
-  for(let i=0;i<M.lanes;i++){const f=detectFormations(s.lanes[i].human,i,s.lanes,'human',s.mode);
-    f.forEach(x=>active.push({...x,lane:M.ln[i]}))}
-  const defs=[{n:'Phalanx',r:'3+ Spear'},{n:'Skirmish',r:'Arch+Cav'},{n:'Shardwall',r:'Shard+2Sp'},{n:'Vanguard',r:'Solo Cav'},{n:'Crossfire',r:'Adj Arch'}];
-  return`<div class="form-bar">${defs.map(d=>{
-    const a=active.find(x=>x.n===d.n);
-    return`<span class="fb-item ${a?'active':''}">${a?a.ico+' ':''}<b>${d.n}</b>${a?' — '+a.lane+' ('+a.d+')':' · '+d.r}</span>`;
-  }).join('')}</div>`;
-}
-
-// Wit topic options for dropdown
-const WIT_TOPICS=[
-  {v:'',l:'— Select a topic —'},
-  {v:'help',l:'🎯 What should I do right now?'},
-  {v:'formation',l:'🛡️ How do formations work?'},
-  {v:'tower',l:'🏰 Explain The Tower / Breakthrough'},
-  {v:'spear',l:'⚔️ Spearmen strategy'},
-  {v:'archer',l:'🏹 Archer positioning'},
-  {v:'cavalry',l:'🐴 Cavalry & Charge ability'},
-  {v:'shard',l:'🗡️ Shardbearers & fatigue'},
-  {v:'pass',l:'⏸️ When should I pass?'},
-  {v:'concede',l:'🤝 When to concede a round'},
-  {v:'opponent',l:'🎭 How to beat the AI opponent'},
-  {v:'cardadv',l:'📊 Card advantage & tempo'},
-  {v:'opening',l:'1️⃣ Round 1 / opening strategy'},
-  {v:'rules',l:'📜 Game rules overview'},
-  {v:'win',l:'📈 How am I doing?'},
-  {v:'story',l:'📖 Tell me a story, Wit'},
-];
-
 function renderWit(){
   if(pvpMode)return'';
-  return`<div class="wit-float ${witOpen?'':'mini'}">
-    <div class="wit-bubble" onclick="togWit()">🃏</div>
-    <div class="wit-body">
-      <div class="wit-head-bar"><span>🃏</span><h4>Wit Watch</h4><span class="wit-close" onclick="togWit()">✕</span></div>
+  const col=witOpen?'':'col';
+  return`<div class="rpanel ${col}">
+    ${G&&G.phase==='play'?`<div class="adv-box">
+      <div class="adv-box-head"><span>📊</span><h3>Intel</h3></div>
+      <div class="adv-box-body">${advHTML(G)}</div>
+    </div>`:''}
+    <div class="wit">
+      <div class="wit-head" onclick="togWit()">
+        <span class="wit-av">🃏</span>
+        <h3>Wit Watch</h3>
+        <span class="wit-tog"><span class="wit-tog-txt">${witOpen?'◀':'▶'}</span></span>
+      </div>
       <div class="wit-mode">
-        <span class="mode-label">Mode:</span>
+        <span class="mode-label">Guidance:</span>
         <label><input type="radio" name="wm" value="normal" ${witMode==='normal'?'checked':''} onchange="setWitMode('normal')"> Normal</label>
         <label><input type="radio" name="wm" value="enhanced" ${witMode==='enhanced'?'checked':''} onchange="setWitMode('enhanced')"> Enhanced</label>
         <label><input type="radio" name="wm" value="cheat" ${witMode==='cheat'?'checked':''} onchange="setWitMode('cheat')"> <span style="color:var(--red)">Cheat</span></label>
@@ -588,10 +537,14 @@ function renderWit(){
       <div class="wit-msgs" id="witMsgs">${witMsgs.map(m=>
         `<div class="wit-msg ${m.from}"><span class="wit-nm">${m.from==='wit'?'🃏 Wit':'You'}</span>${m.text}</div>`
       ).join('')}</div>
-      <div class="wit-topic"><select id="witTopic" onchange="witTopicAsk(this.value)">
-        ${WIT_TOPICS.map(t=>`<option value="${t.v}">${t.l}</option>`).join('')}
-      </select></div>
-      <div class="wit-in"><input type="text" id="witInput" placeholder="Or type a question..." onkeydown="if(event.key==='Enter')askWit()"><button onclick="askWit()">Ask</button></div>
+      <div class="wit-qa">
+        <button onclick="quickAsk('What should I do?')">What do I do?</button>
+        <button onclick="quickAsk('How do formations work?')">Formations</button>
+        <button onclick="quickAsk('Tell me about The Tower')">The Tower</button>
+        <button onclick="quickAsk('How do I beat my opponent?')">Beat AI</button>
+        <button onclick="quickAsk('Should I pass or concede?')">Pass/Concede?</button>
+      </div>
+      <div class="wit-in"><input type="text" id="witInput" placeholder="Ask Wit anything..." onkeydown="if(event.key==='Enter')askWit()"><button onclick="askWit()">Ask</button></div>
     </div>
   </div>`;
 }
@@ -599,29 +552,9 @@ function renderWit(){
 window.togWit=()=>{witOpen=!witOpen;R()};
 window.setWitMode=function(m){
   witMode=m;
-  const modeMsg={normal:'Normal mode — ask me anything.',enhanced:'Enhanced — I\'ll advise on key moments.',cheat:'Cheat mode active. I see everything.'};
+  const modeMsg={normal:'Guidance set to Normal. I\'ll answer when asked.',enhanced:'Enhanced mode. I\'ll proactively advise you each turn — like having a general whispering in your ear.',cheat:'"Cheat" mode? *sighs* Fine. I\'ll show you their hand, the optimal play, and win probabilities. Don\'t say I didn\'t warn you — victories without struggle are hollow. But I suppose you want to learn the mechanics. I respect that.'};
   witMsgs.push({from:'wit',text:modeMsg[m]});R();
 };
-window.witTopicAsk=function(topic){
-  if(!topic)return;
-  // Force the topic directly into witReply via a synthetic query
-  const topicLabels={help:'What should I do?',formation:'How do formations work?',tower:'Tell me about The Tower',
-    spear:'How do spearmen work?',archer:'How do archers work?',cavalry:'How does cavalry work?',
-    shard:'How do shardbearers work?',pass:'Should I pass?',concede:'Should I concede?',
-    opponent:'How do I beat the opponent?',cardadv:'Card advantage tips',opening:'Round 1 strategy',
-    rules:'Explain the rules',win:'How am I doing?',story:'Tell me a story'};
-  const q=topicLabels[topic]||topic;
-  witMsgs.push({from:'usr',text:q});
-  witMsgs.push({from:'wit',text:witReply(q)});
-  // Reset dropdown
-  const sel=document.getElementById('witTopic');if(sel)sel.selectedIndex=0;
-  R();
-  setTimeout(()=>{const el=document.getElementById('witMsgs');if(el)el.scrollTop=el.scrollHeight},50);
-};
-function witReset(){
-  witMsgs=[{from:'wit',text:"New game, new table. I am Wit — ask me anything about strategy, formations, or the rules. Pick a topic below or type a question."}];
-  lastWitState='';
-}
 // Proactive Wit commentary — only speaks when something meaningful changes
 let lastWitState='';
 function witProactive(){
@@ -1105,7 +1038,6 @@ function R(){
         <button class="btn sm" onclick="toMenu()">Menu</button>
       </div></div>
       <div class="pl ai"><span>${p2Icon} ${p2Label}</span><span class="cc">${s.p.ai.h.length} in hand</span></div>
-      ${renderLaneStatus(s)}
       <div class="bf">${s.lanes.map((l,i)=>rLane(l,i,s)).join('')}</div>
       <div class="pl hu"><span>🔵 ${p1Label}</span><span class="cc">${s.p.human.h.length} in hand</span></div>
       <div class="sb2" id="st">${stTxt(s)}</div>
@@ -1113,12 +1045,11 @@ function R(){
       <div class="ha"><div class="ha-l">${pvpMode?(isP2Turn?'Player 2\'s Hand':'Player 1\'s Hand'):'Your Hand'}</div><div class="hd">${pvpMode
         ?(isP2Turn?s.p.ai.h.map(c=>rHC_pvp(c,s,'ai')).join(''):s.p.human.h.map(c=>rHC(c,s)).join(''))
         :s.p.human.h.map(c=>rHC(c,s)).join('')}</div>
-        <div class="hint">${hintTxt(s)}</div>
-        ${renderFormBar(s)}</div>
+        <div class="hint">${hintTxt(s)}</div></div>
       <div class="log">${s.log.map(l=>`<p class="${l.t}-msg">${l.m}</p>`).join('')}</div>
     </div>
+    ${renderWit()}
   </div>
-  ${renderWit()}
   <div class="ov ${s.phase==='round_end'||s.phase==='match_end'?'ac':''}">${rOv(s)}</div>
   ${renderTutorial()}`;
   bind();
@@ -1481,7 +1412,7 @@ window.toMenu=()=>{menu=true;R()};
 window.togAdv=()=>{advOpen=!advOpen;R()};
 
 function startGame(m){
-  mode=m;menu=false;turnNum=0;G=mkState(m);witReset();
+  mode=m;menu=false;turnNum=0;G=mkState(m);
   const M=MODES[m];
   lg(`— Towers (${M.label}) vs ${AIW[aiPers].name}. Life before death, Radiant. —`,'system');
   if(M.fd)lg('Flatface: opponent cards hidden until round end.','system');
