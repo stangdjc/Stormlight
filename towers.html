@@ -21,13 +21,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .form-bar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;padding:4px 8px;margin-top:3px}
 .form-bar .fb-item{font-size:9px;padding:2px 8px;border-radius:4px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.12);color:var(--gld)}
 .form-bar .fb-item.active{background:rgba(85,204,119,.1);border-color:var(--grn);color:var(--grn);font-weight:700}
-/* Floating Wit Chat */
-.wit-float{position:fixed;bottom:12px;right:12px;width:320px;z-index:50;display:flex;flex-direction:column;transition:all .25s}
+/* Floating Wit Chat — moveable left/right */
+.wit-float{position:fixed;bottom:12px;width:320px;z-index:50;display:flex;flex-direction:column;transition:all .25s}
+.wit-float.pos-right{right:12px}.wit-float.pos-left{left:12px}
 .wit-float.mini{width:48px;height:48px;border-radius:50%;cursor:pointer}
-.wit-float.mini .wit-body,.wit-float.mini .wit-head-bar{display:none}
+.wit-float.mini .wit-body{display:none}
 .wit-bubble{width:48px;height:48px;border-radius:50%;background:var(--gld);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);border:2px solid rgba(255,215,0,.4);transition:all .15s}
 .wit-bubble:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(255,215,0,.2)}
 .wit-float:not(.mini) .wit-bubble{display:none}
+/* Smack talk bubble */
+.smack{position:relative;display:inline-block}
+.smack-bubble{position:absolute;top:-4px;left:100%;margin-left:8px;background:var(--bg3);border:1px solid var(--brd);border-radius:8px 8px 8px 2px;padding:4px 10px;font-size:10px;color:var(--dim);font-style:italic;white-space:nowrap;max-width:340px;overflow:hidden;text-overflow:ellipsis;animation:smack-in .3s ease-out;z-index:10;pointer-events:none}
+@keyframes smack-in{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
 .wit-body{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;max-height:380px;display:flex;flex-direction:column}
 .wit-head-bar{padding:6px 10px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:6px;background:rgba(255,215,0,.03)}
 .wit-head-bar span{font-size:14px}
@@ -235,7 +240,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tut-dot.ac{background:var(--gld)}
 .tut-dot.done{background:var(--grn)}
 .tut-nav{display:flex;gap:6px}
-@media(max-width:900px){.wit-float{bottom:6px;right:6px;width:280px}.page{padding:6px}}
+@media(max-width:900px){.wit-float{bottom:6px;width:260px}.wit-float.pos-right{right:6px}.wit-float.pos-left{left:6px}.page{padding:6px}.smack-bubble{max-width:200px}}
 @media(max-width:700px){.cd{width:46px;height:64px}.cd .cv{font-size:16px}.ls .cd{width:40px;height:56px}.ls .cd .cv{font-size:14px}}
 </style>
 </head>
@@ -253,12 +258,72 @@ const MODES={
   crosswise:{lanes:5,ln:['Far Left','Left','Center','Right','Far Right'],w:3,deal:13,draw:3,fd:false,label:'Crosswise Chull',ar:2,tower:true,towerIdx:2}
 };
 const AIW={
-  sadeas:{cp:-5,fp:10,fb:3,ca:15,ct:.6,ac:true,name:'Sadeas',icon:'🔴',desc:'Ruthless — flanks first, baits Center'},
-  dalinar:{cp:15,fp:5,fb:12,ca:5,ct:.2,ac:false,name:'Dalinar',icon:'🔵',desc:'Honorable — formations, holds The Tower'}
+  sadeas:{cp:-5,fp:10,fb:3,ca:15,ct:.6,ac:true,name:'Sadeas',icon:'🔴',desc:'Ruthless — flanks first, baits Center',tier:1},
+  dalinar:{cp:15,fp:5,fb:12,ca:5,ct:.2,ac:false,name:'Dalinar',icon:'🔵',desc:'Honorable — formations, holds The Tower',tier:1},
+  adolin:{cp:8,fp:8,fb:8,ca:8,ct:.4,ac:true,name:'Adolin',icon:'🟡',desc:'Balanced — adapts to your strategy',tier:2},
+  taravangian:{cp:5,fp:5,fb:6,ca:20,ct:.8,ac:false,name:'Taravangian',icon:'🟤',desc:'Calculating — sacrifices lanes to win wars',tier:3},
+  odium:{cp:12,fp:12,fb:10,ca:10,ct:.15,ac:true,name:'Odium',icon:'🟣',desc:'Overwhelming — relentless pressure everywhere',tier:4}
 };
 
+// Smack talk per AI personality
+const SMACK={
+  sadeas:{
+    deploy:["Oh how bold. Did a servant suggest that?","Predictable. I expected more from a Kholin.","Is that your best card? *laughs*","A fine move... for an amateur."],
+    pass:["Passing already? How... restrained.","The Blackthorn hesitates. How unlike him.","Conserving? Or simply out of ideas?"],
+    winRound:["Another round to me. The Codes won't save you.","I've seen Thaylen merchants negotiate better, and they were drunk!","Perhaps you should stick to bridge runs."],
+    loseRound:["A minor setback. Enjoy it while it lasts.","You got lucky. That won't happen again."],
+    concede:["Wise. The first smart thing you've done.","At least you know when you're beaten."],
+    deploy_strong:["Oh, bringing out the heavy units? Desperate times.","That's... actually concerning. No matter."]
+  },
+  dalinar:{
+    deploy:["A solid deployment. I respect the positioning.","You fight with honor. Good.","The Codes would approve of that formation."],
+    pass:["A patient commander. I can respect that.","Wisdom in restraint."],
+    winRound:["The round is mine. No dishonor in your effort.","I take no pleasure in this... well, perhaps a little."],
+    loseRound:["Well fought. You earned that.","Honor is satisfied. On to the next round."],
+    concede:["There is no shame in a strategic retreat.","A wise decision. We'll meet again."],
+    deploy_strong:["A powerful move. Let us see if it holds."]
+  },
+  adolin:{
+    deploy:["Not bad! But watch this—","Ooh, going there? Interesting choice.","My father would approve. I'm not sure I do.","You know what? That's actually pretty clever."],
+    pass:["Taking a breather? Smart.","Alright, my turn to shine."],
+    winRound:["Yes! Did you see that? Did you see what I did there?","Ha! Adolin Kholin takes the round!"],
+    loseRound:["Okay okay, you got me. But I'm coming back.","Storms. That was good. I'll admit it."],
+    concede:["You're giving up? Really? I was just getting started!"],
+    deploy_strong:["Bringing out the Shards? Now it's a real fight!"]
+  },
+  taravangian:{
+    deploy:["...yes. That will do.","Every piece has its purpose. Even the ones we sacrifice.","Interesting. I've already calculated three responses.","The Diagram suggested you'd play that."],
+    pass:["Patience. All according to plan.","..."],
+    winRound:["The outcome was inevitable. I calculated it turns ago.","Compassion is a weakness at this table."],
+    loseRound:["An acceptable loss. It serves the larger design.","You believe you've won? The Diagram accounts for this."],
+    concede:["A sacrifice. You wouldn't understand why.","This round was never the objective."],
+    deploy_strong:["Hmm. I may need to recalculate."]
+  },
+  odium:{
+    deploy:["PASSION drives me. What drives you?","Your little armies amuse me.","I have broken worlds. Your cards are nothing.","Feel the futility. Embrace it."],
+    pass:["Hesitation? I can taste your doubt.","You delay the inevitable."],
+    winRound:["KNEEL. This is merely the beginning.","Your defeat was written in the stars.","Did you truly believe you could win?"],
+    loseRound:["...Impossible. This changes nothing.","A temporary setback. I am ETERNAL."],
+    concede:["Yes. Surrender. It is the natural order.","Wise. Fighting me was always futile."],
+    deploy_strong:["Interesting. But even Shardbearers break before me."]
+  }
+};
+
+let currentSmack='',smackTimer=null;
+function triggerSmack(event){
+  if(pvpMode)return;
+  const lines=SMACK[aiPers]?.[event];
+  if(!lines||!lines.length)return;
+  currentSmack=lines[Math.floor(Math.random()*lines.length)];
+  if(smackTimer)clearTimeout(smackTimer);
+  smackTimer=setTimeout(()=>{currentSmack='';R()},4500);
+}
+
+// Track which opponents have been beaten
+let beatenOpponents=[];
+
 let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
-let pvpMode=false,handoffScreen=false,witOpen=true,witMode='normal'; // normal|enhanced|cheat
+let pvpMode=false,handoffScreen=false,witOpen=true,witMode='normal',witPos='right'; // normal|enhanced|cheat
 let witMsgs=[{from:'wit',text:"Ah, a new player at the Towers table! I am Wit — some call me Hoid. I've played this game across a dozen worlds, and I assure you, the rules are always the same: the clever survive, and the bold occasionally win. Ask me anything."}];
 
 // ═══════════════════════════════════════
@@ -574,10 +639,13 @@ const WIT_TOPICS=[
 
 function renderWit(){
   if(pvpMode)return'';
-  return`<div class="wit-float ${witOpen?'':'mini'}">
+  return`<div class="wit-float pos-${witPos} ${witOpen?'':'mini'}">
     <div class="wit-bubble" onclick="togWit()">🃏</div>
     <div class="wit-body">
-      <div class="wit-head-bar"><span>🃏</span><h4>Wit Watch</h4><span class="wit-close" onclick="togWit()">✕</span></div>
+      <div class="wit-head-bar"><span>🃏</span><h4>Wit Watch</h4>
+        <span class="wit-close" onclick="moveWit()" title="Move to ${witPos==='right'?'left':'right'}">${witPos==='right'?'◁':'▷'}</span>
+        <span class="wit-close" onclick="togWit()" title="Minimize">▾</span>
+      </div>
       <div class="wit-mode">
         <span class="mode-label">Mode:</span>
         <label><input type="radio" name="wm" value="normal" ${witMode==='normal'?'checked':''} onchange="setWitMode('normal')"> Normal</label>
@@ -597,6 +665,7 @@ function renderWit(){
 }
 
 window.togWit=()=>{witOpen=!witOpen;R()};
+window.moveWit=()=>{witPos=witPos==='right'?'left':'right';R()};
 window.setWitMode=function(m){
   witMode=m;
   const modeMsg={normal:'Normal mode — ask me anything.',enhanced:'Enhanced — I\'ll advise on key moments.',cheat:'Cheat mode active. I see everything.'};
@@ -1104,7 +1173,7 @@ function R(){
         <button class="btn sm" onclick="tutOpen_()">?</button>
         <button class="btn sm" onclick="toMenu()">Menu</button>
       </div></div>
-      <div class="pl ai"><span>${p2Icon} ${p2Label}</span><span class="cc">${s.p.ai.h.length} in hand</span></div>
+      <div class="pl ai"><span class="smack">${p2Icon} ${p2Label}${currentSmack?`<span class="smack-bubble">"${currentSmack}"</span>`:''}</span><span class="cc">${s.p.ai.h.length} in hand</span></div>
       ${renderLaneStatus(s)}
       <div class="bf">${s.lanes.map((l,i)=>rLane(l,i,s)).join('')}</div>
       <div class="pl hu"><span>🔵 ${p1Label}</span><span class="cc">${s.p.human.h.length} in hand</span></div>
@@ -1128,10 +1197,17 @@ function renderMenu(){
   return`<div class="menu"><h1>⚡ TOWERS</h1><div style="font-size:10px;color:var(--dim);margin-bottom:2px">~Created by DC</div><div class="sub">A Rosharan Card Game · Formations · The Tower · AI Personalities</div>
     <h3>Choose Opponent</h3>
     <div class="ai-row">
-      <div class="ai-card sadeas ${aiPers==='sadeas'?'sel':''}" data-ai="sadeas"><h4>🔴 Highprince Sadeas</h4><p>Ruthless & calculated. Targets flanks, baits Center, concedes freely. Exploits card advantage.</p></div>
-      <div class="ai-card dalinar ${aiPers==='dalinar'?'sel':''}" data-ai="dalinar"><h4>🔵 Highprince Dalinar</h4><p>Formation-heavy & honorable. Builds Phalanx, holds The Tower, rarely concedes. Hard to outmuscle.</p></div>
+      <div class="ai-card sadeas ${aiPers==='sadeas'&&!pvpMode?'sel':''}" data-ai="sadeas"><h4>🔴 Sadeas</h4><p>${AIW.sadeas.desc}</p></div>
+      <div class="ai-card dalinar ${aiPers==='dalinar'&&!pvpMode?'sel':''}" data-ai="dalinar"><h4 style="color:var(--blu)">🔵 Dalinar</h4><p>${AIW.dalinar.desc}</p></div>
     </div>
-    <div style="margin-bottom:4px"><div class="ai-card ${pvpMode?'sel':''}" data-ai="pvp" style="border-color:${pvpMode?'var(--gld)':'var(--brd)'}"><h4 style="color:var(--grn)">🤝 vs Human (Hotseat)</h4><p>Two players, same screen. Take turns and pass the device. No peeking!</p></div></div>
+    <div class="ai-row">
+      <div class="ai-card ${aiPers==='adolin'&&!pvpMode?'sel':''}" data-ai="adolin" style="${beatenOpponents.length<1?'opacity:.4;pointer-events:none':''}"><h4 style="color:#e6c619">🟡 Adolin</h4><p>${beatenOpponents.length<1?'🔒 Beat any opponent to unlock':AIW.adolin.desc}</p></div>
+      <div class="ai-card ${aiPers==='taravangian'&&!pvpMode?'sel':''}" data-ai="taravangian" style="${beatenOpponents.length<2?'opacity:.4;pointer-events:none':''}"><h4 style="color:#a0785a">🟤 Taravangian</h4><p>${beatenOpponents.length<2?'🔒 Beat 2 opponents to unlock':AIW.taravangian.desc}</p></div>
+    </div>
+    <div class="ai-row">
+      <div class="ai-card ${aiPers==='odium'&&!pvpMode?'sel':''}" data-ai="odium" style="${beatenOpponents.length<3?'opacity:.4;pointer-events:none':''}"><h4 style="color:#9955ee">🟣 Odium</h4><p>${beatenOpponents.length<3?'🔒 Beat 3 opponents to unlock':AIW.odium.desc}</p></div>
+      <div class="ai-card ${pvpMode?'sel':''}" data-ai="pvp" style="border-color:${pvpMode?'var(--gld)':'var(--brd)'}"><h4 style="color:var(--grn)">🤝 vs Human</h4><p>Two players, same screen. Hotseat.</p></div>
+    </div>
     <h3>Choose Mode</h3>
     <div class="mc" data-mode="standard"><span class="mt std">Standard</span><h4>Classic Towers</h4><p>3 lanes with The Tower at Center. Formations, fatigue, breakthrough victory.</p></div>
     <div class="mc" data-mode="flatface"><span class="mt var">Variant</span><h4>Flatface</h4><p>Opponent cards hidden until round end. Bluff and misdirect.</p></div>
@@ -1252,9 +1328,14 @@ function rOv(s){
     const w=s.p.human.rw>=2?'human':'ai',isW=w==='human';
     const lastR=s.rr[s.rr.length-1];
     const bt=lastR&&lastR.bt;
+    // Track beaten opponents for unlocks
+    if(isW&&!pvpMode&&!beatenOpponents.includes(aiPers))beatenOpponents.push(aiPers);
+    const unlockMsg=isW&&beatenOpponents.length>=1&&beatenOpponents.length<=3?
+      `<p style="color:var(--gld);font-size:12px">🔓 New opponent unlocked!</p>`:'';
     return`<div class="ovc"><div style="font-size:44px;margin-bottom:6px">🤝</div><h2>${isW?'Victory!':'Defeat'}</h2>
       ${bt?`<div class="bt-alert">🏰 BREAKTHROUGH! The Tower has fallen!</div>`:''}
-      <p>${isW?'"The Codes are upheld." Dalinar extends a firm handshake.':`"${aiPers==='sadeas'?'Better luck next time, Blackthorn.':'A worthy contest. Honor is satisfied.'}" ${AIW[aiPers].name} offers a handshake.`}</p>
+      <p>${isW?'"The Codes are upheld."':`"${currentSmack||'A worthy contest.'}"  — ${AIW[aiPers].name}`}</p>
+      ${unlockMsg}
       <div class="sc"><span class="ps">${s.p.human.rw}</span><span style="color:var(--dim)"> – </span><span class="as">${s.p.ai.rw}</span></div>
       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn p" onclick="rematch()">Rematch</button><button class="btn" onclick="toMenu()">Menu</button></div></div>`;
   }
@@ -1433,12 +1514,14 @@ window.dismissHandoff=function(){handoffScreen=false;R();};
 
 function aiExec(){
   const M=MODES[G.mode],d=aiTurn(G);
-  if(d.a==='pass'){G.ap=true;lg(`${AIW[aiPers].name} passes.`,'ai');if(G.hp){resRound();return}}
-  else if(d.a==='concede'){lg(`${AIW[aiPers].name} concedes with a ${aiPers==='sadeas'?'curt nod':'reluctant bow'}.`,'ai');G.p.human.rw++;elim(G);chkEnd();return}
+  if(d.a==='pass'){G.ap=true;lg(`${AIW[aiPers].name} passes.`,'ai');if(Math.random()>.6)triggerSmack('pass');if(G.hp){resRound();return}}
+  else if(d.a==='concede'){lg(`${AIW[aiPers].name} concedes.`,'ai');triggerSmack('concede');G.p.human.rw++;elim(G);chkEnd();return}
   else if(d.a==='deploy'){
     const{c,li}=d;G.p.ai.h=G.p.ai.h.filter(x=>x.id!==c.id);c.deployTurn=turnNum;c.moved=false;G.lanes[li].ai.push(c);G.ap=false;
     lg(`${AIW[aiPers].name} deploys ${M.fd?'a card':UI[c.type]+' '+c.type+' ('+c.value+')'} to ${M.ln[li]}`,'ai');
     if(c.type==='cavalry')aiCharge(G);
+    if(c.type==='shardbearers'||c.value>=8)triggerSmack('deploy_strong');
+    else if(Math.random()>.65)triggerSmack('deploy');
   }
   else if(d.a==='move'){
     const{card,from,to}=d;
@@ -1457,8 +1540,8 @@ function resRound(){
     if(winner==='human'){G.p.human.rw=2;lg(`BREAKTHROUGH! You shatter The Tower!`,'system')}
     else{G.p.ai.rw=2;lg(`BREAKTHROUGH! ${AIW[aiPers].name} breaks through The Tower!`,'ai')}
   } else {
-    if(r.rw==='human'){G.p.human.rw++;lg(`Round ${G.cr}: You win! (${r.hl}–${r.al})`,'system')}
-    else if(r.rw==='ai'){G.p.ai.rw++;lg(`Round ${G.cr}: ${AIW[aiPers].name} wins. (${r.al}–${r.hl})`,'system')}
+    if(r.rw==='human'){G.p.human.rw++;lg(`Round ${G.cr}: You win! (${r.hl}–${r.al})`,'system');triggerSmack('loseRound')}
+    else if(r.rw==='ai'){G.p.ai.rw++;lg(`Round ${G.cr}: ${AIW[aiPers].name} wins. (${r.al}–${r.hl})`,'system');triggerSmack('winRound')}
     else lg(`Round ${G.cr}: Draw!`,'system');
   }
   elim(G);G.cr++;G.hp=false;G.ap=false;turnNum=0;

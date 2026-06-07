@@ -2,7 +2,13 @@
 
 > *"The purpose of a storyteller is not to tell you how to think, but to give you questions to think about."* — Brandon Sanderson
 
-A strategic card game based on the fictional "Towers" game from Brandon Sanderson's **The Stormlight Archive**. Built as a single-file browser game (HTML/CSS/JavaScript) with AI opponents, formations, and multiple variants.
+~Created by DC
+
+A strategic card game based on the fictional "Towers" game from Brandon Sanderson's **The Stormlight Archive**. Built as a single-file browser game (HTML/CSS/JavaScript) with multiple AI opponents, formations, smack talk, and multiplayer.
+
+**Play now:** [stangdjc.github.io/Stormlight](https://stangdjc.github.io/Stormlight/)
+
+---
 
 ## Game Overview
 
@@ -12,298 +18,133 @@ Two players deploy armies across a multi-lane battlefield. Win lanes by outmaneu
 
 ---
 
-## Battle Flow — State Machine
+## Features
 
-```mermaid
-stateDiagram-v2
-    [*] --> MENU: Launch Game
-    MENU --> MATCH_START: Select Mode + AI
+### AI Opponents (5, with progression unlocks)
 
-    state MATCH_START {
-        [*] --> Shuffle_Deck
-        Shuffle_Deck --> Deal_Cards: 10 cards each (std)
-        Deal_Cards --> [*]
-    }
+| Opponent | Style | Unlock |
+|----------|-------|--------|
+| 🔴 **Sadeas** | Ruthless flanker, baits Center, concedes freely | Available |
+| 🔵 **Dalinar** | Formation-heavy, holds The Tower, rarely concedes | Available |
+| 🟡 **Adolin** | Balanced, adapts to your strategy | Beat 1 opponent |
+| 🟤 **Taravangian** | Calculating, sacrifices lanes to win wars | Beat 2 opponents |
+| 🟣 **Odium** | Overwhelming, relentless pressure everywhere | Beat 3 opponents |
 
-    MATCH_START --> ROUND_START
+Each AI has unique personality-driven **smack talk** that triggers during gameplay — taunts on deploy, round wins, and concedes.
 
-    state ROUND_START {
-        [*] --> Draw_Phase: Rounds 2-3 only
-        Draw_Phase --> Reset_Flags: Draw 3 cards each
-        [*] --> Reset_Flags: Round 1
-        Reset_Flags --> [*]: turnNum = 0
-    }
+### Game Modes
 
-    ROUND_START --> TURN_PHASE
+| Mode | Lanes | Win | Special |
+|------|-------|-----|---------|
+| **Standard** | 3 | 2 of 3 | The Tower, Formations, Fatigue |
+| **Flatface** | 3 | 2 of 3 | Opponent cards face-down until resolution |
+| **Crosswise Chull** | 5 | 3 of 5 | Archers reach 2 lanes, 13 cards dealt |
+| **PvP Hotseat** | 3/5 | Any mode | Two humans, same screen, hand-hiding between turns |
 
-    state TURN_PHASE {
-        [*] --> Player_Turn
+### Unit Types
 
-        state Player_Turn {
-            [*] --> Choose_Action
-            Choose_Action --> Deploy: Play card to lane
-            Choose_Action --> Move: Shift card to adjacent lane (−1 str)
-            Choose_Action --> Retreat: Pull card to hand
-            Choose_Action --> Pass: End turn
-            Choose_Action --> Concede: Surrender round 🤝
+| Unit | Icon | Ability |
+|------|------|---------|
+| Spearmen | ⚔️ ♣ | +1 per other Spearman in lane. 3+ = Phalanx |
+| Archers | 🏹 ♦ | +2 to adjacent lanes. Best in center |
+| Cavalry | 🐴 ♥ | Charge: reposition 1 card on deploy. Solo = Vanguard |
+| Shardbearers | 🗡️ ♠ | ×2 strength. Max 1/lane. Fatigues without Shardwall |
 
-            Deploy --> Check_Cavalry: Is Cavalry?
-            Check_Cavalry --> Charge_Phase: Yes & allies exist
-            Check_Cavalry --> End_Turn: No
-            Charge_Phase --> End_Turn: Reposition 1 card
+### Formations (auto-detected)
 
-            Move --> End_Turn
-            Retreat --> End_Turn
-            Concede --> ROUND_END
-        }
+| Formation | Requirement | Bonus |
+|-----------|------------|-------|
+| **Phalanx** | 3+ Spearmen | +3 per Spearman |
+| **Skirmish Line** | Archer + Cavalry | +3/archer, +2/cavalry |
+| **Shardwall** | Shardbearer + 2 Spearmen | Negates fatigue |
+| **Vanguard** | Solo Cavalry | +4 per Cavalry |
+| **Crossfire** | Archers in adjacent lanes | +2 per Archer |
 
-        End_Turn --> AI_Turn: Switch to AI
-        AI_Turn --> Check_Both_Passed
+### Turn Actions
 
-        state AI_Turn {
-            [*] --> Evaluate_Lanes
-            Evaluate_Lanes --> Personality_Filter: Apply Sadeas/Dalinar weights
-            Personality_Filter --> Select_Action
-            Select_Action --> AI_Deploy
-            Select_Action --> AI_Move
-            Select_Action --> AI_Pass
-            Select_Action --> AI_Concede
-        }
+Deploy (click card → click lane) · Move (adjacent lane, −1 str) · Retreat · Pass · Concede 🤝
 
-        Check_Both_Passed --> RESOLUTION: Both passed
-        Check_Both_Passed --> Player_Turn: Continue
-        Pass --> Check_Both_Passed
-    }
+### Interactive Features
 
-    state RESOLUTION {
-        [*] --> Calc_Formations: Detect Phalanx, Skirmish, etc.
-        Calc_Formations --> Apply_Fatigue: Shardbearer degradation
-        Apply_Fatigue --> Calc_Lane_Totals: Sum strength + bonuses
-        Calc_Lane_Totals --> Determine_Lane_Winners: Higher total wins
-        Determine_Lane_Winners --> Check_Breakthrough: Center +10 & flank?
-        Check_Breakthrough --> MATCH_END: Breakthrough!
-        Check_Breakthrough --> Count_Lanes: No breakthrough
-        Count_Lanes --> [*]
-    }
+- **Click-to-deploy**: Select a card, lanes light up as targets with +N strength preview
+- **Smart action hints**: Pass button pulses gold when winning, Concede pulses red when losing badly
+- **Lane status bar**: Inline chips above battlefield showing +/− per lane
+- **Formations bar**: Below hand, shows all formations with active highlights
+- **Smack talk**: AI opponents taunt during gameplay, personality-matched
+- **Opponent progression**: Beat opponents to unlock harder ones
 
-    RESOLUTION --> ROUND_END
+### Wit Watch (Floating Advisor)
 
-    state ROUND_END {
-        [*] --> Eliminate_Cards: All deployed cards removed
-        Eliminate_Cards --> Check_Match: 2 rounds won?
-        Check_Match --> MATCH_END: Yes
-        Check_Match --> ROUND_START: No, next round
-    }
+A floating 🃏 chat bubble with Hoid's personality. Moveable left/right, minimizable.
 
-    state MATCH_END {
-        [*] --> Handshake: 🤝 As tradition demands
-        Handshake --> Show_Results
-        Show_Results --> MENU: Play Again / Menu
-    }
-```
+**Modes:**
+- **Normal** — Answers when asked via dropdown or free text
+- **Enhanced** — Proactive advice on key moments (formation opportunities, critical lanes)
+- **Cheat** — Shows AI hand breakdown, optimal play, lane win probabilities
 
----
+**16 topic categories** available via dropdown selector. Free text input for natural questions with fuzzy topic matching.
 
-## Unit Types & Standard Deck Mapping
+### Tutorial
 
-| Unit | Icon | Suit | Values | Base Ability | Physical Deck |
-|------|------|------|--------|-------------|---------------|
-| Spearmen | ⚔️ | ♣ Clubs | 1–10 | +1 per other Spearman in lane | Clubs A–10 |
-| Archers | 🏹 | ♦ Diamonds | 1–10 | +2 to each adjacent lane | Diamonds A–10 |
-| Cavalry | 🐴 | ♥ Hearts | 1–10 | Charge: reposition 1 card on deploy | Hearts A–10 |
-| Shardbearers | 🗡️ | ♠ Spades | 1–10 | ×2 strength, max 1 per lane, fatigues | Spades A–10 |
-
-**Deck:** 40 cards total (4 types × 10 values). Remove J/Q/K from a standard 52-card deck to play physically.
-
----
-
-## Formations
-
-Formations are **auto-detected** during resolution and stack with base abilities.
-
-| Formation | Requirement | Bonus | Strategy |
-|-----------|------------|-------|----------|
-| **Phalanx** ⚔️ | 3+ Spearmen in one lane | +3 per Spearman | Dalinar's bread & butter. Devastating in Center. |
-| **Skirmish Line** 🏹🐴 | Archer + Cavalry in same lane | +3/Archer, +2/Cavalry | Flexible combo. Pairs range support with mobility. |
-| **Shardwall** 🛡️ | Shardbearer + 2+ Spearmen | Negates Shardbearer fatigue | Essential for long deployments. Infantry sustains the Shard. |
-| **Vanguard** 🐴 | Only Cavalry in a lane | +4 per Cavalry | Scouting/flanking. High risk, high reward isolation play. |
-| **Crossfire** 🎯 | Archers in this lane + adjacent | +2 per Archer in lane | Multi-lane archer coverage. Stack archers in center. |
-
-### Formation Detection Pseudocode
-
-```javascript
-function detectFormations(cards, laneIndex, allLanes, player, mode) {
-  const formations = [];
-  const spears  = cards.filter(c => c.type === 'spearmen');
-  const archers = cards.filter(c => c.type === 'archers');
-  const cavalry = cards.filter(c => c.type === 'cavalry');
-  const shards  = cards.filter(c => c.type === 'shardbearers');
-
-  // Phalanx: 3+ Spearmen in lane → +3 per Spearman
-  if (spears.length >= 3) {
-    formations.push({ name: 'Phalanx', bonus: spears.length * 3 });
-  }
-
-  // Skirmish Line: Archer + Cavalry → synergy bonus
-  if (archers.length > 0 && cavalry.length > 0) {
-    formations.push({
-      name: 'Skirmish Line',
-      bonus: archers.length * 3 + cavalry.length * 2
-    });
-  }
-
-  // Shardwall: Shardbearer + 2+ Spearmen → negate fatigue
-  if (shards.length > 0 && spears.length >= 2) {
-    formations.push({ name: 'Shardwall', negatesFatigue: true, bonus: 0 });
-  }
-
-  // Vanguard: Only cavalry in lane → +4 each
-  if (cavalry.length > 0 && cards.length === cavalry.length) {
-    formations.push({ name: 'Vanguard', bonus: cavalry.length * 4 });
-  }
-
-  // Crossfire: Archers in adjacent lanes → +2 each
-  const adjArcherCount = getAdjacentArcherCount(laneIndex, allLanes, player);
-  if (archers.length > 0 && adjArcherCount > 0) {
-    formations.push({ name: 'Crossfire', bonus: archers.length * 2 });
-  }
-
-  return formations;
-}
-```
+8-step interactive walkthrough accessible from the menu ("How to Play") or in-game ("?" button). Covers card types, formations, The Tower, fatigue, and strategy tips.
 
 ---
 
 ## Fatigue & Logistics
 
-Shardbearers are powerful but unsustainable without infantry support.
-
-- **Shardbearer fatigue:** −1 effective strength for every 3 turns deployed within a round
-- **Move penalty:** Any card moved to an adjacent lane suffers −1 strength for the round
-- **Shardwall negation:** Shardbearer + 2 Spearmen cancels all fatigue
-- **Minimum strength:** Cards never drop below 1 effective strength
-
-```javascript
-function calcFatigue(card, currentTurn, formations) {
-  let penalty = 0;
-  if (card.moved) penalty += 1;
-  if (card.type === 'shardbearers' && card.deployTurn >= 0) {
-    penalty += Math.floor((currentTurn - card.deployTurn) / 3);
-    if (formations.some(f => f.negatesFatigue)) {
-      penalty = card.moved ? 1 : 0;  // Shardwall cancels degradation
-    }
-  }
-  return penalty;
-}
-```
-
----
+- **Shardbearer fatigue**: −1 strength per 3 turns deployed. Shardwall negates.
+- **Move penalty**: −1 strength when repositioned to adjacent lane.
+- **Minimum strength**: Cards never drop below 1.
 
 ## The Tower — Win Condition
 
-The Center lane is **The Tower**, a critical strategic objective marked with 🏰.
-
-**Standard win:** Win 2 of 3 lanes → win the round. Win 2 of 3 rounds → win the match.
-
-**Breakthrough win:** Win The Tower (Center) by **10+ margin** AND win **at least 1 flank** → **instant match victory**, regardless of round score.
-
-This creates a strategic fork: commit heavily to Center and risk flanks, or spread forces and play the long game.
+Center lane = The Tower 🏰. Win it by **+10 margin** AND hold **1 flank** = **Breakthrough** = instant match win.
 
 ---
 
-## AI Personalities
+## Technical Details
 
-### 🔴 Highprince Sadeas — "The Ruthless"
+- **Single HTML file**, zero dependencies, runs in any modern browser
+- **~100KB** total (HTML + CSS + JS + inline SVG art)
+- SVG unit silhouettes (spear formation, bow, mounted rider, Shardblade)
+- CSS gradient card backgrounds with type-specific coloring
+- Shardbearer pulse glow animation
+- Card deploy slide animation
+- Battlefield terrain texture (Shattered Plains aesthetic)
 
-| Trait | Weight | Behavior |
-|-------|--------|----------|
-| Center Priority | −5 | Avoids Center, baits opponent |
-| Flank Priority | +10 | Crushes flanks aggressively |
-| Formation Bonus | ×0.3 | Minimal formation play |
-| Card Advantage | +15 | Hoards cards, wins by attrition |
-| Concede Tolerance | 60% | Freely concedes losing rounds |
-| Charge Style | Aggressive | Repositions to exploit gaps |
+## Physical Deck
 
-**Play pattern:** Sadeas targets your weakest flank, deliberately under-commits to Center to lure your forces there, then overwhelms the flanks. He'll concede Round 1 to save cards for a devastating Round 2–3.
-
-### 🔵 Highprince Dalinar — "The Honorable"
-
-| Trait | Weight | Behavior |
-|-------|--------|----------|
-| Center Priority | +15 | The Tower is everything |
-| Flank Priority | +5 | Still contests flanks |
-| Formation Bonus | ×1.2 | Builds Phalanx religiously |
-| Card Advantage | +5 | Spends for position |
-| Concede Tolerance | 20% | Rarely concedes |
-| Charge Style | Conservative | Repositions for defense |
-
-**Play pattern:** Dalinar builds Phalanx formations, pushes for Center control, and aims for Breakthrough. Predictable but extremely hard to outmuscle in a straight fight. Tries to Shardwall his Shardbearers.
+Strip a 52-card deck to A–10 (40 cards). ♣=Spearmen, ♦=Archers, ♥=Cavalry, ♠=Shardbearers. Deal 10 each.
 
 ---
 
-## Game Modes
+## Version History
 
-| Mode | Lanes | Win | Deal | Special |
-|------|-------|-----|------|---------|
-| **Standard** | 3 | 2 of 3 | 10 | The Tower, Formations, Fatigue |
-| **Flatface** | 3 | 2 of 3 | 10 | Opponent cards face-down until resolution |
-| **Crosswise Chull** | 5 | 3 of 5 | 13 | Archers reach 2 lanes, expanded battlefield |
-
----
-
-## Turn Actions
-
-On your turn, choose **one**:
-
-1. **Deploy** — Play a card from hand face-up to any lane. Triggers Cavalry Charge if applicable.
-2. **Move** — Shift a deployed card to an **adjacent** lane. That card takes −1 strength (fatigue) for the round.
-3. **Retreat** — Pull a deployed card back to your hand. Saves it from elimination but costs tempo.
-4. **Pass** — Do nothing. When both players pass consecutively, the round resolves.
-5. **Concede (Offer Handshake)** — Surrender the round immediately. All deployed cards still eliminated. Saves hand cards.
-
----
-
-## Strength Calculation Order
-
-```
-1. Base value (card face value)
-2. Type multiplier (Shardbearers ×2)
-3. In-lane synergy (Spearmen +1 per other Spearman)
-4. Fatigue penalty (−N from degradation/move)
-5. Floor to minimum 1
-6. Sum all cards in lane
-7. Add Archer range support from adjacent lanes (+2 per archer)
-8. Add Formation bonuses (Phalanx, Skirmish, Vanguard, Crossfire)
-9. Final lane total
-```
+| Version | Changes |
+|---------|---------|
+| v1 | Core game engine, 3 lanes, 4 unit types, basic AI |
+| v2 | Advisor panel, blocked-card feedback, Flatface + Crosswise Chull variants |
+| v3 | Formations, fatigue, The Tower, AI personalities (Sadeas/Dalinar), Move action |
+| v4 | Full-screen layout, Wit Watch AI chat |
+| v5 | Card polish (gradients, effective strength), advisor + Wit split panel |
+| v6 | Click-to-deploy, lane preview, smart action hints, Wit cheat mode |
+| v7 | Rosharan SVG card art, battlefield atmosphere, deploy animations, Wit spam fix |
+| v8 | Layout restructure (lane status top, formations bottom), floating Wit with dropdown topics, chat reset |
+| v9 | Moveable Wit (left/right), 5 AI opponents with progression, smack talk system |
 
 ---
 
 ## File Structure
 
 ```
-Stormlight_Towers/
-├── towers.html          # Complete game (single file, no dependencies)
-├── README.md            # This file
-└── BACKLOG.md           # Future enhancements
+Stormlight/
+├── towers.html           # The game (single file)
+├── README.md             # This file
+├── BACKLOG.md            # Future features roadmap
+├── DEPLOY.md             # GitHub Pages deployment guide
+├── ROADMAP.md            # Sharing & multiplayer roadmap
+└── towers_backup_*.html  # Version backups
 ```
-
----
-
-## How to Play
-
-1. Open `towers.html` in any modern browser
-2. Select an AI opponent (Sadeas or Dalinar)
-3. Choose a game mode
-4. Deploy cards strategically across lanes
-5. Build formations for bonus strength
-6. Win 2 of 3 rounds — or achieve a Breakthrough at The Tower
-
----
-
-## Physical Deck Instructions
-
-Strip a standard 52-card deck down to A–10 in all four suits (40 cards). Map suits to units per the table above. Shuffle, deal 10 each, and track formations manually. The Tower is always the Center lane.
 
 ---
 
