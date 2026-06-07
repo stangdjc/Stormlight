@@ -57,8 +57,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .lc.tied{background:rgba(255,215,0,.08);border-color:var(--gld);color:var(--gld)}
 .lc.mt{background:var(--bg3);color:var(--dim)}
 /* Top bar */
-.top{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;margin-bottom:6px;background:linear-gradient(90deg,var(--bg2),rgba(42,34,53,.9));border-radius:10px;border:1px solid var(--brd);flex-wrap:wrap;gap:4px}
-.top h1{font-size:18px;color:var(--gld);letter-spacing:2px;font-weight:800;text-shadow:0 0 12px rgba(255,215,0,.15)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;margin-bottom:6px;background:var(--bg2);border-radius:10px;border:1px solid var(--brd);flex-wrap:wrap;gap:4px}
+.top h1{font-size:17px;color:var(--gld);letter-spacing:1px}
 .top-r{display:flex;align-items:center;gap:8px}
 .mi{font-size:12px;color:var(--dim)}.mi b{color:var(--gld);font-weight:600}
 .badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:2px 6px;border-radius:3px;background:rgba(204,170,255,.12);color:var(--sh);border:1px solid rgba(204,170,255,.25)}
@@ -66,19 +66,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .pl{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;margin:3px 0;font-size:12px;font-weight:600;border-radius:5px}
 .pl.ai{background:rgba(255,85,85,.08);color:var(--red)}.pl.hu{background:rgba(74,158,255,.08);color:var(--blu)}
 .cc{font-weight:400;color:var(--dim);font-size:11px}
-/* Battlefield — Rosharan Shattered Plains */
-.bf{display:flex;gap:6px;margin:3px 0;flex:1;min-height:0;position:relative}
-.bf::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(74,158,255,.04),transparent 70%);pointer-events:none;border-radius:10px}
-.ln{flex:1;border:1px solid var(--brd);border-radius:9px;background:linear-gradient(180deg,rgba(30,25,40,.9),var(--bgl),rgba(30,25,40,.9));overflow:hidden;display:flex;flex-direction:column;position:relative}
-.ln::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q15 28 30 30 Q45 32 60 30' fill='none' stroke='%23ffffff' stroke-width='.3' opacity='.03'/%3E%3Cpath d='M0 50 Q20 48 40 50 Q50 52 60 50' fill='none' stroke='%23ffffff' stroke-width='.2' opacity='.02'/%3E%3C/svg%3E");pointer-events:none;border-radius:9px}
-.ln.tower-lane{border-color:var(--gld);box-shadow:0 0 12px rgba(255,215,0,.12),inset 0 0 20px rgba(255,215,0,.03)}
-.ln.tower-lane .lh{background:linear-gradient(180deg,rgba(255,215,0,.06),transparent)}
-.lh{text-align:center;padding:6px;font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--brd);background:rgba(255,255,255,.02)}
-.lh .tower-icon{color:var(--gld);font-size:11px;margin-left:3px;filter:drop-shadow(0 0 3px rgba(255,215,0,.4))}
-.ls{flex:1;min-height:60px;padding:6px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;justify-content:center}
+/* Battlefield */
+.bf{display:flex;gap:6px;margin:3px 0;flex:1;min-height:0}
+.ln{flex:1;border:1px solid var(--brd);border-radius:9px;background:var(--bgl);overflow:hidden;display:flex;flex-direction:column}
+.ln.tower-lane{border-color:var(--gld);box-shadow:0 0 8px rgba(255,215,0,.1)}
+.lh{text-align:center;padding:5px;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--brd);background:rgba(255,255,255,.02)}
+.lh .tower-icon{color:var(--gld);font-size:10px;margin-left:3px}
+.ls{flex:1;min-height:60px;padding:5px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;justify-content:center}
 .ls.as{border-bottom:1px solid var(--brd)}
-.lt{text-align:center;padding:3px 0;font-size:12px;font-weight:700;background:linear-gradient(90deg,rgba(255,85,85,.04),rgba(255,255,255,.02),rgba(74,158,255,.04));border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
-.lt .at{color:var(--red);text-shadow:0 0 6px rgba(255,85,85,.3)}.lt .vs{color:var(--dim);margin:0 6px}.lt .ht{color:var(--blu);text-shadow:0 0 6px rgba(74,158,255,.3)}
+.lt{text-align:center;padding:2px 0;font-size:11px;font-weight:700;background:rgba(255,255,255,.02);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
+.lt .at{color:var(--red)}.lt .vs{color:var(--dim);margin:0 4px}.lt .ht{color:var(--blu)}
 /* Formation badges */
 .fm-row{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;padding:2px 4px;min-height:16px}
 .fm-badge{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(255,215,0,.1);color:var(--gld);border:1px solid rgba(255,215,0,.2)}
@@ -108,52 +105,35 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .cheat-intel .ci-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03)}
 .cheat-intel .ci-label{color:var(--dim)}.cheat-intel .ci-val{color:var(--gld);font-weight:700}
 .cheat-intel .ci-best{background:rgba(85,204,119,.08);padding:4px 6px;border-radius:4px;margin-top:4px;color:var(--grn);font-weight:600}
-/* Cards — Rosharan Illustrated */
-.cd{width:62px;height:86px;border-radius:8px;border:2px solid var(--brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:default;transition:all .2s;position:relative;user-select:none;overflow:hidden}
-.cd::before{content:'';position:absolute;inset:0;border-radius:6px;opacity:.12;pointer-events:none}
-.cd::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' fill='none'/%3E%3Cpath d='M0 0L40 40M40 0L0 40' stroke='%23ffffff' stroke-width='.15' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;border-radius:6px}
-.cd .cv{font-size:24px;font-weight:800;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.5);z-index:1}
-.cd .ci{z-index:1;margin-bottom:2px}
-.cd .ci svg{width:22px;height:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
-.cd .ct{font-size:7px;text-transform:uppercase;letter-spacing:.8px;margin-top:2px;opacity:.7;font-weight:700;z-index:1}
-.cd .cs{position:absolute;top:3px;right:4px;font-size:8px;font-weight:800;background:rgba(0,0,0,.65);padding:1px 5px;border-radius:3px;z-index:1}
-.cd .cd-suit{position:absolute;top:3px;left:4px;font-size:9px;opacity:.4;font-weight:700;z-index:1}
-.cd .cd-eff{position:absolute;bottom:3px;right:4px;font-size:8px;font-weight:700;background:rgba(0,0,0,.55);padding:1px 4px;border-radius:3px;color:var(--grn);z-index:1}
-.cd .fat-ind{position:absolute;bottom:3px;left:4px;font-size:8px;font-weight:700;color:var(--red);text-shadow:0 0 6px rgba(255,85,85,.6);z-index:1}
-/* Spearmen — steel blue, disciplined */
-.cd.spearmen{background:linear-gradient(160deg,#1a2d42,#0d1824,#162538);border-color:var(--sp);color:var(--sp)}
-.cd.spearmen::before{background:linear-gradient(180deg,rgba(124,179,255,.2),transparent 60%)}
-/* Archers — ember orange, ranged */
-.cd.archers{background:linear-gradient(160deg,#2e1a0a,#1a0e04,#261508);border-color:var(--ar);color:var(--ar)}
-.cd.archers::before{background:linear-gradient(180deg,rgba(255,153,68,.2),transparent 60%)}
-/* Cavalry — crimson, mobile */
-.cd.cavalry{background:linear-gradient(160deg,#2e0e18,#1a0810,#261016);border-color:var(--cv);color:var(--cv)}
-.cd.cavalry::before{background:linear-gradient(180deg,rgba(255,85,119,.2),transparent 60%)}
-/* Shardbearers — purple glow, legendary */
-.cd.shardbearers{background:linear-gradient(160deg,#1e1430,#120e22,#1a1228);border-color:var(--sh);color:var(--sh);box-shadow:inset 0 0 15px rgba(204,170,255,.1),0 0 6px rgba(204,170,255,.08)}
-.cd.shardbearers::before{background:linear-gradient(180deg,rgba(204,170,255,.25),transparent 50%)}
-@keyframes shard-pulse{0%,100%{box-shadow:inset 0 0 15px rgba(204,170,255,.1),0 0 6px rgba(204,170,255,.08)}50%{box-shadow:inset 0 0 20px rgba(204,170,255,.15),0 0 10px rgba(204,170,255,.12)}}
-.cd.shardbearers{animation:shard-pulse 3s ease-in-out infinite}
-/* Face-down */
-.cd.face-down{background:linear-gradient(135deg,#2a2535,#1e1a28)!important;border-color:var(--brd2)!important;color:var(--dim)!important;box-shadow:none!important;animation:none!important}
-.cd.face-down::before,.cd.face-down::after{display:none}
+/* Cards — Polished */
+.cd{width:60px;height:82px;border-radius:8px;border:2px solid var(--brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:default;transition:all .18s;position:relative;user-select:none;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;border-radius:6px;opacity:.15;pointer-events:none}
+.cd .cv{font-size:22px;font-weight:800;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.4)}.cd .ci{font-size:15px;margin-bottom:2px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.cd .ct{font-size:7px;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;opacity:.8;font-weight:600}
+.cd .cs{position:absolute;top:3px;right:4px;font-size:8px;font-weight:800;background:rgba(0,0,0,.6);padding:1px 4px;border-radius:3px;letter-spacing:.3px}
+.cd .cd-suit{position:absolute;top:3px;left:4px;font-size:9px;opacity:.5;font-weight:700}
+.cd .cd-eff{position:absolute;bottom:3px;right:4px;font-size:8px;font-weight:700;background:rgba(0,0,0,.5);padding:1px 4px;border-radius:3px;color:var(--grn)}
+.cd .fat-ind{position:absolute;bottom:3px;left:4px;font-size:8px;font-weight:700;color:var(--red);text-shadow:0 0 4px rgba(255,85,85,.5)}
+.cd.spearmen{background:linear-gradient(135deg,var(--spb),#0d1e2e);border-color:var(--sp);color:var(--sp)}
+.cd.spearmen::before{background:linear-gradient(180deg,var(--sp),transparent)}
+.cd.archers{background:linear-gradient(135deg,var(--arb),#1e0e05);border-color:var(--ar);color:var(--ar)}
+.cd.archers::before{background:linear-gradient(180deg,var(--ar),transparent)}
+.cd.cavalry{background:linear-gradient(135deg,var(--cvb),#1e0810);border-color:var(--cv);color:var(--cv)}
+.cd.cavalry::before{background:linear-gradient(180deg,var(--cv),transparent)}
+.cd.shardbearers{background:linear-gradient(135deg,var(--shb),#120e1e);border-color:var(--sh);color:var(--sh);box-shadow:inset 0 0 12px rgba(204,170,255,.08)}
+.cd.shardbearers::before{background:linear-gradient(180deg,var(--sh),transparent)}
+.cd.face-down{background:var(--bg3)!important;border-color:var(--brd2)!important;color:var(--dim)!important;box-shadow:none!important}
+.cd.face-down::before{display:none}
 .cd.face-down .ci,.cd.face-down .cv,.cd.face-down .ct,.cd.face-down .cs,.cd.face-down .cd-suit,.cd.face-down .cd-eff,.cd.face-down .fat-ind{visibility:hidden}
-.cd.face-down .ci svg{visibility:hidden}
-/* Deploy animation */
-@keyframes card-deploy{from{opacity:0;transform:translateY(20px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
-.ls .cd{animation:card-deploy .25s ease-out}
-/* Card back pattern for face-down */
-.cd.face-down .card-back{position:absolute;inset:6px;border:1px solid rgba(255,255,255,.08);border-radius:4px;display:flex;align-items:center;justify-content:center}
-.cd.face-down .card-back svg{width:20px;height:20px;opacity:.2}
+.cd.face-down::after{content:'?';font-size:26px;font-weight:800;color:var(--dim);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
 /* Hand */
 .ha{margin-top:5px;padding:8px 12px;background:var(--bg2);border-radius:9px;border:1px solid var(--brd)}
 .ha-l{font-size:11px;color:var(--dim);margin-bottom:4px;font-weight:600}
 .hd{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:70px;align-items:center}
-.hd .cd{cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1)}
-.hd .cd:hover{transform:translateY(-8px) scale(1.06);box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:10}
-.hd .cd.sel{transform:translateY(-12px) scale(1.08);box-shadow:0 0 0 2px var(--gld),0 0 20px rgba(255,215,0,.25),0 10px 30px rgba(0,0,0,.5)}
-.hd .cd.unp{opacity:.25;filter:grayscale(.7) brightness(.7)}
-.ls .cd{width:52px;height:72px}.ls .cd .cv{font-size:18px}.ls .cd .ci svg{width:18px;height:18px}.ls .cd .ct{font-size:5px}
+.hd .cd{cursor:pointer}.hd .cd:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:10}
+.hd .cd.sel{transform:translateY(-10px) scale(1.06);box-shadow:0 0 0 2px var(--gld),0 0 16px rgba(255,215,0,.2),0 8px 24px rgba(0,0,0,.5)}
+.hd .cd.unp{opacity:.3;filter:grayscale(.6) brightness(.8)}
+.ls .cd{width:50px;height:68px}.ls .cd .cv{font-size:17px}.ls .cd .ci{font-size:13px}.ls .cd .ct{font-size:6px}
 /* Retreat/Move highlight */
 .ls.rm .cd{cursor:pointer;outline:2px dashed var(--gld);outline-offset:1px}.ls.rm .cd:hover{outline-color:var(--red)}
 .ls.mm .cd{cursor:pointer;outline:2px dashed var(--blu);outline-offset:1px}.ls.mm .cd:hover{outline-color:var(--grn)}
@@ -181,7 +161,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .bt-alert{font-size:14px;color:var(--gld);font-weight:700;margin:8px 0;padding:8px;background:rgba(255,215,0,.08);border-radius:6px;border:1px solid rgba(255,215,0,.2)}
 /* Menu */
 .menu{max-width:540px;margin:50px auto;text-align:center}
-.menu h1{font-size:36px;color:var(--gld);margin-bottom:3px;letter-spacing:3px;font-weight:800;text-shadow:0 0 20px rgba(255,215,0,.15)}.menu .sub{color:var(--dim);font-size:13px;margin-bottom:24px;font-style:italic}
+.menu h1{font-size:34px;color:var(--gld);margin-bottom:3px;letter-spacing:2px}.menu .sub{color:var(--dim);font-size:13px;margin-bottom:24px}
 .menu h3{font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin:18px 0 8px;text-align:left}
 .mc{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px 16px;margin-bottom:8px;cursor:pointer;text-align:left;transition:all .15s}
 .mc:hover{border-color:var(--gld);background:var(--bg3)}
@@ -1074,33 +1054,24 @@ function renderMenu(){
 
 const SUIT_SYM={spearmen:'♣',archers:'♦',cavalry:'♥',shardbearers:'♠'};
 const TYPE_LABEL={spearmen:'Spearmen',archers:'Archers',cavalry:'Cavalry',shardbearers:'Shardbearer'};
-// SVG unit silhouettes — Rosharan style
-const UNIT_SVG={
-  spearmen:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="12" y1="2" x2="12" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polygon points="12,2 9,7 15,7" fill="currentColor" opacity=".9"/><line x1="7" y1="13" x2="17" y2="13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 20 L12 17 L16 20" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>`,
-  archers:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3 C6 3 6 21 6 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 4 Q14 12 6 20" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="6" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><polygon points="20,12 17,10.5 17,13.5" fill="currentColor"/><line x1="17" y1="9" x2="20" y2="12" stroke="currentColor" stroke-width=".8"/><line x1="17" y1="15" x2="20" y2="12" stroke="currentColor" stroke-width=".8"/></svg>`,
-  cavalry:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="16" rx="7" ry="3.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 16 Q8 10 12 8 Q16 10 16 16" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="12" cy="6" r="2" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="12" y1="4" x2="14" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M5 18 L3 21 M19 18 L21 21" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>`,
-  shardbearers:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 L12 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 6 L16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 14 L12 16" stroke="currentColor" stroke-width="2.5"/><path d="M7 18 Q12 14 17 18 Q17 22 12 22 Q7 22 7 18Z" stroke="currentColor" stroke-width="1.3" fill="currentColor" opacity=".15"/><circle cx="12" cy="6" r="1" fill="currentColor" opacity=".6"/><line x1="9" y1="3" x2="12" y2="2" stroke="currentColor" stroke-width=".8" opacity=".5"/><line x1="15" y1="3" x2="12" y2="2" stroke="currentColor" stroke-width=".8" opacity=".5"/></svg>`,
-  facedown:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4 L18 8 L18 16 L12 20 L6 16 L6 8 Z" stroke="currentColor" stroke-width="1" opacity=".3"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width=".8" opacity=".2"/></svg>`
-};
 function rHC(c,s){
   const sel=s.sel&&s.sel.id===c.id,pl=canPlay(c,s.lanes,'human');
   const eff=c.type==='shardbearers'?c.value*2:c.value;
-  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" title="${pl?TYPE_LABEL[c.type]+' — Str '+eff:'Blocked — all lanes have Shardbearer'}"><span class="cd-suit">${SUIT_SYM[c.type]}</span><span class="ci">${UNIT_SVG[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}<span class="cd-eff">${eff}</span></div>`;
+  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" title="${pl?TYPE_LABEL[c.type]+' — Str '+eff:'Blocked — all lanes have Shardbearer'}"><span class="cd-suit">${SUIT_SYM[c.type]}</span><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type].slice(0,6)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}<span class="cd-eff">${eff}</span></div>`;
 }
 function rHC_pvp(c,s,side){
   const sel=s.sel&&s.sel.id===c.id,pl=canPlay(c,s.lanes,side);
   const eff=c.type==='shardbearers'?c.value*2:c.value;
-  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" data-pvp="${side}" title="${TYPE_LABEL[c.type]+' — Str '+eff}"><span class="cd-suit">${SUIT_SYM[c.type]}</span><span class="ci">${UNIT_SVG[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}<span class="cd-eff">${eff}</span></div>`;
+  return`<div class="cd ${c.type} ${sel?'sel':''} ${!pl?'unp':''}" data-id="${c.id}" data-hand="1" data-pvp="${side}" title="${TYPE_LABEL[c.type]+' — Str '+eff}"><span class="cd-suit">${SUIT_SYM[c.type]}</span><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type].slice(0,6)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}<span class="cd-eff">${eff}</span></div>`;
 }
 
 function rCard(c,fd=false){
   const fat=c.type==='shardbearers'&&c.deployTurn>=0?Math.floor((turnNum-c.deployTurn)/3):0;
   const mf=c.moved?1:0;const tf=fat+mf;
   let eff=c.type==='shardbearers'?c.value*2:c.value;
-  if(c.type==='spearmen')eff=c.value;
+  if(c.type==='spearmen')eff=c.value; // base only, lane bonuses shown in total
   eff=Math.max(1,eff-tf);
-  if(fd)return`<div class="cd face-down" data-id="${c.id}"><span class="ci">${UNIT_SVG[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]||''}</span><div class="card-back">${UNIT_SVG.facedown}</div></div>`;
-  return`<div class="cd ${c.type}" data-id="${c.id}"><span class="cd-suit">${SUIT_SYM[c.type]||''}</span><span class="ci">${UNIT_SVG[c.type]||''}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]||''}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0?`<span class="fat-ind">-${tf}</span>`:''}<span class="cd-eff">${eff}</span></div>`;
+  return`<div class="cd ${fd?'face-down':c.type}" data-id="${c.id}"><span class="cd-suit">${SUIT_SYM[c.type]||''}</span><span class="ci">${UI[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${(TYPE_LABEL[c.type]||c.type).slice(0,6)}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0&&!fd?`<span class="fat-ind">-${tf}</span>`:''}${!fd?`<span class="cd-eff">${eff}</span>`:''}</div>`;
 }
 
 function rLane(l,i,s){
