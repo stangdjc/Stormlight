@@ -84,6 +84,28 @@ A floating 🃏 chat bubble with Hoid's personality. Moveable left/right, minimi
 
 **16 topic categories** available via dropdown selector. Free text input for natural questions with fuzzy topic matching.
 
+### Sound & Atmosphere
+
+- **Sound effects** (Web Audio API, zero external files): card deploy thud, formation chime, Breakthrough horn, round win/lose stingers, pass/concede sounds, card select click
+- **Ambient highstorm** wind loop (toggle with 💨 button)
+- **Sound toggle** 🔊/🔇 in top bar — mutes all sounds instantly
+- All sounds procedurally generated — no audio files needed
+
+### Animations & Effects
+
+- **Enhanced card deploy**: smooth slide with slight bounce on entry
+- **Lane flash**: green/red/gold flash on lane win/lose/draw at resolution
+- **Breakthrough victory**: screen shake + 60-particle gold burst explosion
+- **Formation trigger glow** on badges when a new formation activates
+
+### Mobile Responsive
+
+- Fully playable on phones (tested down to 320px width)
+- Vertical lane stacking on narrow screens
+- Touch-friendly card and button targets
+- Responsive Wit chat, menu, tutorial, and overlays
+- Three breakpoints: 900px, 700px, 420px
+
 ### Tutorial
 
 8-step interactive walkthrough accessible from the menu ("How to Play") or in-game ("?" button). Covers card types, formations, The Tower, fatigue, and strategy tips.
@@ -131,6 +153,7 @@ Strip a 52-card deck to A–10 (40 cards). ♣=Spearmen, ♦=Archers, ♥=Cavalr
 | v7 | Rosharan SVG card art, battlefield atmosphere, deploy animations, Wit spam fix |
 | v8 | Layout restructure (lane status top, formations bottom), floating Wit with dropdown topics, chat reset |
 | v9 | Moveable Wit (left/right), 5 AI opponents with progression, smack talk system |
+| v10 | Sound effects (Web Audio), card/lane animations, Breakthrough particles + screen shake, mobile responsive, ambient highstorm |
 
 ---
 

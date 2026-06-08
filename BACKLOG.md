@@ -25,12 +25,12 @@
 ## Priority 2: Card & Action Polish
 
 ### Visual Enhancements
-- [ ] Card deploy animation (slide from hand into lane)
-- [ ] Card retreat animation (slide back to hand)
-- [ ] Lane win/loss flash effect on resolution
-- [ ] Formation badge pulse animation when triggered
+- [x] Card deploy animation (slide from hand into lane) ✅ v10
+- [x] Card retreat animation (slide back to hand) ✅ v10
+- [x] Lane win/loss flash effect on resolution ✅ v10
+- [x] Formation badge pulse animation when triggered ✅ v10
 - [ ] Shardbearer fatigue visual (cracking border effect)
-- [ ] Breakthrough victory: screen-shake + gold particle burst
+- [x] Breakthrough victory: screen-shake + gold particle burst ✅ v10
 - [ ] Card hover tooltip showing effective strength with all bonuses broken down
 
 ### Action Flow Improvements
@@ -41,11 +41,11 @@
 - [ ] Undo last action (before AI responds)
 - [ ] Speed control for AI thinking delay (fast/normal/slow)
 
-### Audio (Optional)
-- [ ] Card deploy sound (parchment/thud)
-- [ ] Formation trigger chime
-- [ ] Breakthrough horn blast
-- [ ] Ambient highstorm wind (toggle)
+### Audio ✅ v10
+- [x] Card deploy sound (parchment/thud) ✅ v10
+- [x] Formation trigger chime ✅ v10
+- [x] Breakthrough horn blast ✅ v10
+- [x] Ambient highstorm wind (toggle) ✅ v10
 
 ---
 
@@ -57,4 +57,4 @@
 - [ ] Additional AI personalities (Navani = tech/siege focus, Wit = chaotic/random)
 - [ ] Match history and win/loss tracking
 - [ ] Spectator mode for watching AI vs AI matches
-- [ ] Mobile-optimized layout (vertical card stacking)
+- [x] Mobile-optimized layout (vertical card stacking) ✅ v10

@@ -240,71 +240,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tut-dot.ac{background:var(--gld)}
 .tut-dot.done{background:var(--grn)}
 .tut-nav{display:flex;gap:6px}
-/* ═══ v10: Enhanced Animations ═══ */
-/* Card deploy — smoother with slight bounce */
-@keyframes card-deploy-v2{0%{opacity:0;transform:translateY(40px) scale(.7) rotate(-2deg)}60%{opacity:1;transform:translateY(-4px) scale(1.04) rotate(.5deg)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
-.ls .cd{animation:card-deploy-v2 .35s cubic-bezier(.34,1.56,.64,1)}
-/* Card retreat — slide back down */
-@keyframes card-retreat{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(30px) scale(.8)}}
-.cd.retreating{animation:card-retreat .25s ease-in forwards}
-/* Lane flash on resolution */
-@keyframes lane-win-flash{0%{box-shadow:inset 0 0 0 rgba(85,204,119,0)}30%{box-shadow:inset 0 0 30px rgba(85,204,119,.25)}100%{box-shadow:inset 0 0 0 rgba(85,204,119,0)}}
-@keyframes lane-lose-flash{0%{box-shadow:inset 0 0 0 rgba(255,85,85,0)}30%{box-shadow:inset 0 0 30px rgba(255,85,85,.2)}100%{box-shadow:inset 0 0 0 rgba(255,85,85,0)}}
-@keyframes lane-draw-flash{0%{box-shadow:inset 0 0 0 rgba(255,215,0,0)}30%{box-shadow:inset 0 0 25px rgba(255,215,0,.15)}100%{box-shadow:inset 0 0 0 rgba(255,215,0,0)}}
-.ln.flash-win{animation:lane-win-flash 1.2s ease-out}
-.ln.flash-lose{animation:lane-lose-flash 1.2s ease-out}
-.ln.flash-draw{animation:lane-draw-flash 1.2s ease-out}
-/* Formation trigger glow */
-@keyframes form-trigger{0%{background:rgba(255,215,0,.1);transform:scale(1)}50%{background:rgba(255,215,0,.25);transform:scale(1.08)}100%{background:rgba(255,215,0,.1);transform:scale(1)}}
-.fm-badge.just-triggered{animation:form-trigger .6s ease-out}
-/* ═══ v10: Breakthrough Victory Effect ═══ */
-@keyframes screen-shake{0%,100%{transform:translate(0)}10%{transform:translate(-6px,4px)}20%{transform:translate(5px,-3px)}30%{transform:translate(-4px,6px)}40%{transform:translate(6px,-2px)}50%{transform:translate(-3px,5px)}60%{transform:translate(4px,-4px)}70%{transform:translate(-5px,3px)}80%{transform:translate(3px,-5px)}90%{transform:translate(-2px,4px)}}
-.shake{animation:screen-shake .6s ease-out}
-/* Gold particle burst */
-.bt-particles{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
-.bt-particle{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--gld);opacity:0;animation:particle-burst 1.8s ease-out forwards}
-@keyframes particle-burst{0%{opacity:1;transform:translate(0,0) scale(1)}30%{opacity:.9}100%{opacity:0;transform:translate(var(--px),var(--py)) scale(0)}}
-/* Sound toggle */
-.snd-btn{cursor:pointer;font-size:14px;opacity:.6;transition:opacity .15s;padding:2px 4px}
-.snd-btn:hover{opacity:1}
-.snd-btn.muted{opacity:.3}
-/* ═══ v10: Mobile Responsive ═══ */
 @media(max-width:900px){.wit-float{bottom:6px;width:260px}.wit-float.pos-right{right:6px}.wit-float.pos-left{left:6px}.page{padding:6px}.smack-bubble{max-width:200px}}
-@media(max-width:700px){
-  .page{flex-direction:column;height:auto;min-height:100vh;overflow-y:auto}
-  body{overflow-y:auto}
-  .game{overflow:visible}
-  .cd{width:48px;height:66px}.cd .cv{font-size:17px}
-  .ls .cd{width:42px;height:58px}.ls .cd .cv{font-size:14px}.ls .cd .ci svg{width:14px;height:14px}
-  .bf{flex-direction:column;gap:4px;min-height:auto}
-  .ln{min-height:80px}
-  .ls{min-height:40px;gap:3px}
-  .hd{gap:4px;min-height:56px}
-  .top h1{font-size:14px;letter-spacing:1px}
-  .mi{font-size:10px}
-  .btn{padding:5px 10px;font-size:11px}
-  .menu h1{font-size:26px}
-  .menu .sub{font-size:11px}
-  .ai-row{flex-wrap:wrap;gap:6px}
-  .ai-card{min-width:calc(50% - 6px);padding:10px}
-  .ovc{padding:18px 22px;max-width:90%}
-  .wit-float{width:240px;bottom:4px}
-  .tut-box{max-width:95%;max-height:80vh}
-  .tut-body .tut-grid{grid-template-columns:1fr}
-  .form-bar{gap:3px}.form-bar .fb-item{font-size:8px;padding:1px 5px}
-  .lane-status-bar{flex-wrap:wrap}
-  .ls-chip{font-size:9px;padding:2px 6px}
-  .smack-bubble{position:static;display:block;margin:2px 0 0;max-width:100%}
-}
-@media(max-width:420px){
-  .cd{width:40px;height:56px}.cd .cv{font-size:15px}.cd .ct{display:none}
-  .ls .cd{width:36px;height:50px}.ls .cd .cv{font-size:12px}
-  .cd .cs{font-size:7px;padding:0 3px}.cd .cd-eff{font-size:7px;padding:0 3px}.cd .cd-suit{font-size:7px}
-  .top{padding:5px 10px}.top h1{font-size:12px}
-  .ai-row{flex-direction:column}.ai-card{min-width:100%}
-  .act{gap:4px}.btn{padding:4px 8px;font-size:10px}
-  .wit-float{width:200px}
-}
+@media(max-width:700px){.cd{width:46px;height:64px}.cd .cv{font-size:16px}.ls .cd{width:40px;height:56px}.ls .cd .cv{font-size:14px}}
 </style>
 </head>
 <body>
@@ -384,71 +321,6 @@ function triggerSmack(event){
 
 // Track which opponents have been beaten
 let beatenOpponents=[];
-
-// ═══════════════════════════════════════
-// v10: Sound Engine (Web Audio API)
-// ═══════════════════════════════════════
-let soundOn=true,audioCtx=null;
-function getAC(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
-function playTone(freq,dur,type='sine',vol=.12,decay=true){
-  if(!soundOn)return;try{const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();
-  o.type=type;o.frequency.setValueAtTime(freq,ac.currentTime);g.gain.setValueAtTime(vol,ac.currentTime);
-  if(decay)g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
-  o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+dur)}catch(e){}}
-function playNoise(dur,vol=.06){
-  if(!soundOn)return;try{const ac=getAC(),buf=ac.createBuffer(1,ac.sampleRate*dur,ac.sampleRate),d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,.8);
-  const src=ac.createBufferSource(),g=ac.createGain();src.buffer=buf;g.gain.setValueAtTime(vol,ac.currentTime);
-  g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);src.connect(g);g.connect(ac.destination);src.start()}catch(e){}}
-
-// Sound effects
-function sndDeploy(){playTone(120,.15,'sine',.1);setTimeout(()=>playNoise(.08,.08),30)}
-function sndFormation(){playTone(523,.12,'sine',.08);setTimeout(()=>playTone(659,.12,'sine',.07),80);setTimeout(()=>playTone(784,.18,'sine',.06),160)}
-function sndBreakthrough(){playTone(262,.2,'sawtooth',.1);setTimeout(()=>playTone(330,.2,'sawtooth',.1),150);setTimeout(()=>playTone(392,.3,'sawtooth',.12),300);setTimeout(()=>playTone(523,.5,'sawtooth',.14),450);setTimeout(()=>playNoise(.3,.06),500)}
-function sndRoundWin(){playTone(523,.15,'sine',.08);setTimeout(()=>playTone(659,.15,'sine',.07),120);setTimeout(()=>playTone(784,.25,'sine',.09),240)}
-function sndRoundLose(){playTone(392,.2,'sine',.07);setTimeout(()=>playTone(330,.2,'sine',.06),150);setTimeout(()=>playTone(262,.35,'sine',.08),300)}
-function sndPass(){playTone(440,.06,'sine',.04)}
-function sndConcede(){playTone(330,.15,'sine',.06);setTimeout(()=>playTone(262,.25,'sine',.07),120)}
-function sndSelect(){playTone(660,.05,'sine',.04)}
-
-// Ambient highstorm wind — looping noise
-let stormNode=null,stormGain=null,stormOn=false;
-function toggleStorm(){
-  if(!soundOn){stormOn=false;return}
-  if(stormOn&&stormNode){try{stormNode.stop()}catch(e){}stormNode=null;stormOn=false;return}
-  try{const ac=getAC(),dur=4,buf=ac.createBuffer(1,ac.sampleRate*dur,ac.sampleRate),d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++){const t=i/ac.sampleRate;d[i]=(Math.random()*2-1)*(0.3+0.2*Math.sin(t*0.7))*0.4}
-  stormNode=ac.createBufferSource();stormGain=ac.createGain();stormNode.buffer=buf;stormNode.loop=true;
-  stormGain.gain.setValueAtTime(.025,ac.currentTime);stormNode.connect(stormGain);stormGain.connect(ac.destination);
-  stormNode.start();stormOn=true}catch(e){stormOn=false}
-}
-window.toggleSound=function(){soundOn=!soundOn;if(!soundOn&&stormNode){try{stormNode.stop()}catch(e){}stormNode=null;stormOn=false}R()};
-window.toggleStorm=toggleStorm;
-
-// ═══════════════════════════════════════
-// v10: Breakthrough Particle System
-// ═══════════════════════════════════════
-function spawnParticles(){
-  const container=document.createElement('div');container.className='bt-particles';
-  document.body.appendChild(container);
-  for(let i=0;i<60;i++){
-    const p=document.createElement('div');p.className='bt-particle';
-    const cx=window.innerWidth/2,cy=window.innerHeight/2;
-    const angle=Math.random()*Math.PI*2,dist=120+Math.random()*280;
-    p.style.left=cx+'px';p.style.top=cy+'px';
-    p.style.setProperty('--px',(Math.cos(angle)*dist)+'px');
-    p.style.setProperty('--py',(Math.sin(angle)*dist)+'px');
-    p.style.width=(4+Math.random()*6)+'px';p.style.height=p.style.width;
-    p.style.animationDelay=(Math.random()*.3)+'s';
-    p.style.background=Math.random()>.3?'var(--gld)':Math.random()>.5?'#fff':'var(--ar)';
-    container.appendChild(p);
-  }
-  setTimeout(()=>container.remove(),2200);
-}
-function triggerScreenShake(){
-  const page=document.querySelector('.page');
-  if(page){page.classList.add('shake');setTimeout(()=>page.classList.remove('shake'),700)}
-}
 
 let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
 let pvpMode=false,handoffScreen=false,witOpen=true,witMode='normal',witPos='right'; // normal|enhanced|cheat
@@ -1298,8 +1170,6 @@ function R(){
         ${pvpMode?'<span class="badge" style="background:rgba(85,204,119,.12);color:var(--grn);border-color:rgba(85,204,119,.25)">PvP Hotseat</span>'
           :`<span class="badge" style="background:${aiPers==='sadeas'?'rgba(255,85,85,.12)':'rgba(74,158,255,.12)'};color:${aiPers==='sadeas'?'var(--red)':'var(--blu)'};border-color:${aiPers==='sadeas'?'rgba(255,85,85,.25)':'rgba(74,158,255,.25)'}">vs ${W.name}</span>`}
         <span class="mi">Rd <b>${s.cr}/3</b> · P1 <b>${s.p.human.rw}</b>–<b>${s.p.ai.rw}</b> P2 · Pile: ${s.dp.length}</span>
-        <span class="snd-btn ${soundOn?'':'muted'}" onclick="toggleSound()" title="${soundOn?'Mute':'Unmute'}">${soundOn?'🔊':'🔇'}</span>
-        <span class="snd-btn ${stormOn?'':'muted'}" onclick="toggleStorm()" title="${stormOn?'Stop Highstorm':'Ambient Highstorm'}">${stormOn?'🌪️':'💨'}</span>
         <button class="btn sm" onclick="tutOpen_()">?</button>
         <button class="btn sm" onclick="toMenu()">Menu</button>
       </div></div>
@@ -1460,8 +1330,6 @@ function rOv(s){
     const bt=lastR&&lastR.bt;
     // Track beaten opponents for unlocks
     if(isW&&!pvpMode&&!beatenOpponents.includes(aiPers))beatenOpponents.push(aiPers);
-    if(isW)setTimeout(sndRoundWin,100); else setTimeout(sndRoundLose,100);
-    if(bt)setTimeout(()=>{triggerScreenShake();spawnParticles()},200);
     const unlockMsg=isW&&beatenOpponents.length>=1&&beatenOpponents.length<=3?
       `<p style="color:var(--gld);font-size:12px">🔓 New opponent unlocked!</p>`:'';
     return`<div class="ovc"><div style="font-size:44px;margin-bottom:6px">🤝</div><h2>${isW?'Victory!':'Defeat'}</h2>
@@ -1523,7 +1391,7 @@ function bind(){
     if(!pvpMode&&G.turn!=='human')return;
     const hand=isP2?G.p.ai.h:G.p.human.h;
     const c=hand.find(x=>x.id===el.dataset.id);if(!c)return;
-    G.sel=G.sel?.id===c.id?null:c;G.rm=false;G.mm=false;G.cm=false;G.cid=null;sndSelect();R();
+    G.sel=G.sel?.id===c.id?null:c;G.rm=false;G.mm=false;G.cm=false;G.cid=null;R();
   }));
   // Lane card clicks — for retreat/move/charge, use the active player's side
   const side=pvpMode&&G.turn==='ai'?'ai':'human';
@@ -1554,10 +1422,6 @@ window.dep=function(li){
   if(side==='human')G.hp=false; else G.ap=false;
   const who=side==='human'?'Player 1':'Player 2';
   lg(`${pvpMode?who:'You'} deploy${pvpMode?'s':''} ${UI[c.type]} ${c.type} (${c.value}) to ${MODES[G.mode].ln[li]}`,side==='human'?'player':'ai');
-  sndDeploy();
-  // Check if a new formation triggered for sound
-  const postForms=detectFormations(G.lanes[li][side],li,G.lanes,side,G.mode);
-  if(postForms.length>0)setTimeout(sndFormation,200);
   const td=G.lanes.reduce((a,l)=>a+l[side].length,0);
   if(c.type==='cavalry'&&td>1){G.cm=true;G.cid=null;R();return}
   endTurn();
@@ -1625,14 +1489,12 @@ window.pPass=function(){
   if(who==='human')G.hp=true; else G.ap=true;
   G.sel=null;G.rm=false;G.mm=false;
   lg(`${who==='human'?'Player 1':'Player 2'} passes.`,who==='human'?'player':'ai');
-  sndPass();
   if(G.hp&&G.ap)resRound(); else endTurn();
 };
 window.pCon=function(){
   const who=G.turn;
   if(who==='human'){lg('Player 1 offers a handshake and concedes.','player');G.p.ai.rw++}
   else{lg('Player 2 offers a handshake and concedes.','ai');G.p.human.rw++}
-  sndConcede();
   elim(G);chkEnd();
 };
 
@@ -1657,7 +1519,6 @@ function aiExec(){
   else if(d.a==='deploy'){
     const{c,li}=d;G.p.ai.h=G.p.ai.h.filter(x=>x.id!==c.id);c.deployTurn=turnNum;c.moved=false;G.lanes[li].ai.push(c);G.ap=false;
     lg(`${AIW[aiPers].name} deploys ${M.fd?'a card':UI[c.type]+' '+c.type+' ('+c.value+')'} to ${M.ln[li]}`,'ai');
-    sndDeploy();
     if(c.type==='cavalry')aiCharge(G);
     if(c.type==='shardbearers'||c.value>=8)triggerSmack('deploy_strong');
     else if(Math.random()>.65)triggerSmack('deploy');
@@ -1673,25 +1534,15 @@ function aiExec(){
 
 function resRound(){
   const r=resolve(G);G.rr.push(r);const M=MODES[G.mode];
-  // Apply lane flash classes
-  setTimeout(()=>{
-    document.querySelectorAll('.ln').forEach((el,i)=>{
-      if(i<r.lr.length){
-        const cls=r.lr[i].w==='human'?'flash-win':r.lr[i].w==='ai'?'flash-lose':'flash-draw';
-        el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),1300);
-      }
-    });
-  },50);
   // Breakthrough check
   if(r.bt){
     const winner=r.bt;
     if(winner==='human'){G.p.human.rw=2;lg(`BREAKTHROUGH! You shatter The Tower!`,'system')}
     else{G.p.ai.rw=2;lg(`BREAKTHROUGH! ${AIW[aiPers].name} breaks through The Tower!`,'ai')}
-    sndBreakthrough();triggerScreenShake();setTimeout(spawnParticles,200);
   } else {
-    if(r.rw==='human'){G.p.human.rw++;lg(`Round ${G.cr}: You win! (${r.hl}–${r.al})`,'system');triggerSmack('loseRound');sndRoundWin()}
-    else if(r.rw==='ai'){G.p.ai.rw++;lg(`Round ${G.cr}: ${AIW[aiPers].name} wins. (${r.al}–${r.hl})`,'system');triggerSmack('winRound');sndRoundLose()}
-    else{lg(`Round ${G.cr}: Draw!`,'system');sndPass()}
+    if(r.rw==='human'){G.p.human.rw++;lg(`Round ${G.cr}: You win! (${r.hl}–${r.al})`,'system');triggerSmack('loseRound')}
+    else if(r.rw==='ai'){G.p.ai.rw++;lg(`Round ${G.cr}: ${AIW[aiPers].name} wins. (${r.al}–${r.hl})`,'system');triggerSmack('winRound')}
+    else lg(`Round ${G.cr}: Draw!`,'system');
   }
   elim(G);G.cr++;G.hp=false;G.ap=false;turnNum=0;
   if(G.p.human.rw>=2||G.p.ai.rw>=2||G.cr>3)G.phase='match_end';else G.phase='round_end';
