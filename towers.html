@@ -343,6 +343,58 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .db-type-cards .cd.in-deck{opacity:1;box-shadow:0 0 0 2px var(--gld),0 4px 12px rgba(255,215,0,.15)}
 @media(max-width:700px){.deck-builder{max-width:100%;padding:0 6px}.db-grid .cd{width:44px;height:62px}.db-grid .cd .cv{font-size:15px}}
 @media(max-width:420px){.db-grid .cd{width:38px;height:54px}.db-grid .cd .cv{font-size:13px}.db-grid .cd .ct{display:none}}
+/* v12: Campaign Mode */
+.campaign-map{max-width:680px;margin:20px auto;text-align:center;padding:0 12px}
+.campaign-map h1{font-size:28px;color:var(--gld);letter-spacing:2px;margin-bottom:2px}
+.cm-subtitle{color:var(--dim);font-size:13px;font-style:italic;margin-bottom:12px}
+.cm-intro{color:var(--txt);font-size:13px;line-height:1.6;margin-bottom:16px;padding:12px;background:var(--bg2);border:1px solid var(--brd);border-radius:8px}
+.cm-effects{margin-bottom:16px}
+.cm-eff-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:6px}
+.cm-eff-chip{display:inline-block;padding:3px 10px;margin:2px;font-size:11px;border-radius:12px;background:var(--bg3);border:1px solid var(--brd);color:var(--gld)}
+.cm-chapters{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.cm-chapter{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;text-align:left;transition:all .2s;position:relative}
+.cm-chapter.unlocked{cursor:pointer}.cm-chapter.unlocked:hover{border-color:var(--gld);background:var(--bg3)}
+.cm-chapter.current{border-color:var(--gld);box-shadow:0 0 12px rgba(255,215,0,.15)}
+.cm-chapter.locked{opacity:.4;cursor:default}
+.cm-chapter.won{border-left:3px solid var(--grn)}.cm-chapter.lost{border-left:3px solid var(--red)}
+.cm-ch-icon{font-size:28px;min-width:36px;text-align:center}
+.cm-ch-num{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim)}
+.cm-ch-name{font-size:14px;font-weight:700;color:var(--txt);flex:1}
+.cm-ch-opp{font-size:11px;color:var(--dim)}
+.cm-ch-result{font-size:11px;font-weight:700}.cm-ch-result.win{color:var(--grn)}.cm-ch-result.lose{color:var(--red)}
+.cm-ch-current{font-size:11px;font-weight:700;color:var(--gld);animation:pulse 1.5s infinite}
+.cm-ch-lock{font-size:16px;position:absolute;right:12px}
+.cm-complete{padding:20px;background:var(--bg2);border:2px solid var(--gld);border-radius:12px;margin-bottom:12px}
+.cm-complete h2{color:var(--gld);margin-bottom:6px}
+.cm-score{font-size:24px;font-weight:800;color:var(--txt);margin-bottom:4px}
+.cm-verdict{font-size:13px;color:var(--dim);margin-bottom:12px;font-style:italic}
+.cm-back{margin-top:8px}
+/* Campaign Briefing */
+.campaign-briefing{max-width:600px;margin:30px auto;text-align:center;padding:0 16px}
+.campaign-briefing h1{font-size:24px;color:var(--gld);margin-bottom:8px}
+.cb-chapter{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--dim);margin-bottom:4px}
+.cb-opponent{font-size:13px;color:var(--dim);margin-bottom:16px}
+.cb-story{font-size:14px;line-height:1.7;color:var(--txt);padding:16px;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;margin-bottom:12px;text-align:left}
+.cb-tip{font-size:12px;color:var(--gld);padding:10px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.15);border-radius:8px;margin-bottom:14px;text-align:left}
+.cb-stakes{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.cb-stake{font-size:12px;padding:8px 12px;border-radius:8px;text-align:left}
+.cb-stake.win{background:rgba(0,200,83,.06);border:1px solid rgba(0,200,83,.15);color:var(--grn)}
+.cb-stake.lose{background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.15);color:var(--red)}
+.cb-active-effects{font-size:11px;color:var(--gld);padding:8px;background:var(--bg3);border-radius:6px;margin-bottom:12px}
+.cb-actions{display:flex;gap:8px;justify-content:center;margin-top:12px}
+/* Campaign Outcome */
+.campaign-outcome{max-width:600px;margin:30px auto;text-align:center;padding:0 16px}
+.campaign-outcome h1{font-size:22px;color:var(--txt);margin-bottom:12px}
+.co-result{font-size:28px;font-weight:900;margin-bottom:8px;letter-spacing:3px}
+.campaign-outcome.win .co-result{color:var(--gld)}
+.campaign-outcome.lose .co-result{color:var(--red)}
+.co-story{font-size:14px;line-height:1.7;color:var(--txt);padding:16px;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;margin-bottom:12px;text-align:left}
+.co-effect{font-size:13px;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-weight:600}
+.co-effect.win{background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.2);color:var(--grn)}
+.co-effect.lose{background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.2);color:var(--red)}
+.co-actions{margin-top:12px}
+@media(max-width:700px){.campaign-map,.campaign-briefing,.campaign-outcome{padding:0 8px}.cm-chapter{padding:10px 12px;gap:8px}.cm-ch-icon{font-size:22px;min-width:28px}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
@@ -491,6 +543,227 @@ function triggerScreenShake(){
 let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
 let pvpMode=false,handoffScreen=false,witOpen=true,witMode='normal',witPos='right'; // normal|enhanced|cheat
 let deckBuilderOpen=false,playerDeck=[],pvpDeck2=[],buildingForP2=false; // v11: Deck Builder
+// v12: Campaign Mode
+let campaignActive=false,campaignChapter=0,campaignEffects={deckSize:20,formationBonus:0,strBonus:0,scoutCards:0,extraAICard:false};
+let campaignResults=[]; // array of 'win'|'lose' per chapter
+let campaignScreen=''; // 'map','briefing','outcome'
+
+const CAMPAIGN={
+  title:'The War of Reckoning',
+  subtitle:'A Stormlight Campaign',
+  intro:'You are a young Brightlord sworn to Dalinar Kholin\'s coalition. The Shattered Plains hold glory and ruin in equal measure. Your command of Towers will decide the fate of the warcamps — and perhaps all of Roshar.',
+  chapters:[
+    {
+      id:0,opponent:'sadeas',mode:'standard',
+      name:'The Betrayal at the Tower',
+      icon:'🗼',
+      briefing:'Highprince Sadeas has agreed to a joint assault on a plateau. Your forces march alongside his to claim the chrysalis. But whispers in the warcamp say Sadeas cannot be trusted. Dalinar has asked you to lead the vanguard — prove your worth on the Tower plateau.',
+      briefingSub:'Sadeas fights dirty. He\'ll sacrifice weak lanes to overwhelm where you\'re thin. Watch for cavalry flanks.',
+      winText:'The plateau is yours! But as the dust settles, you see Sadeas\'s banner retreating — he abandoned the assault early, leaving your flank exposed. You survived through sheer skill. Dalinar nods grimly. "Now we know what he is." Your troops rally around your victory, and a fallen Shardbearer\'s blade is recovered from the field.',
+      winEffect:'Bonus: +1 deck slot (21 cards) for the rest of the campaign.',
+      winApply:e=>{e.deckSize=21},
+      loseText:'Sadeas\'s forces pulled back mid-battle, leaving you surrounded. Your army fights valiantly but the position is lost. You retreat with what remains. Dalinar places a hand on your shoulder. "We rebuild. We always rebuild." But the losses sting — you\'ll start the next battle with a thinner roster.',
+      loseEffect:'Penalty: -2 deck slots (18 cards) next chapter.',
+      loseApply:e=>{e.deckSize=18}
+    },
+    {
+      id:1,opponent:'dalinar',mode:'standard',
+      name:'The Codes of War',
+      icon:'⚔️',
+      briefing:'After the betrayal, Dalinar\'s coalition needs strength. The Blackthorn himself offers to spar with you at the practice grounds. This is not a battle — it is a test. Dalinar wants to see if you have the discipline to lead his vanguard. Fight with honor. He\'ll respect nothing less.',
+      briefingSub:'Dalinar builds formations. He\'ll stack spearmen for Phalanx and hold The Tower. Outmaneuver him with mobility.',
+      winText:'Dalinar sheathes his blade and offers a rare smile. "You fight like someone who understands the Codes. Not just strength — purpose." He pledges his elite Cobalt Guard to reinforce your formations. Their discipline sharpens your troops\' coordination across the campaign.',
+      winEffect:'Bonus: +1 formation strength bonus for all formations.',
+      winApply:e=>{e.formationBonus=1},
+      loseText:'Dalinar overwhelms your lines with patient, methodical pressure. You yield with honor. "No shame in this," he says. "You held longer than most." He doesn\'t pledge the Cobalt Guard, but his respect is clear. You fight on without the bonus — but without penalty either.',
+      loseEffect:'No penalty. Dalinar respects the effort.',
+      loseApply:e=>{}
+    },
+    {
+      id:2,opponent:'adolin',mode:'standard',
+      name:'The Duel',
+      icon:'🏟️',
+      briefing:'The dueling arena in the warcamps. All of Alethkar watches. Adolin Kholin has challenged the corrupt Shardbearers to a duel of honor — and he\'s asked you to fight at his side in a preliminary bout. Win here and the political momentum shifts to Dalinar\'s coalition. The crowd roars. Shardplate gleams.',
+      briefingSub:'Adolin is balanced and adaptive. He\'ll mirror your strategy. Commit to a plan early and don\'t second-guess.',
+      winText:'The arena erupts! Your victory shifts the political winds. Highprinces who sat on the fence now whisper about joining Dalinar\'s cause. Adolin clasps your arm: "We make a good team." The crowd\'s energy is infectious — your troops fight harder knowing all of Alethkar believes in them.',
+      winEffect:'Bonus: Rally ability — +1 strength to all units in one lane (once per game).',
+      winApply:e=>{e.strBonus=1},
+      loseText:'Adolin fights brilliantly but your coordination falters at a critical moment. The bout goes to the opposition. The crowd murmurs. Adolin shakes his head — "Next time." The political setback emboldens your enemies. Taravangian\'s forces arrive at the Plains with sharper teeth than expected.',
+      loseEffect:'Penalty: Taravangian gets +1 strength in all lanes next chapter.',
+      loseApply:e=>{e.strBonus=-1}
+    },
+    {
+      id:3,opponent:'taravangian',mode:'flatface',
+      name:'The Diagram',
+      icon:'📜',
+      briefing:'Intelligence reaches the warcamp: Taravangian — the seemingly gentle old king — has been manipulating events across Roshar using a mysterious document called the Diagram. His agents have infiltrated the Plains. Now he challenges you directly, and nothing is as it seems. His cards are hidden. His intentions darker still.',
+      briefingSub:'Flatface mode — his cards are hidden until resolution. He cherry-picks the highest values. Spread your strength to avoid being surprised.',
+      winText:'You cut through Taravangian\'s deceptions! His hidden cards couldn\'t overcome your preparation. As his agents scatter, captured documents reveal fragments of the Diagram — including intelligence on Odium\'s battle formations. "Knowledge is the sharpest Blade," Dalinar says, studying the papers.',
+      winEffect:'Bonus: Scout intel — see 3 cards from Odium\'s deck in the final battle.',
+      winApply:e=>{e.scoutCards=3},
+      loseText:'Taravangian\'s hidden machinations overwhelm you. His calculated sacrifices were precisely that — calculated. As you regroup, word arrives that his agents have passed information to Odium\'s forces. The final battle just got harder.',
+      loseEffect:'Penalty: Odium starts with an extra card in hand.',
+      loseApply:e=>{e.extraAICard=true}
+    },
+    {
+      id:4,opponent:'odium',mode:'crosswise',
+      name:'The Last Desolation',
+      icon:'🌩️',
+      briefing:'The Everstorm breaks across the Shattered Plains. Odium\'s forces pour through — Fused, Regals, and the full might of the enemy. Everything you\'ve fought for comes down to this. Five lanes. No retreat. All of your accumulated strength, every alliance forged and lesson learned, will be tested. Life before death, Radiant.',
+      briefingSub:'Crosswise Chull — 5 lanes, archers reach 2 lanes. Odium hits everywhere with maximum force. Use everything you\'ve earned.',
+      winText:'THE EVERSTORM BREAKS! Against impossible odds, your forces hold. Lane by lane, formation by formation, you push back the darkness. As Odium\'s forces crumble, a shaft of golden light breaks through the clouds. The Stormfather rumbles: "These Words are accepted." You have saved Roshar. The war is not over — but today, honor prevailed.',
+      winEffect:'🏆 Campaign Complete! You are a true Knight Radiant.',
+      winApply:e=>{},
+      loseText:'The Everstorm rages. Your lines buckle under Odium\'s relentless assault. One by one, the lanes fall. But even in defeat, your soldiers fight with honor. Dalinar pulls you from the field: "We will return. The journey doesn\'t end here." The Desolation has come... but Radiants don\'t stay down.',
+      loseEffect:'You may retry with all your accumulated effects. The journey continues.',
+      loseApply:e=>{}
+    }
+  ]
+};
+
+function getCampaignEffects(){
+  // Recalculate effects from scratch based on results
+  const eff={deckSize:20,formationBonus:0,strBonus:0,scoutCards:0,extraAICard:false};
+  for(let i=0;i<campaignResults.length;i++){
+    const ch=CAMPAIGN.chapters[i];
+    if(campaignResults[i]==='win')ch.winApply(eff);
+    else ch.loseApply(eff);
+  }
+  return eff;
+}
+
+function renderCampaignMap(){
+  const eff=getCampaignEffects();
+  let h=`<div class="campaign-map">
+    <h1>⚡ ${CAMPAIGN.title}</h1>
+    <div class="cm-subtitle">${CAMPAIGN.subtitle}</div>
+    <div class="cm-intro">${CAMPAIGN.intro}</div>
+    <div class="cm-effects">`;
+  // Show accumulated effects
+  const effs=[];
+  if(eff.deckSize!==20)effs.push(`Deck: ${eff.deckSize} cards`);
+  if(eff.formationBonus>0)effs.push(`Formation: +${eff.formationBonus}`);
+  if(eff.strBonus>0)effs.push(`Rally: +${eff.strBonus} str`);
+  if(eff.strBonus<0)effs.push(`Enemy: +${Math.abs(eff.strBonus)} str`);
+  if(eff.scoutCards>0)effs.push(`Scout: see ${eff.scoutCards} cards`);
+  if(eff.extraAICard)effs.push(`Enemy: +1 starting card`);
+  if(effs.length)h+=`<div class="cm-eff-title">Campaign Effects</div>${effs.map(e=>`<span class="cm-eff-chip">${e}</span>`).join('')}`;
+  h+=`</div><div class="cm-chapters">`;
+
+  for(let i=0;i<CAMPAIGN.chapters.length;i++){
+    const ch=CAMPAIGN.chapters[i];
+    const result=campaignResults[i]||null;
+    const unlocked=i<=campaignResults.length;
+    const current=i===campaignResults.length;
+    const won=result==='win';
+    const lost=result==='lose';
+    h+=`<div class="cm-chapter ${unlocked?'unlocked':'locked'} ${current?'current':''} ${won?'won':''} ${lost?'lost':''}" ${unlocked&&!result?`onclick="openCampaignBriefing(${i})"`:''}">
+      <div class="cm-ch-icon">${ch.icon}</div>
+      <div class="cm-ch-num">Chapter ${i+1}</div>
+      <div class="cm-ch-name">${ch.name}</div>
+      <div class="cm-ch-opp">vs ${AIW[ch.opponent].icon} ${AIW[ch.opponent].name}</div>
+      ${result?`<div class="cm-ch-result ${result}">${won?'✅ Victory':'❌ Defeat'}</div>`:''}
+      ${current?'<div class="cm-ch-current">▶ NEXT</div>':''}
+      ${!unlocked?'<div class="cm-ch-lock">🔒</div>':''}
+    </div>`;
+  }
+
+  // Campaign complete?
+  const allDone=campaignResults.length>=5;
+  const allWins=campaignResults.filter(r=>r==='win').length;
+
+  h+=`</div>`;
+  if(allDone){
+    h+=`<div class="cm-complete">
+      <h2>${allWins>=3?'🌟 Victory! The Everstorm Breaks!':'⚔️ Campaign Complete'}</h2>
+      <div class="cm-score">${allWins}/5 Victories</div>
+      <div class="cm-verdict">${allWins===5?'Perfect Campaign — True Knight Radiant!':allWins>=4?'Legendary — The Blackthorn would be proud.':allWins>=3?'Victory — Honor prevails, though the cost was high.':allWins>=2?'Hard-fought — Roshar endures, barely.':'Defeat — But Radiants rise again.'}</div>
+      <button class="btn g" onclick="resetCampaign()">🔄 New Campaign</button>
+    </div>`;
+  }
+  h+=`<div class="cm-back"><button class="btn" onclick="exitCampaign()">← Back to Menu</button></div></div>`;
+  return h;
+}
+
+function renderCampaignBriefing(){
+  const ch=CAMPAIGN.chapters[campaignChapter];
+  const eff=getCampaignEffects();
+  return`<div class="campaign-briefing">
+    <div class="cb-chapter">Chapter ${campaignChapter+1} of 5</div>
+    <h1>${ch.icon} ${ch.name}</h1>
+    <div class="cb-opponent">vs ${AIW[ch.opponent].icon} ${AIW[ch.opponent].name} — ${MODES[ch.mode].label}</div>
+    <div class="cb-story">${ch.briefing}</div>
+    <div class="cb-tip">💡 ${ch.briefingSub}</div>
+    <div class="cb-stakes">
+      <div class="cb-stake win">🏆 If you win: ${ch.winEffect}</div>
+      <div class="cb-stake lose">💀 If you lose: ${ch.loseEffect}</div>
+    </div>
+    ${eff.deckSize!==20||eff.formationBonus||eff.strBonus||eff.scoutCards||eff.extraAICard?
+      `<div class="cb-active-effects">Active effects: ${eff.deckSize!==20?`Deck ${eff.deckSize} cards. `:''}${eff.formationBonus?`Formations +${eff.formationBonus}. `:''}${eff.strBonus>0?`Rally +${eff.strBonus}. `:''}${eff.strBonus<0?`Enemy +${Math.abs(eff.strBonus)} str. `:''}${eff.scoutCards?`Scout ${eff.scoutCards} cards. `:''}${eff.extraAICard?'Enemy +1 card. ':''}</div>`:''}
+    <div class="cb-actions">
+      <button class="btn" onclick="campaignScreen='map';R()">← Back</button>
+      <button class="btn p" onclick="startCampaignBattle()">⚔️ Begin Battle</button>
+    </div>
+  </div>`;
+}
+
+function renderCampaignOutcome(won){
+  const ch=CAMPAIGN.chapters[campaignChapter];
+  return`<div class="campaign-outcome ${won?'win':'lose'}">
+    <div class="co-result">${won?'⚡ VICTORY ⚡':'💀 DEFEAT 💀'}</div>
+    <h1>${ch.name}</h1>
+    <div class="co-story">${won?ch.winText:ch.loseText}</div>
+    <div class="co-effect ${won?'win':'lose'}">${won?ch.winEffect:ch.loseEffect}</div>
+    <div class="co-actions">
+      <button class="btn p" onclick="advanceCampaign()">Continue →</button>
+    </div>
+  </div>`;
+}
+
+window.openCampaignBriefing=function(idx){
+  campaignChapter=idx;campaignScreen='briefing';R();
+};
+
+window.startCampaignBattle=function(){
+  const ch=CAMPAIGN.chapters[campaignChapter];
+  const eff=getCampaignEffects();
+  // Set up the game with campaign settings
+  aiPers=ch.opponent;mode=ch.mode;
+  campaignEffects=eff;
+  campaignScreen='';
+  // Go to deck builder with campaign deck size
+  openDeckBuilder();
+};
+
+window.exitCampaign=function(){
+  campaignActive=false;campaignScreen='';menu=true;R();
+};
+
+window.resetCampaign=function(){
+  campaignResults=[];campaignChapter=0;campaignEffects={deckSize:20,formationBonus:0,strBonus:0,scoutCards:0,extraAICard:false};
+  campaignScreen='map';R();
+};
+
+window.advanceCampaign=function(){
+  campaignScreen='map';R();
+};
+
+window.startCampaign=function(){
+  campaignActive=true;campaignResults=[];campaignChapter=0;
+  campaignEffects={deckSize:20,formationBonus:0,strBonus:0,scoutCards:0,extraAICard:false};
+  campaignScreen='map';menu=false;R();
+};
+
+// Called when a campaign battle ends
+function campaignBattleEnd(won){
+  campaignResults[campaignChapter]=won?'win':'lose';
+  campaignScreen='outcome';
+}
+
+window.campaignMatchEnd=function(won){
+  campaignBattleEnd(won);
+  menu=false;R();
+};
 let witMsgs=[{from:'wit',text:"Ah, a new player at the Towers table! I am Wit — some call me Hoid. I've played this game across a dozen worlds, and I assure you, the rules are always the same: the clever survive, and the bold occasionally win. Ask me anything."}];
 
 // ═══════════════════════════════════════
@@ -974,9 +1247,11 @@ function renderDeckBuilder(){
   const pool=mkDeck();
   const deck=buildingForP2?pvpDeck2:playerDeck;
   const count=deck.length;
-  const ready=count===20;
-  const over=count>20;
-  const pct=Math.min(100,count/20*100);
+  const eff=campaignActive?getCampaignEffects():{deckSize:20};
+  const maxCards=eff.deckSize||20;
+  const ready=count===maxCards;
+  const over=count>maxCards;
+  const pct=Math.min(100,count/maxCards*100);
 
   // Stats
   const stats={spearmen:0,archers:0,cavalry:0,shardbearers:0,totalStr:0};
@@ -984,11 +1259,12 @@ function renderDeckBuilder(){
   const avgStr=count>0?(stats.totalStr/count).toFixed(1):'0';
 
   const who=pvpMode?(buildingForP2?'Player 2':'Player 1'):'Your';
+  const chapterLabel=campaignActive?` — Chapter ${campaignChapter+1}: ${CAMPAIGN.chapters[campaignChapter].name}`:'';
 
   let h=`<div class="deck-builder">
     <h1>⚡ DECK BUILDER</h1>
-    <div class="db-sub">${who} Deck — Pick 20 cards from the 40-card pool</div>
-    <div class="db-counter ${ready?'ready':''} ${over?'over':''}">${count} / 20</div>
+    <div class="db-sub">${who} Deck — Pick ${maxCards} cards from the 40-card pool${chapterLabel}</div>
+    <div class="db-counter ${ready?'ready':''} ${over?'over':''}">${count} / ${maxCards}</div>
     <div class="db-progress"><div class="db-progress-fill ${ready?'ready':''} ${over?'over':''}" style="width:${pct}%"></div></div>
     <div class="db-stats">
       <div class="db-stat">⚔️ <b>${stats.spearmen}</b> Spear</div>
@@ -1032,7 +1308,7 @@ function renderDeckBuilder(){
   h+=`<div class="db-actions">
     <button class="btn" onclick="backFromDeckBuilder()">← Back</button>
     <button class="btn g" onclick="quickPlay()">⚡ Quick Play (Random)</button>
-    <button class="btn p" onclick="startWithDeck()" ${!ready?'disabled title="Select exactly 20 cards"':''}>${pvpMode&&!buildingForP2?'Next: P2 Deck →':'Start Battle'}</button>
+    <button class="btn p" onclick="startWithDeck()" ${!ready?`disabled title="Select exactly ${maxCards} cards"`:''}>${pvpMode&&!buildingForP2?'Next: P2 Deck →':campaignActive?'⚔️ Begin Battle':'Start Battle'}</button>
   </div></div>`;
 
   return h;
@@ -1045,7 +1321,8 @@ window.toggleDeckCard=function(id){
   if(idx>=0){
     deck.splice(idx,1);sndSelect();
   } else {
-    if(deck.length>=20)return; // Can't add more
+    const max=campaignActive?(getCampaignEffects().deckSize||20):20;
+    if(deck.length>=max)return; // Can't add more
     const card=pool.find(c=>c.id===id);
     if(card){deck.push({...card,deployTurn:-1,moved:false});sndDeploy()}
   }
@@ -1070,10 +1347,11 @@ window.applyPreset=function(key){
 };
 
 window.randomDeck=function(){
+  const max=campaignActive?(getCampaignEffects().deckSize||20):20;
   const pool=shuf(mkDeck());
   const deck=buildingForP2?pvpDeck2:playerDeck;
   deck.length=0;
-  for(let i=0;i<20;i++)deck.push({...pool[i],deployTurn:-1,moved:false});
+  for(let i=0;i<max;i++)deck.push({...pool[i],deployTurn:-1,moved:false});
   sndSelect();R();
 };
 
@@ -1084,21 +1362,25 @@ window.clearDeck=function(){
 
 window.backFromDeckBuilder=function(){
   if(buildingForP2){buildingForP2=false;R();return}
-  deckBuilderOpen=false;R();
+  deckBuilderOpen=false;
+  if(campaignActive){campaignScreen='briefing';R();return}
+  R();
 };
 
 window.quickPlay=function(){
   // Random deck, skip builder
+  const max=campaignActive?(getCampaignEffects().deckSize||20):20;
   const pool=shuf(mkDeck());
-  playerDeck=pool.slice(0,20).map(c=>({...c,deployTurn:-1,moved:false}));
-  if(pvpMode)pvpDeck2=pool.slice(20,40).map(c=>({...c,deployTurn:-1,moved:false}));
+  playerDeck=pool.slice(0,max).map(c=>({...c,deployTurn:-1,moved:false}));
+  if(pvpMode)pvpDeck2=pool.slice(max,max+20).map(c=>({...c,deployTurn:-1,moved:false}));
   deckBuilderOpen=false;
   startGameWithDecks();
 };
 
 window.startWithDeck=function(){
   const deck=buildingForP2?pvpDeck2:playerDeck;
-  if(deck.length!==20)return;
+  const max=campaignActive?(getCampaignEffects().deckSize||20):20;
+  if(deck.length!==max)return;
   if(pvpMode&&!buildingForP2){
     // P1 done, now P2 builds
     buildingForP2=true;pvpDeck2=[];R();return;
@@ -1110,6 +1392,8 @@ window.startWithDeck=function(){
 function startGameWithDecks(){
   menu=false;turnNum=0;
   const M=MODES[mode];
+  const eff=campaignActive?getCampaignEffects():{deckSize:20,formationBonus:0,strBonus:0,scoutCards:0,extraAICard:false};
+
   // Build the full card pool: player deck + AI deck + remaining as draw pile
   const pDeck=shuf([...playerDeck]);
   const aDeck=pvpMode?shuf([...pvpDeck2]):shuf(buildAIDeck(aiPers));
@@ -1120,13 +1404,34 @@ function startGameWithDecks(){
   const lanes=[];
   for(let i=0;i<M.lanes;i++)lanes.push({human:[],ai:[]});
 
+  // Campaign: apply strength bonus/penalty to player cards
+  if(eff.strBonus>0){for(const c of pDeck)c.value=Math.min(10,c.value+eff.strBonus)}
+  // Campaign: apply enemy strength bonus (from losing Ch3)
+  if(eff.strBonus<0){for(const c of aDeck)c.value=Math.min(10,c.value+Math.abs(eff.strBonus))}
+
+  // Campaign: extra AI card
+  let aiDeal=M.deal;
+  if(eff.extraAICard)aiDeal=Math.min(aDeck.length,M.deal+1);
+
   G={mode,dp:drawPile,
-    p:{human:{h:pDeck.slice(0,M.deal),rw:0},ai:{h:aDeck.slice(0,M.deal),rw:0}},
+    p:{human:{h:pDeck.slice(0,M.deal),rw:0},ai:{h:aDeck.slice(0,aiDeal),rw:0}},
     lanes,cr:1,turn:'human',hp:false,ap:false,phase:'play',
-    sel:null,rm:false,mm:false,cm:false,cid:null,log:[],rr:[]};
+    sel:null,rm:false,mm:false,cm:false,cid:null,log:[],rr:[],
+    campaignEffects:eff};
 
   witReset();
-  lg(`— Towers (${M.label}) vs ${AIW[aiPers].name}. Custom decks loaded. —`,'system');
+  if(campaignActive){
+    const ch=CAMPAIGN.chapters[campaignChapter];
+    lg(`— Campaign Ch.${campaignChapter+1}: ${ch.name} —`,'system');
+    lg(`vs ${AIW[aiPers].icon} ${AIW[aiPers].name} (${M.label})${eff.deckSize!==20?' · Deck: '+eff.deckSize:''}${eff.formationBonus?' · Formation +'+eff.formationBonus:''}${eff.strBonus>0?' · Rally +'+eff.strBonus:''}${eff.strBonus<0?' · Enemy +'+Math.abs(eff.strBonus):''}${eff.scoutCards?' · Scout '+eff.scoutCards+' cards':''}${eff.extraAICard?' · Enemy +1 card':''}`, 'system');
+    // Scout intel: reveal some AI cards
+    if(eff.scoutCards>0){
+      const revealed=G.p.ai.h.slice(0,eff.scoutCards);
+      lg(`🔍 Scout intel: ${revealed.map(c=>`${UI[c.type]}${c.value}`).join(', ')}`,'system');
+    }
+  } else {
+    lg(`— Towers (${M.label}) vs ${AIW[aiPers].name}. Custom decks loaded. —`,'system');
+  }
   if(M.fd)lg('Flatface: opponent cards hidden until round end.','system');
   if(M.tower)lg('🏰 Center lane is The Tower. Win it by +10 with a flank for Breakthrough!','system');
   R();
@@ -1292,7 +1597,12 @@ function calcStr(cards,li,all,pl,m,tn){
   // Archer range support
   for(let d=1;d<=M.ar;d++)for(const o of[-d,d]){const a=li+o;if(a>=0&&a<M.lanes)for(const c of all[a][pl])if(c.type==='archers')total+=2}
   // Formation bonuses
-  for(const f of forms)total+=f.b;
+  for(const f of forms){
+    let bonus=f.b;
+    // Campaign: formation bonus for player side
+    if(campaignActive&&pl==='human'&&G&&G.campaignEffects&&G.campaignEffects.formationBonus)bonus+=G.campaignEffects.formationBonus;
+    total+=bonus;
+  }
   return total;
 }
 
@@ -1540,6 +1850,9 @@ function lg(m,t='system'){if(!G)return;G.log.unshift({m,t});if(G.log.length>50)G
 
 function R(){
   const root=document.getElementById('root');
+  if(campaignActive&&campaignScreen==='map'){root.innerHTML=renderCampaignMap();return}
+  if(campaignActive&&campaignScreen==='briefing'){root.innerHTML=renderCampaignBriefing();return}
+  if(campaignActive&&campaignScreen==='outcome'){const won=campaignResults[campaignChapter]==='win';root.innerHTML=renderCampaignOutcome(won);return}
   if(deckBuilderOpen){root.innerHTML=renderDeckBuilder();return}
   if(menu){root.innerHTML=renderMenu()+renderTutorial();bindMenu();return}
   const s=G,M=MODES[s.mode],W=AIW[aiPers];
@@ -1610,6 +1923,7 @@ function renderMenu(){
     <div class="mc" data-mode="flatface"><span class="mt var">Variant</span><h4>Flatface</h4><p>Opponent cards hidden until round end. Bluff and misdirect.</p></div>
     <div class="mc" data-mode="crosswise"><span class="mt var">Variant</span><h4>Crosswise Chull</h4><p>5 lanes, win 3 of 5. Archers reach 2 lanes. 13 cards dealt.</p></div>
     <div style="margin-top:20px"><button class="btn g" onclick="tutOpen_();" style="width:100%;padding:10px">📜 How to Play — Interactive Tutorial</button></div>
+    <div style="margin-top:8px"><button class="btn" onclick="startCampaign()" style="width:100%;padding:10px;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--gld);color:var(--gld)">⚡ Campaign — The War of Reckoning (5 Chapters)</button></div>
   </div>`;
 
 }
@@ -1736,7 +2050,7 @@ function rOv(s){
       <p>${isW?'"The Codes are upheld."':`"${currentSmack||'A worthy contest.'}"  — ${AIW[aiPers].name}`}</p>
       ${unlockMsg}
       <div class="sc"><span class="ps">${s.p.human.rw}</span><span style="color:var(--dim)"> – </span><span class="as">${s.p.ai.rw}</span></div>
-      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn p" onclick="rematch()">Rematch</button><button class="btn" onclick="toMenu()">Menu</button></div></div>`;
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${campaignActive?`<button class="btn p" onclick="campaignMatchEnd(${isW})">Continue Campaign →</button>`:`<button class="btn p" onclick="rematch()">Rematch</button><button class="btn" onclick="toMenu()">Menu</button>`}</div></div>`;
   }
   if(s.phase==='round_end'){
     const last=s.rr[s.rr.length-1];if(!last)return'';

@@ -53,7 +53,7 @@
 
 - [ ] Online multiplayer (WebSocket or WebRTC peer-to-peer)
 - [x] Deck builder: customize your 20-card deck from the 40-card pool before a match ✅ v11
-- [ ] Campaign mode: sequence of AI opponents with escalating difficulty
+- [x] Campaign mode: 5-chapter Stormlight narrative with carry-forward effects ✅ v12
 - [ ] Additional AI personalities (Navani = tech/siege focus, Wit = chaotic/random)
 - [ ] Match history and win/loss tracking
 - [ ] Spectator mode for watching AI vs AI matches

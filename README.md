@@ -106,6 +106,18 @@ A floating 🃏 chat bubble with Hoid's personality. Moveable left/right, minimi
 - Responsive Wit chat, menu, tutorial, and overlays
 - Three breakpoints: 900px, 700px, 420px
 
+### Campaign: The War of Reckoning
+
+A 5-chapter narrative campaign following the Stormlight Archive story arc. You play as a young Brightlord aligned with Dalinar's coalition.
+
+- **Chapter 1 — The Betrayal at the Tower** vs Sadeas (Standard): Survive the betrayal on the plateau
+- **Chapter 2 — The Codes of War** vs Dalinar (Standard): Prove yourself to the Blackthorn in a sparring match
+- **Chapter 3 — The Duel** vs Adolin (Standard): Fight for political momentum in the arena
+- **Chapter 4 — The Diagram** vs Taravangian (Flatface): Uncover the hidden schemer's plans
+- **Chapter 5 — The Last Desolation** vs Odium (Crosswise Chull): The final battle for Roshar
+
+**Carry-forward effects**: Win/lose outcomes alter subsequent chapters — bonus deck slots, formation buffs, scout intel, or enemy advantages stack across the campaign. Every playthrough feels different.
+
 ### Deck Builder
 
 Before each match, pick 20 cards from the full 40-card pool. Shape your strategy before the first deploy.
@@ -166,6 +178,7 @@ Strip a 52-card deck to A–10 (40 cards). ♣=Spearmen, ♦=Archers, ♥=Cavalr
 | v9 | Moveable Wit (left/right), 5 AI opponents with progression, smack talk system |
 | v10 | Sound effects (Web Audio), card/lane animations, Breakthrough particles + screen shake, mobile responsive, ambient highstorm |
 | v11 | Deck Builder — pick 20 cards from 40-card pool, 5 presets, AI personality-weighted decks, PvP dual deck building |
+| v12 | Campaign Mode — 5-chapter Stormlight narrative, carry-forward effects, win/lose story consequences |
 
 ---
 
