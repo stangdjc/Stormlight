@@ -52,7 +52,7 @@
 ## Priority 3: Future Features
 
 - [ ] Online multiplayer (WebSocket or WebRTC peer-to-peer)
-- [ ] Deck builder: customize your 20-card deck from the 40-card pool before a match
+- [x] Deck builder: customize your 20-card deck from the 40-card pool before a match ✅ v11
 - [ ] Campaign mode: sequence of AI opponents with escalating difficulty
 - [ ] Additional AI personalities (Navani = tech/siege focus, Wit = chaotic/random)
 - [ ] Match history and win/loss tracking

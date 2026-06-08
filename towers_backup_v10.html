@@ -305,44 +305,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   .act{gap:4px}.btn{padding:4px 8px;font-size:10px}
   .wit-float{width:200px}
 }
-/* ═══ v11: Deck Builder ═══ */
-.deck-builder{max-width:720px;margin:20px auto;text-align:center;overflow-y:auto;max-height:calc(100vh - 40px);padding:0 12px}
-.deck-builder h1{font-size:28px;color:var(--gld);letter-spacing:2px;margin-bottom:2px}
-.deck-builder .db-sub{color:var(--dim);font-size:12px;margin-bottom:12px}
-.db-stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
-.db-stat{background:var(--bg2);border:1px solid var(--brd);border-radius:8px;padding:6px 12px;font-size:11px}
-.db-stat b{color:var(--gld);font-weight:700}
-.db-stat.full b{color:var(--grn)}
-.db-stat.over b{color:var(--red)}
-.db-counter{font-size:20px;font-weight:800;color:var(--gld);margin:6px 0}
-.db-counter.ready{color:var(--grn)}
-.db-counter.over{color:var(--red)}
-.db-progress{width:100%;max-width:400px;height:6px;background:var(--bg3);border-radius:3px;margin:6px auto 12px;overflow:hidden}
-.db-progress-fill{height:100%;background:var(--gld);border-radius:3px;transition:width .2s}
-.db-progress-fill.ready{background:var(--grn)}
-.db-progress-fill.over{background:var(--red)}
-.db-section{margin-bottom:12px}
-.db-section h3{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:left}
-.db-grid{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
-.db-grid .cd{cursor:pointer;opacity:.45;transition:all .2s}
-.db-grid .cd:hover{opacity:.7;transform:translateY(-4px)}
-.db-grid .cd.in-deck{opacity:1;box-shadow:0 0 0 2px var(--gld),0 4px 12px rgba(255,215,0,.15)}
-.db-grid .cd.in-deck:hover{transform:translateY(-4px)}
-.db-presets{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}
-.db-presets .btn{font-size:11px;padding:5px 12px}
-.db-actions{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.db-type-row{display:flex;gap:4px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
-.db-type-label{font-size:10px;font-weight:700;min-width:80px;text-align:left;padding:3px 6px;border-radius:4px}
-.db-type-label.spearmen{color:var(--sp);background:rgba(124,179,255,.08)}
-.db-type-label.archers{color:var(--ar);background:rgba(255,153,68,.08)}
-.db-type-label.cavalry{color:var(--cv);background:rgba(255,85,119,.08)}
-.db-type-label.shardbearers{color:var(--sh);background:rgba(204,170,255,.08)}
-.db-type-cards{display:flex;gap:4px;flex-wrap:wrap}
-.db-type-cards .cd{cursor:pointer;opacity:.45;transition:all .2s}
-.db-type-cards .cd:hover{opacity:.7;transform:translateY(-3px)}
-.db-type-cards .cd.in-deck{opacity:1;box-shadow:0 0 0 2px var(--gld),0 4px 12px rgba(255,215,0,.15)}
-@media(max-width:700px){.deck-builder{max-width:100%;padding:0 6px}.db-grid .cd{width:44px;height:62px}.db-grid .cd .cv{font-size:15px}}
-@media(max-width:420px){.db-grid .cd{width:38px;height:54px}.db-grid .cd .cv{font-size:13px}.db-grid .cd .ct{display:none}}
 </style>
 </head>
 <body>
@@ -490,7 +452,6 @@ function triggerScreenShake(){
 
 let mode='standard',aiPers='sadeas',advOpen=true,G=null,anim=false,menu=true,turnNum=0,tutOpen=false,tutStep=0;
 let pvpMode=false,handoffScreen=false,witOpen=true,witMode='normal',witPos='right'; // normal|enhanced|cheat
-let deckBuilderOpen=false,playerDeck=[],pvpDeck2=[],buildingForP2=false; // v11: Deck Builder
 let witMsgs=[{from:'wit',text:"Ah, a new player at the Towers table! I am Wit — some call me Hoid. I've played this game across a dozen worlds, and I assure you, the rules are always the same: the clever survive, and the bold occasionally win. Ask me anything."}];
 
 // ═══════════════════════════════════════
@@ -911,233 +872,6 @@ window.askWit=function(){
 };
 
 // ═══════════════════════════════════════
-// v11: Deck Builder
-// ═══════════════════════════════════════
-const DECK_PRESETS={
-  balanced:{name:'⚖️ Balanced',desc:'Even mix of all types',pick:c=>{
-    const quotas={spearmen:5,archers:5,cavalry:5,shardbearers:5};
-    return quotas[c.type]>0?(quotas[c.type]--,true):false}},
-  formation:{name:'⚔️ Formation Heavy',desc:'Spearmen + support for Phalanx',
-    cards:['spearmen_3','spearmen_4','spearmen_5','spearmen_6','spearmen_7','spearmen_8','spearmen_9','spearmen_10',
-      'archers_6','archers_7','archers_8','archers_9','archers_10',
-      'cavalry_7','cavalry_8','cavalry_9','cavalry_10',
-      'shardbearers_8','shardbearers_9','shardbearers_10']},
-  shardRush:{name:'🗡️ Shard Rush',desc:'All Shardbearers + Spearmen for Shardwall',
-    cards:['shardbearers_1','shardbearers_2','shardbearers_3','shardbearers_4','shardbearers_5','shardbearers_6','shardbearers_7','shardbearers_8','shardbearers_9','shardbearers_10',
-      'spearmen_6','spearmen_7','spearmen_8','spearmen_9','spearmen_10',
-      'archers_8','archers_9','archers_10',
-      'cavalry_9','cavalry_10']},
-  cavalry:{name:'🐴 Cavalry Blitz',desc:'Cavalry + Archers for Skirmish Lines',
-    cards:['cavalry_1','cavalry_2','cavalry_3','cavalry_4','cavalry_5','cavalry_6','cavalry_7','cavalry_8','cavalry_9','cavalry_10',
-      'archers_4','archers_5','archers_6','archers_7','archers_8','archers_9','archers_10',
-      'spearmen_8','spearmen_9','spearmen_10']},
-  highValue:{name:'💎 Elite Force',desc:'Only high-value cards (6-10)',
-    cards:['spearmen_6','spearmen_7','spearmen_8','spearmen_9','spearmen_10',
-      'archers_6','archers_7','archers_8','archers_9','archers_10',
-      'cavalry_6','cavalry_7','cavalry_8','cavalry_9','cavalry_10',
-      'shardbearers_6','shardbearers_7','shardbearers_8','shardbearers_9','shardbearers_10']}
-};
-
-// AI deck building — personality-weighted card selection
-function buildAIDeck(personality){
-  const pool=mkDeck();const W=AIW[personality];
-  // Weight each card
-  const weighted=pool.map(c=>{
-    let w=c.value; // base: higher value = more desirable
-    if(personality==='sadeas'){
-      if(c.type==='cavalry')w+=4;if(c.type==='archers')w+=3;if(c.type==='shardbearers')w+=2;
-      if(c.type==='spearmen'&&c.value<5)w-=3; // Sadeas doesn't care for weak infantry
-    } else if(personality==='dalinar'){
-      if(c.type==='spearmen')w+=5; // Formation builder
-      if(c.type==='shardbearers')w+=3;if(c.type==='archers')w+=1;
-    } else if(personality==='adolin'){
-      w+=2; // Balanced, slight preference for everything
-      if(c.type==='cavalry')w+=2;if(c.type==='spearmen')w+=1;
-    } else if(personality==='taravangian'){
-      w=c.value*1.5; // Pure value maximizer
-      if(c.type==='shardbearers')w+=4;
-      if(c.value<=3)w-=5; // Hates weak cards
-    } else if(personality==='odium'){
-      if(c.type==='shardbearers')w+=6;if(c.value>=7)w+=3;
-      if(c.type==='spearmen'&&c.value>=5)w+=2;
-      w+=2; // Wants everything strong
-    }
-    // Add randomness so AI decks vary between games
-    w+=Math.random()*3;
-    return{card:c,weight:w};
-  });
-  weighted.sort((a,b)=>b.weight-a.weight);
-  return weighted.slice(0,20).map(w=>w.card);
-}
-
-function renderDeckBuilder(){
-  const pool=mkDeck();
-  const deck=buildingForP2?pvpDeck2:playerDeck;
-  const count=deck.length;
-  const ready=count===20;
-  const over=count>20;
-  const pct=Math.min(100,count/20*100);
-
-  // Stats
-  const stats={spearmen:0,archers:0,cavalry:0,shardbearers:0,totalStr:0};
-  for(const c of deck){stats[c.type]++;stats.totalStr+=c.type==='shardbearers'?c.value*2:c.value}
-  const avgStr=count>0?(stats.totalStr/count).toFixed(1):'0';
-
-  const who=pvpMode?(buildingForP2?'Player 2':'Player 1'):'Your';
-
-  let h=`<div class="deck-builder">
-    <h1>⚡ DECK BUILDER</h1>
-    <div class="db-sub">${who} Deck — Pick 20 cards from the 40-card pool</div>
-    <div class="db-counter ${ready?'ready':''} ${over?'over':''}">${count} / 20</div>
-    <div class="db-progress"><div class="db-progress-fill ${ready?'ready':''} ${over?'over':''}" style="width:${pct}%"></div></div>
-    <div class="db-stats">
-      <div class="db-stat">⚔️ <b>${stats.spearmen}</b> Spear</div>
-      <div class="db-stat">🏹 <b>${stats.archers}</b> Archer</div>
-      <div class="db-stat">🐴 <b>${stats.cavalry}</b> Cavalry</div>
-      <div class="db-stat">🗡️ <b>${stats.shardbearers}</b> Shard</div>
-      <div class="db-stat">Avg Str: <b>${avgStr}</b></div>
-    </div>
-    <div class="db-presets">`;
-
-  // Preset buttons
-  for(const[key,preset] of Object.entries(DECK_PRESETS)){
-    h+=`<button class="btn sm" onclick="applyPreset('${key}')" title="${preset.desc}">${preset.name}</button>`;
-  }
-  h+=`<button class="btn sm" onclick="randomDeck()" title="Random 20 cards">🎲 Random</button>`;
-  h+=`<button class="btn sm d" onclick="clearDeck()" title="Clear all">✕ Clear</button>`;
-  h+=`</div>`;
-
-  // Card grid by type
-  for(const type of UT){
-    const typeCards=pool.filter(c=>c.type===type).sort((a,b)=>a.value-b.value);
-    h+=`<div class="db-type-row">
-      <span class="db-type-label ${type}">${UI[type]} ${TYPE_LABEL[type]}</span>
-      <div class="db-type-cards">`;
-    for(const c of typeCards){
-      const inDeck=deck.some(d=>d.id===c.id);
-      const eff=c.type==='shardbearers'?c.value*2:c.value;
-      h+=`<div class="cd ${c.type} ${inDeck?'in-deck':''}" data-dbid="${c.id}" onclick="toggleDeckCard('${c.id}')">
-        <span class="cd-suit">${SUIT_SYM[c.type]}</span>
-        <span class="ci">${UNIT_SVG[c.type]}</span>
-        <span class="cv">${c.value}</span>
-        <span class="ct">${TYPE_LABEL[c.type]}</span>
-        ${c.type==='shardbearers'?'<span class="cs">×2</span>':''}
-        <span class="cd-eff">${eff}</span>
-      </div>`;
-    }
-    h+=`</div></div>`;
-  }
-
-  // Action buttons
-  h+=`<div class="db-actions">
-    <button class="btn" onclick="backFromDeckBuilder()">← Back</button>
-    <button class="btn g" onclick="quickPlay()">⚡ Quick Play (Random)</button>
-    <button class="btn p" onclick="startWithDeck()" ${!ready?'disabled title="Select exactly 20 cards"':''}>${pvpMode&&!buildingForP2?'Next: P2 Deck →':'Start Battle'}</button>
-  </div></div>`;
-
-  return h;
-}
-
-window.toggleDeckCard=function(id){
-  const deck=buildingForP2?pvpDeck2:playerDeck;
-  const pool=mkDeck();
-  const idx=deck.findIndex(c=>c.id===id);
-  if(idx>=0){
-    deck.splice(idx,1);sndSelect();
-  } else {
-    if(deck.length>=20)return; // Can't add more
-    const card=pool.find(c=>c.id===id);
-    if(card){deck.push({...card,deployTurn:-1,moved:false});sndDeploy()}
-  }
-  R();
-};
-
-window.applyPreset=function(key){
-  const preset=DECK_PRESETS[key];if(!preset)return;
-  const pool=mkDeck();
-  const deck=buildingForP2?pvpDeck2:playerDeck;
-  deck.length=0;
-  if(preset.cards){
-    for(const id of preset.cards){const c=pool.find(x=>x.id===id);if(c)deck.push({...c,deployTurn:-1,moved:false})}
-  } else {
-    // Balanced: 5 of each, highest values
-    for(const type of UT){
-      const tc=pool.filter(c=>c.type===type).sort((a,b)=>b.value-a.value).slice(0,5);
-      for(const c of tc)deck.push({...c,deployTurn:-1,moved:false});
-    }
-  }
-  sndFormation();R();
-};
-
-window.randomDeck=function(){
-  const pool=shuf(mkDeck());
-  const deck=buildingForP2?pvpDeck2:playerDeck;
-  deck.length=0;
-  for(let i=0;i<20;i++)deck.push({...pool[i],deployTurn:-1,moved:false});
-  sndSelect();R();
-};
-
-window.clearDeck=function(){
-  const deck=buildingForP2?pvpDeck2:playerDeck;
-  deck.length=0;R();
-};
-
-window.backFromDeckBuilder=function(){
-  if(buildingForP2){buildingForP2=false;R();return}
-  deckBuilderOpen=false;R();
-};
-
-window.quickPlay=function(){
-  // Random deck, skip builder
-  const pool=shuf(mkDeck());
-  playerDeck=pool.slice(0,20).map(c=>({...c,deployTurn:-1,moved:false}));
-  if(pvpMode)pvpDeck2=pool.slice(20,40).map(c=>({...c,deployTurn:-1,moved:false}));
-  deckBuilderOpen=false;
-  startGameWithDecks();
-};
-
-window.startWithDeck=function(){
-  const deck=buildingForP2?pvpDeck2:playerDeck;
-  if(deck.length!==20)return;
-  if(pvpMode&&!buildingForP2){
-    // P1 done, now P2 builds
-    buildingForP2=true;pvpDeck2=[];R();return;
-  }
-  deckBuilderOpen=false;
-  startGameWithDecks();
-};
-
-function startGameWithDecks(){
-  menu=false;turnNum=0;
-  const M=MODES[mode];
-  // Build the full card pool: player deck + AI deck + remaining as draw pile
-  const pDeck=shuf([...playerDeck]);
-  const aDeck=pvpMode?shuf([...pvpDeck2]):shuf(buildAIDeck(aiPers));
-  const allIds=new Set([...pDeck.map(c=>c.id),...aDeck.map(c=>c.id)]);
-  const fullPool=mkDeck();
-  const drawPile=shuf(fullPool.filter(c=>!allIds.has(c.id)));
-
-  const lanes=[];
-  for(let i=0;i<M.lanes;i++)lanes.push({human:[],ai:[]});
-
-  G={mode,dp:drawPile,
-    p:{human:{h:pDeck.slice(0,M.deal),rw:0},ai:{h:aDeck.slice(0,M.deal),rw:0}},
-    lanes,cr:1,turn:'human',hp:false,ap:false,phase:'play',
-    sel:null,rm:false,mm:false,cm:false,cid:null,log:[],rr:[]};
-
-  witReset();
-  lg(`— Towers (${M.label}) vs ${AIW[aiPers].name}. Custom decks loaded. —`,'system');
-  if(M.fd)lg('Flatface: opponent cards hidden until round end.','system');
-  if(M.tower)lg('🏰 Center lane is The Tower. Win it by +10 with a flank for Breakthrough!','system');
-  R();
-}
-
-window.openDeckBuilder=function(){
-  playerDeck=[];pvpDeck2=[];buildingForP2=false;
-  deckBuilderOpen=true;R();
-};
-
-// ═══════════════════════════════════════
 // Tutorial System
 // ═══════════════════════════════════════
 const TUT_STEPS=[
@@ -1540,7 +1274,6 @@ function lg(m,t='system'){if(!G)return;G.log.unshift({m,t});if(G.log.length>50)G
 
 function R(){
   const root=document.getElementById('root');
-  if(deckBuilderOpen){root.innerHTML=renderDeckBuilder();return}
   if(menu){root.innerHTML=renderMenu()+renderTutorial();bindMenu();return}
   const s=G,M=MODES[s.mode],W=AIW[aiPers];
   const p1Label=pvpMode?'Player 1':'Dalinar (You)', p2Label=pvpMode?'Player 2':W.name;
@@ -1980,9 +1713,12 @@ window.toMenu=()=>{menu=true;R()};
 window.togAdv=()=>{advOpen=!advOpen;R()};
 
 function startGame(m){
-  mode=m;
-  // v11: Open deck builder instead of starting directly
-  openDeckBuilder();
+  mode=m;menu=false;turnNum=0;G=mkState(m);witReset();
+  const M=MODES[m];
+  lg(`— Towers (${M.label}) vs ${AIW[aiPers].name}. Life before death, Radiant. —`,'system');
+  if(M.fd)lg('Flatface: opponent cards hidden until round end.','system');
+  if(M.tower)lg('🏰 Center lane is The Tower. Win it by +10 with a flank for Breakthrough!','system');
+  R();
 }
 
 R();

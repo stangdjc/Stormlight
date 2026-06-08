@@ -106,6 +106,17 @@ A floating 🃏 chat bubble with Hoid's personality. Moveable left/right, minimi
 - Responsive Wit chat, menu, tutorial, and overlays
 - Three breakpoints: 900px, 700px, 420px
 
+### Deck Builder
+
+Before each match, pick 20 cards from the full 40-card pool. Shape your strategy before the first deploy.
+
+- **Grid selection**: Cards grouped by type (Spearmen, Archers, Cavalry, Shardbearers), click to toggle
+- **5 presets**: Balanced, Formation Heavy, Shard Rush, Cavalry Blitz, Elite Force
+- **Quick Play**: Random deck for fast starts
+- **Live stats**: Type breakdown, average strength, 20-card progress bar
+- **AI personality decks**: Each opponent builds differently — Sadeas favors cavalry flanks, Dalinar loads spearmen for formations, Taravangian cherry-picks high-value, Odium takes the strongest of everything
+- **PvP dual building**: Both players build decks with hand-hiding between
+
 ### Tutorial
 
 8-step interactive walkthrough accessible from the menu ("How to Play") or in-game ("?" button). Covers card types, formations, The Tower, fatigue, and strategy tips.
@@ -154,6 +165,7 @@ Strip a 52-card deck to A–10 (40 cards). ♣=Spearmen, ♦=Archers, ♥=Cavalr
 | v8 | Layout restructure (lane status top, formations bottom), floating Wit with dropdown topics, chat reset |
 | v9 | Moveable Wit (left/right), 5 AI opponents with progression, smack talk system |
 | v10 | Sound effects (Web Audio), card/lane animations, Breakthrough particles + screen shake, mobile responsive, ambient highstorm |
+| v11 | Deck Builder — pick 20 cards from 40-card pool, 5 presets, AI personality-weighted decks, PvP dual deck building |
 
 ---
 
