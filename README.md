@@ -129,6 +129,19 @@ Before each match, pick 20 cards from the full 40-card pool. Shape your strategy
 - **AI personality decks**: Each opponent builds differently — Sadeas favors cavalry flanks, Dalinar loads spearmen for formations, Taravangian cherry-picks high-value, Odium takes the strongest of everything
 - **PvP dual building**: Both players build decks with hand-hiding between
 
+### Drag-and-Drop Deploy
+
+Drag cards from your hand directly onto lanes. Includes ghost card preview and lane highlighting on hover. Touch-drag supported on mobile with finger tracking.
+
+### Undo & Auto-Pass
+
+- **Undo**: Revert your last deploy, move, or retreat before the AI responds. Button appears after any action.
+- **Auto-pass**: Toggle to automatically pass when no card deployment would improve your position. Saves clicks in late-round situations.
+
+### Shardbearer Fatigue Visual
+
+Deployed Shardbearers show progressive border cracking as fatigue accumulates — subtle glow at 1 fatigue, pulsing cracks at 2, intense red at 3+. Shardwall-protected Shardbearers show a calming blue shield glow instead.
+
 ### Tutorial
 
 8-step interactive walkthrough accessible from the menu ("How to Play") or in-game ("?" button). Covers card types, formations, The Tower, fatigue, and strategy tips.
@@ -182,6 +195,7 @@ Strip a 52-card deck to A–10 (40 cards). ♣=Spearmen, ♦=Archers, ♥=Cavalr
 | v11 | Deck Builder — pick 20 cards from 40-card pool, 5 presets, AI personality-weighted decks, PvP dual deck building |
 | v12 | Campaign Mode — 5-chapter Stormlight narrative, carry-forward effects, win/lose story consequences |
 | v13 | UX polish — AI speed control, card hover tooltips with strength breakdown, optimal lane highlights |
+| v14 | Interaction polish — drag-and-drop deploy, undo last action, Shardbearer fatigue cracking visual, auto-pass toggle |
 
 ---
 

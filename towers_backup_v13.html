@@ -408,26 +408,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .ln.lane-best{box-shadow:inset 0 0 12px rgba(0,200,83,.2);border-color:var(--grn)}
 .ln.lane-ok{box-shadow:inset 0 0 8px rgba(255,215,0,.15);border-color:var(--gld)}
 .ln.lane-weak{box-shadow:inset 0 0 6px rgba(255,255,255,.05);border-color:var(--brd);opacity:.7}
-/* v14: Drag-and-drop */
-.cd.dragging{opacity:.4;transform:scale(.9)}
-.drag-ghost{position:fixed;z-index:300;pointer-events:none;opacity:.85;transform:rotate(-3deg) scale(1.05);filter:drop-shadow(0 6px 12px rgba(0,0,0,.5));transition:none}
-.ln.drag-over{border-color:var(--gld)!important;box-shadow:inset 0 0 20px rgba(255,215,0,.25)!important;transition:all .15s}
-/* v14: Undo button */
-.undo-btn{font-size:11px;padding:4px 10px;opacity:.7;transition:opacity .2s}
-.undo-btn:hover{opacity:1}
-.undo-btn:disabled{opacity:.3;cursor:default}
-/* v14: Shardbearer fatigue cracking */
-.cd.shardbearers.fatigue-1{border-image:linear-gradient(135deg,var(--sh),rgba(255,100,100,.4),var(--sh)) 1;animation:crack-pulse 3s ease-in-out infinite}
-.cd.shardbearers.fatigue-2{border-image:linear-gradient(135deg,rgba(255,80,80,.5),var(--sh),rgba(255,80,80,.6),var(--sh)) 1;animation:crack-pulse 2s ease-in-out infinite}
-.cd.shardbearers.fatigue-3{border-image:linear-gradient(135deg,rgba(255,50,50,.7),rgba(200,50,50,.5),var(--sh),rgba(255,50,50,.8)) 1;animation:crack-pulse 1.2s ease-in-out infinite}
-@keyframes crack-pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(.85)}}
-.cd.shardbearers.shardwall-protected{border-image:none!important;animation:none!important;border-color:var(--sh)!important;box-shadow:0 0 8px rgba(204,170,255,.3)}
-/* v14: Auto-pass */
-.auto-pass-toggle{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--dim);cursor:pointer;user-select:none;padding:2px 6px;border-radius:4px;transition:all .2s}
-.auto-pass-toggle:hover{color:var(--txt)}
-.auto-pass-toggle.active{color:var(--gld);background:rgba(255,215,0,.08)}
-.auto-pass-toggle .ap-check{width:12px;height:12px;border:1px solid var(--brd);border-radius:3px;display:inline-block;text-align:center;line-height:12px;font-size:9px}
-.auto-pass-toggle.active .ap-check{background:var(--gld);border-color:var(--gld);color:var(--bg1)}
 </style>
 </head>
 <body>
@@ -517,8 +497,6 @@ let aiSpeed='normal'; // 'fast','normal','slow'
 const AI_DELAY={fast:150,normal:600,slow:1500};
 window.cycleAISpeed=function(){aiSpeed=aiSpeed==='fast'?'normal':aiSpeed==='normal'?'slow':'fast';R()};
 const SPEED_ICON={fast:'⚡',normal:'🔄',slow:'🐢'};
-// v14: Undo, auto-pass, drag state
-let undoState=null,autoPass=false,dragCard=null,dragGhost=null;
 
 // v13: Card hover tooltip
 let tipEl=null;
@@ -566,141 +544,6 @@ function showCardTip(e,cardId,side,laneIdx){
   tip.classList.add('show');
 }
 function hideCardTip(){if(tipEl)tipEl.classList.remove('show')}
-
-// v14: Undo system — deep clone state before each player action
-function saveUndo(){undoState=JSON.parse(JSON.stringify(G))}
-window.undoAction=function(){
-  if(!undoState||G.phase!=='play')return;
-  if(!pvpMode&&G.turn==='ai')return; // Can't undo during AI turn
-  G=undoState;undoState=null;R();
-  lg('↩️ Action undone.','system');
-};
-
-// v14: Auto-pass — check if any deploy would improve position
-function shouldAutoPass(){
-  if(!autoPass||G.phase!=='play')return false;
-  const side=pvpMode&&G.turn==='ai'?'ai':'human';
-  const hand=G.p[side].h;
-  if(hand.length===0)return true;
-  const M=MODES[G.mode];
-  // Check if player is winning all lanes
-  let winningAll=true;
-  for(let i=0;i<M.lanes;i++){
-    const h=calcStr(G.lanes[i].human,i,G.lanes,'human',G.mode,turnNum);
-    const a=calcStr(G.lanes[i].ai,i,G.lanes,'ai',G.mode,turnNum);
-    if(side==='human'&&h<=a)winningAll=false;
-    if(side==='ai'&&a<=h)winningAll=false;
-  }
-  if(winningAll)return true;
-  // Check if any card deployment improves a losing/tied lane
-  for(const card of hand){
-    for(let i=0;i<M.lanes;i++){
-      const prev=calcPreview(card,i,G);
-      if(prev&&!prev.blocked&&prev.diff>0)return false; // Found a useful play
-    }
-  }
-  return true; // No useful plays
-}
-window.toggleAutoPass=function(){autoPass=!autoPass;R()};
-
-// v14: Drag-and-drop
-function initDrag(){
-  document.querySelectorAll('.hd .cd').forEach(el=>{
-    el.draggable=true;
-    el.addEventListener('dragstart',e=>{
-      const side=pvpMode&&G.turn==='ai'?'ai':'human';
-      const card=G.p[side].h.find(c=>c.id===el.dataset.id);
-      if(!card)return e.preventDefault();
-      dragCard=card;
-      el.classList.add('dragging');
-      // Create ghost
-      const ghost=el.cloneNode(true);
-      ghost.className=el.className.replace('dragging','')+' drag-ghost';
-      ghost.style.width=el.offsetWidth+'px';
-      ghost.style.height=el.offsetHeight+'px';
-      document.body.appendChild(ghost);
-      dragGhost=ghost;
-      // Hide default drag image
-      const blank=document.createElement('canvas');
-      blank.width=1;blank.height=1;
-      e.dataTransfer.setDragImage(blank,0,0);
-      e.dataTransfer.effectAllowed='move';
-    });
-    el.addEventListener('dragend',()=>{
-      el.classList.remove('dragging');
-      if(dragGhost){dragGhost.remove();dragGhost=null}
-      dragCard=null;
-      document.querySelectorAll('.ln.drag-over').forEach(l=>l.classList.remove('drag-over'));
-    });
-  });
-  // Touch drag support
-  let touchCard=null,touchGhost=null,touchStartY=0;
-  document.querySelectorAll('.hd .cd').forEach(el=>{
-    el.addEventListener('touchstart',e=>{
-      const side=pvpMode&&G.turn==='ai'?'ai':'human';
-      const card=G.p[side].h.find(c=>c.id===el.dataset.id);
-      if(!card)return;
-      touchStartY=e.touches[0].clientY;
-      touchCard=card;
-    },{passive:true});
-    el.addEventListener('touchmove',e=>{
-      if(!touchCard)return;
-      const dy=Math.abs(e.touches[0].clientY-touchStartY);
-      if(dy<20)return; // Not a drag yet
-      e.preventDefault();
-      if(!touchGhost){
-        touchGhost=el.cloneNode(true);
-        touchGhost.className=el.className+' drag-ghost';
-        touchGhost.style.width=el.offsetWidth+'px';
-        touchGhost.style.height=el.offsetHeight+'px';
-        document.body.appendChild(touchGhost);
-        el.classList.add('dragging');
-      }
-      const t=e.touches[0];
-      touchGhost.style.left=(t.clientX-30)+'px';
-      touchGhost.style.top=(t.clientY-40)+'px';
-      // Highlight lane under finger
-      document.querySelectorAll('.ln.drag-over').forEach(l=>l.classList.remove('drag-over'));
-      const elUnder=document.elementFromPoint(t.clientX,t.clientY);
-      if(elUnder){const ln=elUnder.closest('.ln.deploy-target');if(ln)ln.classList.add('drag-over')}
-    },{passive:false});
-    el.addEventListener('touchend',e=>{
-      if(touchGhost){
-        const t=e.changedTouches[0];
-        const elUnder=document.elementFromPoint(t.clientX,t.clientY);
-        if(elUnder&&touchCard){
-          const ln=elUnder.closest('.ln.deploy-target:not(.blocked)');
-          if(ln){
-            const li=parseInt(ln.dataset.lane);
-            G.sel=touchCard;
-            dep(li);
-          }
-        }
-        touchGhost.remove();touchGhost=null;
-        el.classList.remove('dragging');
-      }
-      touchCard=null;
-    });
-  });
-  // Lane drop targets
-  document.querySelectorAll('.ln.deploy-target:not(.blocked)').forEach(ln=>{
-    ln.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';ln.classList.add('drag-over')});
-    ln.addEventListener('dragleave',()=>ln.classList.remove('drag-over'));
-    ln.addEventListener('drop',e=>{
-      e.preventDefault();ln.classList.remove('drag-over');
-      if(!dragCard)return;
-      const li=parseInt(ln.dataset.lane);
-      G.sel=dragCard;
-      dep(li);
-      dragCard=null;
-      if(dragGhost){dragGhost.remove();dragGhost=null}
-    });
-  });
-}
-// Track ghost position during drag
-document.addEventListener('dragover',e=>{
-  if(dragGhost){dragGhost.style.left=(e.clientX-30)+'px';dragGhost.style.top=(e.clientY-40)+'px'}
-});
 function getAC(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
 function playTone(freq,dur,type='sine',vol=.12,decay=true){
   if(!soundOn)return;try{const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();
@@ -2179,19 +2022,7 @@ function rCard(c,fd=false){
   if(c.type==='spearmen')eff=c.value;
   eff=Math.max(1,eff-tf);
   if(fd)return`<div class="cd face-down" data-id="${c.id}"><span class="ci">${UNIT_SVG[c.type]}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]||''}</span><div class="card-back">${UNIT_SVG.facedown}</div></div>`;
-  // v14: Shardbearer fatigue cracking visual + Shardwall protection
-  let fatigueClass='';
-  if(c.type==='shardbearers'&&fat>0){
-    // Check if protected by Shardwall — need lane context
-    let hasShardwall=false;
-    if(G&&G.lanes){for(let li=0;li<G.lanes.length;li++){const side=G.lanes[li].human.includes(c)?'human':(G.lanes[li].ai.includes(c)?'ai':null);
-      if(side){const forms=detectFormations(G.lanes[li][side],li,G.lanes,side,G.mode);hasShardwall=forms.some(f=>f.n==='Shardwall');break}}}
-    if(hasShardwall)fatigueClass=' shardwall-protected';
-    else if(fat>=3)fatigueClass=' fatigue-3';
-    else if(fat>=2)fatigueClass=' fatigue-2';
-    else fatigueClass=' fatigue-1';
-  }
-  return`<div class="cd ${c.type}${fatigueClass}" data-id="${c.id}"><span class="cd-suit">${SUIT_SYM[c.type]||''}</span><span class="ci">${UNIT_SVG[c.type]||''}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]||''}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0?`<span class="fat-ind">-${tf}</span>`:''}<span class="cd-eff">${eff}</span></div>`;
+  return`<div class="cd ${c.type}" data-id="${c.id}"><span class="cd-suit">${SUIT_SYM[c.type]||''}</span><span class="ci">${UNIT_SVG[c.type]||''}</span><span class="cv">${c.value}</span><span class="ct">${TYPE_LABEL[c.type]||''}</span>${c.type==='shardbearers'?'<span class="cs">×2</span>':''}${tf>0?`<span class="fat-ind">-${tf}</span>`:''}<span class="cd-eff">${eff}</span></div>`;
 }
 
 function rLane(l,i,s){
@@ -2265,8 +2096,6 @@ function rAct(s){
     <button class="btn" onclick="sRet()" ${td===0?'disabled':''}>Retreat</button>
     <button class="btn g ${shouldPulsePass?'pulse-pass':''}" onclick="pPass()">Pass${shouldPulsePass?' ✓':''}</button>
     <button class="btn d ${shouldPulseConcede?'pulse-concede':''}" onclick="pCon()">Concede 🤝</button>
-    ${undoState?'<button class="btn undo-btn" onclick="undoAction()">↩️ Undo</button>':''}
-    <label class="auto-pass-toggle" title="Auto-pass when no useful plays remain"><input type="checkbox" ${autoPass?'checked':''} onchange="toggleAutoPass()"> Auto-pass</label>
   </div>`;
 }
 
@@ -2388,8 +2217,6 @@ function bind(){
     el.addEventListener('mouseenter',e=>showCardTip(e,el.dataset.id,lSide,li));
     el.addEventListener('mouseleave',hideCardTip);
   });
-  // v14: Drag-and-drop
-  if(G.phase==='play'&&G.sel===null&&!G.rm&&!G.mm&&!G.cm)initDrag();
 }
 
 // Actions
@@ -2403,7 +2230,6 @@ window.cCharge=()=>{G.cm=false;G.cid=null;lg('You skip the charge.','player');en
 
 window.dep=function(li){
   const c=G.sel;if(!c)return;
-  saveUndo(); // v14: save for undo
   const side=pvpMode&&G.turn==='ai'?'ai':'human';
   if(c.type==='shardbearers'&&!canShard(G.lanes[li],side))return;
   G.p[side].h=G.p[side].h.filter(x=>x.id!==c.id);
@@ -2422,7 +2248,6 @@ window.dep=function(li){
 };
 
 function moveCard(id){
-  saveUndo(); // v14: save for undo
   const M=MODES[G.mode],side=pvpMode&&G.turn==='ai'?'ai':'human';
   for(let i=0;i<M.lanes;i++){
     const c=G.lanes[i][side].find(x=>x.id===id);
@@ -2455,7 +2280,6 @@ window.execMove=function(id,from,to){
 };
 
 function retCard(id){
-  saveUndo(); // v14: save for undo
   const M=MODES[G.mode],side=pvpMode&&G.turn==='ai'?'ai':'human';
   for(let i=0;i<M.lanes;i++){const idx=G.lanes[i][side].findIndex(c=>c.id===id);
     if(idx!==-1){const c=G.lanes[i][side].splice(idx,1)[0];c.deployTurn=-1;c.moved=false;G.p[side].h.push(c);G.rm=false;
@@ -2501,18 +2325,11 @@ function endTurn(){
   turnNum++;G.sel=null;G.rm=false;G.mm=false;
   if(pvpMode){
     G.turn=G.turn==='human'?'ai':'human';
-    undoState=null; // v14: clear undo on turn change
     handoffScreen=true;
     R();
   } else {
-    G.turn='ai';undoState=null; // v14: clear undo when AI starts
-    R();
-    anim=true;const d=AI_DELAY[aiSpeed];setTimeout(()=>{aiExec();anim=false;
-      // v14: auto-pass check after AI finishes and human turn resumes
-      if(shouldAutoPass()&&G.phase==='play'&&G.turn==='human'){
-        setTimeout(()=>{lg('⏭️ Auto-pass (no useful plays).','system');pPass()},300);
-      }
-    },d+Math.random()*(d*0.5));
+    G.turn='ai';R();
+    anim=true;const d=AI_DELAY[aiSpeed];setTimeout(()=>{aiExec();anim=false},d+Math.random()*(d*0.5));
   }
 }
 window.dismissHandoff=function(){handoffScreen=false;R();};
@@ -2539,7 +2356,6 @@ function aiExec(){
 }
 
 function resRound(){
-  undoState=null; // v14: clear undo on round end
   const r=resolve(G);G.rr.push(r);const M=MODES[G.mode];
   // Apply lane flash classes
   setTimeout(()=>{

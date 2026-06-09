@@ -15,20 +15,20 @@
 - [x] Deck Builder — pick 20 from 40-card pool, 5 presets, AI personality-weighted decks, PvP dual building ✅ v11
 - [x] Campaign Mode — 5-chapter Stormlight narrative, carry-forward effects, win/lose story consequences ✅ v12
 
----
-
-## Next Up
-
-### Tier 3: Interaction Polish
+### Tier 3: Interaction Polish ✅ v13–v14
 Smoother gameplay, less friction, more visual feedback.
 
-- [ ] **Drag-and-drop deploy** — drag from hand to lane with snap zones and ghost preview
-- [ ] **Undo last action** — revert your last deploy/move before AI responds
+- [x] **Drag-and-drop deploy** — drag from hand to lane with snap zones and ghost preview ✅ v14
+- [x] **Undo last action** — revert your last deploy/move before AI responds ✅ v14
 - [x] **Card hover tooltips** — detailed breakdown: base value + synergy + formation + fatigue = effective strength ✅ v13
 - [x] **Optimal lane highlights** — when a card is selected, lanes glow green (best) / gold (ok) / dim (weak) based on impact ✅ v13
 - [x] **AI speed control** — fast / normal / slow toggle for AI thinking delay ✅ v13
-- [ ] **Shardbearer fatigue visual** — cracking border effect that worsens over turns, resets on Shardwall
-- [ ] **Auto-pass option** — toggle to auto-pass when no beneficial plays remain
+- [x] **Shardbearer fatigue visual** — cracking border effect that worsens over turns, resets on Shardwall ✅ v14
+- [x] **Auto-pass option** — toggle to auto-pass when no beneficial plays remain ✅ v14
+
+---
+
+## Next Up
 
 ### Tier 4: Content Expansion
 More to fight, more to track, more to replay.
