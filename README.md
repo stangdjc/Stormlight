@@ -150,12 +150,14 @@ Center lane = The Tower 🏰. Win it by **+10 margin** AND hold **1 flank** = **
 ## Technical Details
 
 - **Single HTML file**, zero dependencies, runs in any modern browser
-- **~100KB** total (HTML + CSS + JS + inline SVG art)
+- **~135KB** total (HTML + CSS + JS + inline SVG art)
+- Web Audio API for all sound effects — zero audio files
+- CSS keyframe animations (deploy bounce, lane flash, screen shake, particle burst)
 - SVG unit silhouettes (spear formation, bow, mounted rider, Shardblade)
 - CSS gradient card backgrounds with type-specific coloring
-- Shardbearer pulse glow animation
-- Card deploy slide animation
+- Responsive layout with 3 breakpoints (900px, 700px, 420px)
 - Battlefield terrain texture (Shattered Plains aesthetic)
+- Campaign state machine with carry-forward effect calculations
 
 ## Physical Deck
 
@@ -179,6 +181,7 @@ Strip a 52-card deck to A–10 (40 cards). ♣=Spearmen, ♦=Archers, ♥=Cavalr
 | v10 | Sound effects (Web Audio), card/lane animations, Breakthrough particles + screen shake, mobile responsive, ambient highstorm |
 | v11 | Deck Builder — pick 20 cards from 40-card pool, 5 presets, AI personality-weighted decks, PvP dual deck building |
 | v12 | Campaign Mode — 5-chapter Stormlight narrative, carry-forward effects, win/lose story consequences |
+| v13 | UX polish — AI speed control, card hover tooltips with strength breakdown, optimal lane highlights |
 
 ---
 

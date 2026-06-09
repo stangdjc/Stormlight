@@ -395,6 +395,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .co-actions{margin-top:12px}
 @media(max-width:700px){.campaign-map,.campaign-briefing,.campaign-outcome{padding:0 8px}.cm-chapter{padding:10px 12px;gap:8px}.cm-ch-icon{font-size:22px;min-width:28px}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+/* v13: Card hover tooltip */
+.card-tip{position:fixed;z-index:200;pointer-events:none;background:var(--bg1);border:1px solid var(--gld);border-radius:8px;padding:8px 12px;font-size:11px;line-height:1.5;color:var(--txt);max-width:220px;box-shadow:0 4px 16px rgba(0,0,0,.5);opacity:0;transition:opacity .15s}
+.card-tip.show{opacity:1}
+.card-tip .ct-title{font-weight:700;color:var(--gld);margin-bottom:4px;font-size:12px}
+.card-tip .ct-row{display:flex;justify-content:space-between;gap:8px}
+.card-tip .ct-val{color:var(--gld);font-weight:700}
+.card-tip .ct-neg{color:var(--red)}
+.card-tip .ct-pos{color:var(--grn)}
+.card-tip .ct-total{border-top:1px solid var(--brd);margin-top:4px;padding-top:4px;font-weight:700;font-size:12px}
+/* v13: Lane quality highlights */
+.ln.lane-best{box-shadow:inset 0 0 12px rgba(0,200,83,.2);border-color:var(--grn)}
+.ln.lane-ok{box-shadow:inset 0 0 8px rgba(255,215,0,.15);border-color:var(--gld)}
+.ln.lane-weak{box-shadow:inset 0 0 6px rgba(255,255,255,.05);border-color:var(--brd);opacity:.7}
 </style>
 </head>
 <body>
@@ -479,6 +492,58 @@ let beatenOpponents=[];
 // v10: Sound Engine (Web Audio API)
 // ═══════════════════════════════════════
 let soundOn=true,audioCtx=null;
+// v13: AI speed control
+let aiSpeed='normal'; // 'fast','normal','slow'
+const AI_DELAY={fast:150,normal:600,slow:1500};
+window.cycleAISpeed=function(){aiSpeed=aiSpeed==='fast'?'normal':aiSpeed==='normal'?'slow':'fast';R()};
+const SPEED_ICON={fast:'⚡',normal:'🔄',slow:'🐢'};
+
+// v13: Card hover tooltip
+let tipEl=null;
+function ensureTip(){if(!tipEl){tipEl=document.createElement('div');tipEl.className='card-tip';document.body.appendChild(tipEl)}return tipEl}
+function showCardTip(e,cardId,side,laneIdx){
+  if(!G||G.phase!=='play')return;
+  const tip=ensureTip();
+  // Find the card
+  let card=null,deployed=false;
+  if(laneIdx!==undefined&&laneIdx>=0){
+    card=G.lanes[laneIdx][side].find(c=>c.id===cardId);deployed=true;
+  } else {
+    card=G.p[side].h.find(c=>c.id===cardId);
+  }
+  if(!card)return;
+  const base=card.type==='shardbearers'?card.value*2:card.value;
+  let synergy=0,formBonus=0,fatigue=0;
+  if(deployed&&laneIdx>=0){
+    const laneCards=G.lanes[laneIdx][side];
+    if(card.type==='spearmen')synergy=laneCards.filter(x=>x.id!==card.id&&x.type==='spearmen').length;
+    fatigue=typeof calcFatigue==='function'?calcFatigue(card,turnNum,detectFormations(laneCards,laneIdx,G.lanes,side,G.mode)):0;
+    const forms=detectFormations(laneCards,laneIdx,G.lanes,side,G.mode);
+    for(const f of forms)formBonus+=f.b;
+    // Campaign formation bonus
+    if(campaignActive&&side==='human'&&G.campaignEffects&&G.campaignEffects.formationBonus&&forms.length)formBonus+=G.campaignEffects.formationBonus*forms.length;
+    // Archer support from adjacent
+    const M=MODES[G.mode];
+    let archerSupport=0;
+    for(let d=1;d<=M.ar;d++)for(const o of[-d,d]){const a=laneIdx+o;if(a>=0&&a<M.lanes)for(const c of G.lanes[a][side])if(c.type==='archers')archerSupport+=2}
+    synergy+=archerSupport;
+  }
+  const eff=Math.max(1,base+synergy-fatigue);
+  let html=`<div class="ct-title">${UI[card.type]} ${TYPE_LABEL[card.type]} (${card.value})</div>`;
+  html+=`<div class="ct-row"><span>Base strength</span><span class="ct-val">${base}</span></div>`;
+  if(synergy>0)html+=`<div class="ct-row"><span>Synergy/Support</span><span class="ct-pos">+${synergy}</span></div>`;
+  if(formBonus>0)html+=`<div class="ct-row"><span>Formation bonus</span><span class="ct-pos">+${formBonus}</span></div>`;
+  if(fatigue>0)html+=`<div class="ct-row"><span>Fatigue</span><span class="ct-neg">−${fatigue}</span></div>`;
+  if(deployed)html+=`<div class="ct-total ct-row"><span>Effective</span><span class="ct-val">${eff}</span></div>`;
+  else html+=`<div class="ct-total ct-row"><span>Deploy strength</span><span class="ct-val">${base}</span></div>`;
+  if(card.type==='shardbearers'&&!deployed)html+=`<div style="color:var(--dim);font-size:10px;margin-top:3px">×2 multiplier applied. Max 1 per lane. Fatigues without Shardwall.</div>`;
+  tip.innerHTML=html;
+  const r=e.target.closest('.cd').getBoundingClientRect();
+  tip.style.left=Math.min(window.innerWidth-230,r.right+8)+'px';
+  tip.style.top=Math.max(4,r.top-20)+'px';
+  tip.classList.add('show');
+}
+function hideCardTip(){if(tipEl)tipEl.classList.remove('show')}
 function getAC(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
 function playTone(freq,dur,type='sine',vol=.12,decay=true){
   if(!soundOn)return;try{const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();
@@ -1880,6 +1945,7 @@ function R(){
         <span class="mi">Rd <b>${s.cr}/3</b> · P1 <b>${s.p.human.rw}</b>–<b>${s.p.ai.rw}</b> P2 · Pile: ${s.dp.length}</span>
         <span class="snd-btn ${soundOn?'':'muted'}" onclick="toggleSound()" title="${soundOn?'Mute':'Unmute'}">${soundOn?'🔊':'🔇'}</span>
         <span class="snd-btn ${stormOn?'':'muted'}" onclick="toggleStorm()" title="${stormOn?'Stop Highstorm':'Ambient Highstorm'}">${stormOn?'🌪️':'💨'}</span>
+        <span class="snd-btn" onclick="cycleAISpeed()" title="AI Speed: ${aiSpeed}">${SPEED_ICON[aiSpeed]}</span>
         <button class="btn sm" onclick="tutOpen_()">?</button>
         <button class="btn sm" onclick="toMenu()">Menu</button>
       </div></div>
@@ -2114,6 +2180,43 @@ function bind(){
     else if(G.mm)moveCard(id);
     else if(G.cm&&!G.cid)selCharge(id);
   }));
+  // v13: Lane quality highlights when card selected
+  if(G.sel&&G.phase==='play'){
+    const targets=document.querySelectorAll('.ln.deploy-target:not(.blocked)');
+    if(targets.length>1){
+      const scores=[];
+      targets.forEach(el=>{
+        const li=parseInt(el.dataset.lane);
+        const prev=calcPreview(G.sel,li,G);
+        const score=prev?(prev.diff+(prev.adjBonus||0)+(prev.newForms.length?4:0)):0;
+        scores.push({el,score});
+      });
+      const maxS=Math.max(...scores.map(s=>s.score));
+      const minS=Math.min(...scores.map(s=>s.score));
+      const range=maxS-minS;
+      scores.forEach(({el,score})=>{
+        if(range===0||score===maxS)el.classList.add('lane-best');
+        else if(score>minS+(range*0.4))el.classList.add('lane-ok');
+        else el.classList.add('lane-weak');
+      });
+    } else if(targets.length===1){
+      targets[0].classList.add('lane-best');
+    }
+  }
+  // v13: Card hover tooltips
+  document.querySelectorAll('.hd .cd').forEach(el=>{
+    const pSide=pvpMode&&G.turn==='ai'?'ai':'human';
+    el.addEventListener('mouseenter',e=>showCardTip(e,el.dataset.id,pSide,-1));
+    el.addEventListener('mouseleave',hideCardTip);
+  });
+  document.querySelectorAll('.ls .cd').forEach(el=>{
+    const lnEl=el.closest('.ln');if(!lnEl)return;
+    const lsEl=el.closest('.ls');if(!lsEl)return;
+    const lSide=lsEl.dataset.side||'human';
+    const li=parseInt(lnEl.dataset.lane||'0');
+    el.addEventListener('mouseenter',e=>showCardTip(e,el.dataset.id,lSide,li));
+    el.addEventListener('mouseleave',hideCardTip);
+  });
 }
 
 // Actions
@@ -2226,7 +2329,7 @@ function endTurn(){
     R();
   } else {
     G.turn='ai';R();
-    anim=true;setTimeout(()=>{aiExec();anim=false},600+Math.random()*400);
+    anim=true;const d=AI_DELAY[aiSpeed];setTimeout(()=>{aiExec();anim=false},d+Math.random()*(d*0.5));
   }
 }
 window.dismissHandoff=function(){handoffScreen=false;R();};

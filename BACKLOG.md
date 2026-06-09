@@ -1,60 +1,68 @@
-# Towers — Backlog
+# Towers — Enhancement Roadmap
 
-## Priority 1: Tutorial Mode
+## Completed
 
-### Basic Tutorial
-- [ ] Interactive walkthrough overlay that activates on first play
-- [ ] Step-by-step guide covering: card types, lane mechanics, formations, The Tower
-- [ ] "Practice Round" mode with guided hints and undo capability
-- [ ] Base strategies section: when to pass, when to concede, formation building order
+### Tier 1: Game Feel ✅ v10
+- [x] Card deploy/retreat animations (bounce, slide)
+- [x] Lane win/loss/draw flash on resolution
+- [x] Formation badge pulse when triggered
+- [x] Breakthrough screen shake + gold particle burst
+- [x] Sound effects (Web Audio API — deploy, formation, breakthrough, round win/lose, pass, concede, card select)
+- [x] Ambient highstorm wind loop (toggle)
+- [x] Mobile responsive (3 breakpoints: 900px, 700px, 420px)
 
-### LLM-Powered Advisor (Stretch)
-- [ ] Integrate a lightweight LLM (Claude Haiku via API) for natural language Q&A
-- [ ] "Ask the Advisor" button that accepts freeform questions about strategy
-- [ ] Context-aware responses based on current board state (pass lane data to prompt)
-- [ ] Example queries: "Why can't I play this card?", "Should I concede?", "How do I build a Phalanx?"
-- [ ] Fallback: pre-written FAQ if no API key configured
-
-### Implementation Notes
-- Tutorial overlay can be a state machine: `TUTORIAL_INTRO → CARD_TYPES → DEPLOY_DEMO → FORMATION_DEMO → TOWER_DEMO → DONE`
-- Store `tutorialComplete` in localStorage to skip on return visits
-- LLM integration: POST to Claude API with board state JSON, parse response into advisor panel
+### Tier 2: Strategic Depth ✅ v11–v12
+- [x] Deck Builder — pick 20 from 40-card pool, 5 presets, AI personality-weighted decks, PvP dual building ✅ v11
+- [x] Campaign Mode — 5-chapter Stormlight narrative, carry-forward effects, win/lose story consequences ✅ v12
 
 ---
 
-## Priority 2: Card & Action Polish
+## Next Up
 
-### Visual Enhancements
-- [x] Card deploy animation (slide from hand into lane) ✅ v10
-- [x] Card retreat animation (slide back to hand) ✅ v10
-- [x] Lane win/loss flash effect on resolution ✅ v10
-- [x] Formation badge pulse animation when triggered ✅ v10
-- [ ] Shardbearer fatigue visual (cracking border effect)
-- [x] Breakthrough victory: screen-shake + gold particle burst ✅ v10
-- [ ] Card hover tooltip showing effective strength with all bonuses broken down
+### Tier 3: Interaction Polish
+Smoother gameplay, less friction, more visual feedback.
 
-### Action Flow Improvements
-- [ ] Auto-highlight optimal deploy lanes when a card is selected (green = good, yellow = ok, grey = weak)
-- [ ] One-click deploy: click card, click lane (skip the lane selection bar)
-- [ ] Drag-and-drop from hand to lane (with snap zones)
-- [ ] Auto-pass when no beneficial plays remain (optional toggle)
-- [ ] Undo last action (before AI responds)
-- [ ] Speed control for AI thinking delay (fast/normal/slow)
+- [ ] **Drag-and-drop deploy** — drag from hand to lane with snap zones and ghost preview
+- [ ] **Undo last action** — revert your last deploy/move before AI responds
+- [x] **Card hover tooltips** — detailed breakdown: base value + synergy + formation + fatigue = effective strength ✅ v13
+- [x] **Optimal lane highlights** — when a card is selected, lanes glow green (best) / gold (ok) / dim (weak) based on impact ✅ v13
+- [x] **AI speed control** — fast / normal / slow toggle for AI thinking delay ✅ v13
+- [ ] **Shardbearer fatigue visual** — cracking border effect that worsens over turns, resets on Shardwall
+- [ ] **Auto-pass option** — toggle to auto-pass when no beneficial plays remain
 
-### Audio ✅ v10
-- [x] Card deploy sound (parchment/thud) ✅ v10
-- [x] Formation trigger chime ✅ v10
-- [x] Breakthrough horn blast ✅ v10
-- [x] Ambient highstorm wind (toggle) ✅ v10
+### Tier 4: Content Expansion
+More to fight, more to track, more to replay.
+
+- [ ] **New AI opponents** — Navani (tech/siege focus, buffing adjacent units), Wit/Hoid (chaotic wildcard, random strategy shifts mid-game)
+- [ ] **Match history** — persistent win/loss record per opponent, best streaks, campaign completion stats (localStorage)
+- [ ] **Campaign Act 2** — Chapters 6–10 following Words of Radiance / Oathbringer arc (new opponents, new effects)
+- [ ] **New formations** — Siege Line (Archers + Shardbearers), Shield Brothers (2+ Cavalry in same lane), Bridge Four (all 4 types in one lane)
+- [ ] **Card art variants** — alternate SVG art for high-value cards (8-10) to visually distinguish elite units
+
+### Tier 5: Multiplayer & Social
+Take it online.
+
+- [ ] **Online multiplayer** — Supabase Realtime or WebRTC peer-to-peer, lobby + matchmaking
+- [ ] **Spectator mode** — watch AI vs AI matches with commentary
+- [ ] **Share replays** — export match as a replayable JSON, shareable link
+- [ ] **Leaderboard** — anonymous or named rankings across campaign and quick play
+- [ ] **Challenge links** — send a URL that drops someone into a match against your saved deck
+
+### Tier 6: Platform & Intelligence
+Level up the tech.
+
+- [ ] **PWA install** — service worker, offline play, "Add to Home Screen" prompt
+- [ ] **LLM-powered Wit** — Claude Haiku API integration for natural language strategy advice based on live board state
+- [ ] **Custom themes** — swap visual themes (Shattered Plains, Urithiru, Shadesmar) with different CSS palettes
+- [ ] **Mod support** — JSON-configurable card pools, formation rules, and campaign chapters for community content
+- [ ] **Analytics dashboard** — track play patterns, most-used formations, win rates by deck composition
 
 ---
 
-## Priority 3: Future Features
+## Implementation Notes
 
-- [ ] Online multiplayer (WebSocket or WebRTC peer-to-peer)
-- [x] Deck builder: customize your 20-card deck from the 40-card pool before a match ✅ v11
-- [x] Campaign mode: 5-chapter Stormlight narrative with carry-forward effects ✅ v12
-- [ ] Additional AI personalities (Navani = tech/siege focus, Wit = chaotic/random)
-- [ ] Match history and win/loss tracking
-- [ ] Spectator mode for watching AI vs AI matches
-- [x] Mobile-optimized layout (vertical card stacking) ✅ v10
+**Priority guidance:** Tier 3 is pure UX polish — low risk, high quality-of-life. Tier 4 adds replay value. Tier 5 is a bigger architectural lift (networking). Tier 6 is long-term platform investment.
+
+**Architecture constraint:** Single-file HTML remains the target through Tier 4. Tier 5+ may require splitting into multiple files or adding a backend.
+
+**Testing approach:** Node.js eval with mock DOM for logic tests. Browser manual testing for visual/interaction changes. Campaign narrative tested for perspective consistency (always good-guy POV).
